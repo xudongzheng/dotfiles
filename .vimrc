@@ -141,3 +141,4 @@ nnoremap <tab> :tabp<return>
 
 xnoremap gh :s/pick/squash<return>
 let g:netrw_list_hide = "\\(^\\|\\s\\s\\)\\zs\\.\\S\\+"
+let g:is_bash = 1
