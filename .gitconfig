@@ -1,0 +1,4 @@
+[core]
+	pager = less -x4
+[push]
+	default = simple
