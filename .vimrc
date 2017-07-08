@@ -57,6 +57,9 @@ set scrolloff=8
 " Set wildmenu to show options when using tab autocomplete.
 set wildmenu
 
+" Have backspace behave as it does in other applications.
+set backspace=2
+
 " Set tabs to be 4 spaces and use tabs instead of spaces. This uses autocmd so
 " it does not get overwritten language-specific configuration. Python, for
 " example, is configured to expand tabs to spaces. Set text width to 80 for all
