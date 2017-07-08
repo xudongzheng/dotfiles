@@ -81,10 +81,10 @@ autocmd FileType text setlocal nosmartindent
 autocmd FileType text setlocal autoindent
 
 " Use backspace to trigger commands in normal mode. In the command line window,
-" use <Leader><CR> to execute a command.
+" use :w to execute the active line as a command.
 nnoremap <CR> :
 xnoremap <CR> :
-autocmd CmdwinEnter * nnoremap <buffer> <Leader><CR> <CR>
+autocmd CmdwinEnter * cabbrev <buffer> w <CR>
 
 " Use gh, gj, gk, and gl to navigate splits.
 nnoremap gj <C-W><C-J>
@@ -130,8 +130,11 @@ nnoremap <F12> :noh<return>
 xnoremap p odvj
 
 " Netrw comes with lots of mappings that can lead to unintentional, accidental
-" changes. We want to use v to go up a directory and f to enter a directory.
-" NetrwFunction borrows code from https://goo.gl/LP4pww.
+" changes. We will unmap everything and map only the functions that we need.
+autocmd FileType netrw mapclear <buffer>
+
+" Use d to go up a directory and f to enter a directory. NetrwFunction borrows
+" code from https://goo.gl/LP4pww.
 func! NetrwFunction(suffix)
 	redir => scriptnames
 	silent! scriptnames
@@ -153,9 +156,30 @@ endfunc
 func! NetrwParent()
 	call NetrwBrowse("..")
 endfunc
-autocmd FileType netrw mapclear <buffer>
 autocmd FileType netrw nmap <buffer> f :call NetrwReturn()<CR>
 autocmd FileType netrw nmap <buffer> v :call NetrwParent()<CR>
+
+" Map additional functions for creating, renaming, and deleting.
+func! NetrwCreate()
+	let NetrwOpenFile = function(NetrwFunction("NetrwOpenFile"))
+	call NetrwOpenFile(1)
+endfunc
+func! NetrwMkdir()
+	let NetrwMakeDir = function(NetrwFunction("NetrwMakeDir"))
+	call NetrwMakeDir("")
+endfunc
+func! NetrwRename()
+	let NetrwLocalRename = function(NetrwFunction("NetrwLocalRename"))
+	call NetrwLocalRename(b:netrw_curdir)
+endfunc
+func! NetrwRemove()
+	let NetrwLocalRm = function(NetrwFunction("NetrwLocalRm"))
+	call NetrwLocalRm(b:netrw_curdir)
+endfunc
+autocmd FileType netrw nmap <buffer> c :call NetrwCreate()<CR>
+autocmd FileType netrw nmap <buffer> g :call NetrwMkdir()<CR>
+autocmd FileType netrw nmap <buffer> s :call NetrwRename()<CR>
+autocmd FileType netrw nmap <buffer> x :call NetrwRemove()<CR>
 
 " Display file modification time in netrw browser.
 let g:netrw_liststyle = 1
@@ -169,10 +193,12 @@ let g:is_bash = 1
 " Use <Leader>m to open netrw in new tab.
 nnoremap <Leader>m :Te<return>
 
+" Use <Leader>w to adjusts splits to be even.
+nnoremap <Leader>w <C-W>=
+
 " Use \ to go to next tab and <tab> to go to previous tab.
 nnoremap \ :tabn<return>
 nnoremap <Tab> :tabp<return>
-
 
 " beta stuff
 
