@@ -7,6 +7,9 @@ syntax on
 " Enable plugins and indentation for specific file types.
 filetype plugin indent on
 
+" Use <Space> as the leader key.
+let mapleader = " "
+
 " Use langmap to map colemak keys to qwerty keys in normal mode.
 set langmap=dg,ek,fe,gt,il,jy,kn,lu,nj,pr,rs,sd,tf,ui,yo,op,DG,EK,FE,GT,IL,JY,KN,LU,NJ,PR,RS,SD,TF,UI,YO,OP
 
@@ -74,12 +77,11 @@ set smartindent
 autocmd FileType text setlocal nosmartindent
 autocmd FileType text setlocal autoindent
 
-" Use backspace to trigger commands in normal mode.
-nnoremap <Bs> :
-xnoremap <Bs> :
-
-" Use ` to save file to disk in normal mode.
-nnoremap ` :w<return>
+" Use backspace to trigger commands in normal mode. In the command line window,
+" use <Leader><CR> to execute a command.
+nnoremap <CR> :
+xnoremap <CR> :
+autocmd CmdwinEnter * nnoremap <buffer> <Leader><CR> <CR>
 
 " Use gh, gj, gk, and gl to navigate splits.
 nnoremap gj <C-W><C-J>
@@ -107,7 +109,7 @@ nnoremap <F7> :! gofmt -w=true %<return>:e<return>
 inoremap <F7> if err != nil {<return>log.Fatal(err)<return>}<return>
 
 " Use F8 in insert mode to insert text TODO.
-inoremap <F8> TODO
+inoremap <F8> TODO<space>
 
 " Use <F9> to toggle paste.
 set pastetoggle=<F9>
@@ -124,21 +126,52 @@ nnoremap <F12> :noh<return>
 " QWERTY layouts) maps to pgvy.
 xnoremap p odvj
 
+" Netrw comes with lots of mappings that can lead to unintentional, accidental
+" changes. We want to use v to go up a directory and f to enter a directory.
+" NetrwFunction borrows code from https://goo.gl/LP4pww.
+func! NetrwFunction(suffix)
+	redir => scriptnames
+	silent! scriptnames
+	redir END
+	for script in split(l:scriptnames, "\n")
+		if l:script =~ "netrw.vim"
+			return printf("<SNR>%d_%s", str2nr(split(l:script, ":")[0]), a:suffix)
+		endif
+	endfor
+endfunc
+func! NetrwBrowse(dest)
+	let NetrwChange = function(NetrwFunction("NetrwBrowseChgDir"))
+	call netrw#LocalBrowseCheck(NetrwChange(1, a:dest))
+endfunc
+func! NetrwReturn()
+	let NetrwGetWord = function(NetrwFunction("NetrwGetWord"))
+	call NetrwBrowse(NetrwGetWord())
+endfunc
+func! NetrwParent()
+	call NetrwBrowse("..")
+endfunc
+autocmd FileType netrw mapclear <buffer>
+autocmd FileType netrw nmap <buffer> f :call NetrwReturn()<CR>
+autocmd FileType netrw nmap <buffer> v :call NetrwParent()<CR>
+
 " Display file modification time in netrw browser.
 let g:netrw_liststyle = 1
 
 " Netrw hides line numbers by default. Show line numbers in netrw.
-let g:netrw_bufsettings = 'noma nomod nu nobl nowrap ro'
+let g:netrw_bufsettings = "noma nomod nu nobl nowrap ro"
 
-" Use - to open netrw in new tab.
-nnoremap - :Te<return>
+" Use bash syntax for shell scripts.
+let g:is_bash = 1
+
+" Use <Leader>m to open netrw in new tab.
+nnoremap <Leader>m :Te<return>
 
 " Use \ to go to next tab and <tab> to go to previous tab.
 nnoremap \ :tabn<return>
-nnoremap <tab> :tabp<return>
+nnoremap <Tab> :tabp<return>
+
 
 " beta stuff
 
 xnoremap gh :s/pick/squash<return>
 let g:netrw_list_hide = "\\(^\\|\\s\\s\\)\\zs\\.\\S\\+"
-let g:is_bash = 1
