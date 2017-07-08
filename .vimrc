@@ -157,7 +157,7 @@ func! NetrwParent()
 	call NetrwBrowse("..")
 endfunc
 autocmd FileType netrw nmap <buffer> f :call NetrwReturn()<CR>
-autocmd FileType netrw nmap <buffer> v :call NetrwParent()<CR>
+autocmd FileType netrw nmap <buffer> d :call NetrwParent()<CR>
 
 " Map additional functions for creating, renaming, and deleting.
 func! NetrwCreate()
