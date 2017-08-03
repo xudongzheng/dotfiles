@@ -2,3 +2,5 @@
 	pager = less -x4
 [push]
 	default = simple
+[user]
+	name = Xudong Zheng
