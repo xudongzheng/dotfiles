@@ -74,6 +74,9 @@ autocmd FileType gitcommit setlocal spell
 " Vim assumes .md files are modula2 files, but treat them as regular text files.
 autocmd BufRead,BufNewFile {*.md} set filetype=text
 
+" Treat .vue files (for Vue.js) as HTML files.
+autocmd BufRead,BufNewFile {*.vue} set filetype=html
+
 " Set smartindent, except for text files. Otherwise in text files, lines that
 " start with keywords such as 'do' are indented incorrectly.
 set smartindent
