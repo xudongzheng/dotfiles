@@ -60,6 +60,41 @@ set wildmenu
 " Have backspace behave as it does in other applications.
 set backspace=2
 
+" Define abbreviation for Go packages.
+ab tdsn "database/sql"
+ab tfcn "fusion/context"
+ab tfen "fusion/errors"
+ab tfln "fusion/log"
+ab tfmtn "fmt"
+ab tfn "fusion"
+ab tfnhn "fusion/net/http"
+ab tion "io"
+ab tnhn "net/http"
+ab tosn "os"
+
+" Define abbreviation for Go snippets.
+ab cctx context.Context
+ab closetn Close()
+ab ctxg ctx := context.Get(rw)
+ab enl err != nil {<CR>log.Fatal(err)<CR>}
+ab enr err != nil {<CR>return err<CR>}
+ab ent err != nil {<CR>t.Fatal(err)<CR>}
+ab errortn Error()
+ab foid fusion.ObjectID
+ab hdb helper.DB
+ab hdbb helper.DB.Begin
+ab hdbe helper.DB.Exec
+ab hdbq helper.DB.Query
+ab hdbqr helper.DB.QueryRow
+ab nfoid fusion.NewObjectID()
+ab senr sql.ErrNoRows
+ab stringtn String()
+
+" Define miscellaneous abbreviations. Three works better than two since at least
+" two will end up on the same line, making it easier to grep.
+ab todo TODO
+ab todot TODO TODO TODO
+
 " Set tabs to be 4 spaces and use tabs instead of spaces. This uses autocmd so
 " it does not get overwritten language-specific configuration. Python, for
 " example, is configured to expand tabs to spaces. Set text width to 80 for all
@@ -107,15 +142,6 @@ nnoremap <F5> :e<return>
 set nowrap
 inoremap <F6> <c-o>:set wrap!<return>
 nnoremap <F6> :set wrap!<return>
-
-" Use <F7> in normal mode to automatically format Go source code. TODO extend
-" this to other languages as well. Use <F7> in insert mode to insert code that
-" exits with fatal error.
-nnoremap <F7> :! gofmt -w=true %<return>:e<return>
-inoremap <F7> if err != nil {<return>log.Fatal(err)<return>}<return>
-
-" Use F8 in insert mode to insert text TODO.
-inoremap <F8> TODO<space>
 
 " Use <F9> to toggle paste.
 set pastetoggle=<F9>
@@ -192,6 +218,13 @@ let g:netrw_bufsettings = "noma nomod nu nobl nowrap ro"
 
 " Use bash syntax for shell scripts.
 let g:is_bash = 1
+
+" Use <Leader>d in normal mode to automatically format Go source code.
+nnoremap <Leader>d :! gofmt -w=true %<return>:e<return>
+
+" Use <Leader>l to make id uppercase.
+nnoremap <Leader>l :s/id\>/ID/g<return>
+xnoremap <Leader>l :s/id\>/ID/g<return>
 
 " Use <Leader>m to open netrw in new tab.
 nnoremap <Leader>m :Te<return>
