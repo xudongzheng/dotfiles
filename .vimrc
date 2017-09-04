@@ -75,6 +75,7 @@ ab tosn "os"
 " Define abbreviation for Go snippets.
 ab cctx context.Context
 ab closetn Close()
+ab committn Commit()
 ab ctxg ctx := context.Get(rw)
 ab enl err != nil {<CR>log.Fatal(err)<CR>}
 ab enr err != nil {<CR>return err<CR>}
@@ -86,6 +87,7 @@ ab hdbb helper.DB.Begin
 ab hdbe helper.DB.Exec
 ab hdbq helper.DB.Query
 ab hdbqr helper.DB.QueryRow
+ab nexttn Next()
 ab nfoid fusion.NewObjectID()
 ab senr sql.ErrNoRows
 ab stringtn String()
