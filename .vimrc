@@ -234,6 +234,11 @@ nnoremap <Leader>m :Te<return>
 " Use <Leader>w to adjusts splits to be even.
 nnoremap <Leader>w <C-W>=
 
+" Use <Leader>l and <Leader>u to set the spell language to English and Spanish
+" respectively.
+nnoremap <Leader>u :set spelllang=en<CR>
+nnoremap <Leader>i :set spelllang=es<CR>
+
 " Use \ to go to next tab and <tab> to go to previous tab.
 nnoremap \ :tabn<return>
 nnoremap <Tab> :tabp<return>
