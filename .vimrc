@@ -126,7 +126,7 @@ nnoremap <CR> :
 xnoremap <CR> :
 autocmd CmdwinEnter * cabbrev <buffer> w <CR>
 
-" Use gh, gj, gk, and gl to navigate splits.
+" Use gh, gn, ge, and gi to navigate splits.
 nnoremap gj <C-W><C-J>
 nnoremap gk <C-W><C-K>
 nnoremap gl <C-W><C-L>
@@ -221,10 +221,10 @@ let g:netrw_bufsettings = "noma nomod nu nobl nowrap ro"
 " Use bash syntax for shell scripts.
 let g:is_bash = 1
 
-" Use <Leader>d in normal mode to automatically format Go source code.
+" Use <Leader>s in normal mode to automatically format Go source code.
 nnoremap <Leader>d :! gofmt -w=true %<return>:e<return>
 
-" Use <Leader>l to make id uppercase.
+" Use <Leader>i to make id uppercase.
 nnoremap <Leader>l :s/id\>/ID/g<return>
 xnoremap <Leader>l :s/id\>/ID/g<return>
 
