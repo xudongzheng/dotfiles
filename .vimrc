@@ -61,41 +61,41 @@ set wildmenu
 set backspace=2
 
 " Define abbreviation for Go packages.
-ab tdsn "database/sql"
-ab tfcn "fusion/context"
-ab tfen "fusion/errors"
-ab tfln "fusion/log"
-ab tfmtn "fmt"
-ab tfn "fusion"
-ab tfnhn "fusion/net/http"
-ab tion "io"
-ab tnhn "net/http"
-ab tosn "os"
+iab tdsn "database/sql"
+iab tfcn "fusion/context"
+iab tfen "fusion/errors"
+iab tfln "fusion/log"
+iab tfmtn "fmt"
+iab tfn "fusion"
+iab tfnhn "fusion/net/http"
+iab tion "io"
+iab tnhn "net/http"
+iab tosn "os"
 
 " Define abbreviation for Go snippets.
-ab cctx context.Context
-ab closetn Close()
-ab committn Commit()
-ab ctxg ctx := context.Get(rw)
-ab enl err != nil {<CR>log.Fatal(err)<CR>}
-ab enr err != nil {<CR>return err<CR>}
-ab ent err != nil {<CR>t.Fatal(err)<CR>}
-ab errortn Error()
-ab foid fusion.ObjectID
-ab hdb helper.DB
-ab hdbb helper.DB.Begin
-ab hdbe helper.DB.Exec
-ab hdbq helper.DB.Query
-ab hdbqr helper.DB.QueryRow
-ab nexttn Next()
-ab nfoid fusion.NewObjectID()
-ab senr sql.ErrNoRows
-ab stringtn String()
+iab cctx context.Context
+iab closetn Close()
+iab committn Commit()
+iab ctxg ctx := context.Get(rw)
+iab enl err != nil {<CR>log.Fatal(err)<CR>}
+iab enr err != nil {<CR>return err<CR>}
+iab ent err != nil {<CR>t.Fatal(err)<CR>}
+iab errortn Error()
+iab foid fusion.ObjectID
+iab hdb helper.DB
+iab hdbb helper.DB.Begin
+iab hdbe helper.DB.Exec
+iab hdbq helper.DB.Query
+iab hdbqr helper.DB.QueryRow
+iab nexttn Next()
+iab nfoid fusion.NewObjectID()
+iab senr sql.ErrNoRows
+iab stringtn String()
 
 " Define miscellaneous abbreviations. Three works better than two since at least
 " two will end up on the same line, making it easier to grep.
-ab todo TODO
-ab todot TODO TODO TODO
+iab todo TODO
+iab todot TODO TODO TODO
 
 " Set tabs to be 4 spaces and use tabs instead of spaces. This uses autocmd so
 " it does not get overwritten language-specific configuration. Python, for
