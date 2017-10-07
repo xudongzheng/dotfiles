@@ -77,10 +77,11 @@ iab cctx context.Context
 iab closetn Close()
 iab committn Commit()
 iab ctxg ctx := context.Get(rw)
+iab cvbyte []byte
 iab enl err != nil {<CR>log.Fatal(err)<CR>}
 iab enr err != nil {<CR>return err<CR>}
 iab ent err != nil {<CR>t.Fatal(err)<CR>}
-iab errortn Error()
+iab errtn err.Error()
 iab foid fusion.ObjectID
 iab hdb helper.DB
 iab hdbb helper.DB.Begin
