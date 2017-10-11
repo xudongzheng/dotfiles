@@ -70,3 +70,7 @@ alias gxm="git commit -m"
 alias gxn="git commit --amend"
 alias gxr="git commit -m \"\`date -R\`\""
 alias gy="gu && gaa && gxr && gp"
+
+function grih {
+	git rebase -i "HEAD~$1"
+}
