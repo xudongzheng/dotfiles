@@ -71,6 +71,7 @@ iab tfnhn "fusion/net/http"
 iab tion "io"
 iab tnhn "net/http"
 iab tosn "os"
+iab tsn "strings"
 
 " Define abbreviation for Go snippets.
 iab cctx context.Context
@@ -209,7 +210,7 @@ func! NetrwRemove()
 	call NetrwLocalRm(b:netrw_curdir)
 endfunc
 autocmd FileType netrw nmap <buffer> c :call NetrwCreate()<CR>
-autocmd FileType netrw nmap <buffer> g :call NetrwMkdir()<CR>
+autocmd FileType netrw nmap <buffer> gm :call NetrwMkdir()<CR>
 autocmd FileType netrw nmap <buffer> s :call NetrwRename()<CR>
 autocmd FileType netrw nmap <buffer> x :call NetrwRemove()<CR>
 
