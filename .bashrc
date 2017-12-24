@@ -2,6 +2,16 @@ export HISTSIZE=100000
 export HISTFILESIZE=200000
 export EDITOR=vim
 
+# The ls command is different on Linux and macOS. Set color scheme for macOS per
+# https://goo.gl/1ps44T.
+if [[ $(uname) == "Darwin" ]]; then
+	export CLICOLOR=1
+	export LSCOLORS=ExGxBxDxCxEgEdxbxgxcxd
+	alias l="ls"
+else
+	alias l="ls --group-directories-first --color=auto"
+fi
+
 alias c="cd"
 alias csr="cd ~/src/"
 alias dr="date -R"
@@ -11,12 +21,11 @@ alias fh="free -h"
 alias gfmt="gofmt -w=true $GOPATH/src"
 alias hi="history"
 alias hig="history | grep"
-alias l="ls --group-directories-first --color=auto"
 alias lg="git ls-files | xargs grep --color -n"
 alias lgi="lg -i"
 alias lgt="lg TODO"
 alias lgtt="lg 'TODO TODO'"
-alias ll="ls -la --group-directories-first --color=auto --time-style='+%Y-%m-%d %H:%M:%S'"
+alias ll="l -la"
 alias n="netstat -nlp"
 alias ng="netstat -nlp | grep"
 alias p="ps aux"

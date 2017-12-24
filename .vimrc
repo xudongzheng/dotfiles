@@ -1,3 +1,38 @@
+" Map Colemak keys to QWERTY keys (in alphabetical order).
+noremap d g
+noremap dd gg
+noremap e k
+noremap f e
+noremap g t
+noremap i l
+noremap j y
+noremap k n
+noremap l u
+noremap n j
+noremap o p
+noremap p r
+noremap r s
+noremap s d
+noremap t f
+noremap u i
+noremap y o
+noremap D G
+noremap E K
+noremap F E
+noremap G T
+noremap I L
+noremap J Y
+noremap K N
+noremap L U
+noremap N J
+noremap O P
+noremap P R
+noremap R S
+noremap S D
+noremap T F
+noremap U I
+noremap Y O
+
 " Use the elflord color scheme.
 colors elflord
 
@@ -10,13 +45,13 @@ filetype plugin indent on
 " Use <Space> as the leader key.
 let mapleader = " "
 
-" Use langmap to map colemak keys to qwerty keys in normal mode.
-set langmap=dg,ek,fe,gt,il,jy,kn,lu,nj,pr,rs,sd,tf,ui,yo,op,DG,EK,FE,GT,IL,JY,KN,LU,NJ,PR,RS,SD,TF,UI,YO,OP
-
-" Set vim temporary directories to keep working directories clean.
-set backupdir=~/tmp/vim/backup
-set directory=~/tmp/vim/swap
-set undodir=~/tmp/vim/undo
+" Set vim temporary directories to keep working directories clean. We expect the
+" tmp directory to be at the same level as the dot directory containing these
+" dot files (checked out from GitHub).
+let s:parent = expand("<sfile>:h:h")
+let &backupdir = s:parent . "/tmp/vim/backup"
+let &directory = s:parent . "/tmp/vim/swap"
+let &undodir = s:parent . "/tmp/vim/undo"
 
 " Enable mouse support.
 set mouse=a
@@ -128,11 +163,11 @@ nnoremap <CR> :
 xnoremap <CR> :
 autocmd CmdwinEnter * cabbrev <buffer> w <CR>
 
-" Use gh, gn, ge, and gi to navigate splits.
-nnoremap gj <C-W><C-J>
-nnoremap gk <C-W><C-K>
-nnoremap gl <C-W><C-L>
-nnoremap gh <C-W><C-H>
+" Use dh, dn, de, and di to navigate splits.
+nnoremap dh <C-W><C-H>
+nnoremap dn <C-W><C-J>
+nnoremap de <C-W><C-K>
+nnoremap di <C-W><C-L>
 
 " Use <F4> to toggle spell checker.
 inoremap <F4> <c-o>:set spell!<return>
@@ -158,9 +193,8 @@ nnoremap <F10> :w !diff % -<return>
 inoremap <F12> <c-o>:noh<return>
 nnoremap <F12> :noh<return>
 
-" When pasting text, do not overwrite register. Note the original mapping (on
-" QWERTY layouts) maps to pgvy.
-xnoremap p odvj
+" When pasting text, do not overwrite register.
+xnoremap o pgvy
 
 " Netrw comes with lots of mappings that can lead to unintentional, accidental
 " changes. We will unmap everything and map only the functions that we need.
@@ -189,8 +223,8 @@ endfunc
 func! NetrwParent()
 	call NetrwBrowse("..")
 endfunc
-autocmd FileType netrw nmap <buffer> f :call NetrwReturn()<CR>
-autocmd FileType netrw nmap <buffer> d :call NetrwParent()<CR>
+autocmd FileType netrw nnoremap <buffer> t :call NetrwReturn()<CR>
+autocmd FileType netrw nnoremap <buffer> s :call NetrwParent()<CR>
 
 " Map additional functions for creating, renaming, and deleting.
 func! NetrwCreate()
@@ -209,10 +243,10 @@ func! NetrwRemove()
 	let NetrwLocalRm = function(NetrwFunction("NetrwLocalRm"))
 	call NetrwLocalRm(b:netrw_curdir)
 endfunc
-autocmd FileType netrw nmap <buffer> c :call NetrwCreate()<CR>
-autocmd FileType netrw nmap <buffer> gm :call NetrwMkdir()<CR>
-autocmd FileType netrw nmap <buffer> s :call NetrwRename()<CR>
-autocmd FileType netrw nmap <buffer> x :call NetrwRemove()<CR>
+autocmd FileType netrw nnoremap <buffer> c :call NetrwCreate()<CR>
+autocmd FileType netrw nnoremap <buffer> dm :call NetrwMkdir()<CR>
+autocmd FileType netrw nnoremap <buffer> r :call NetrwRename()<CR>
+autocmd FileType netrw nnoremap <buffer> x :call NetrwRemove()<CR>
 
 " Display file modification time in netrw browser.
 let g:netrw_liststyle = 1
@@ -224,11 +258,11 @@ let g:netrw_bufsettings = "noma nomod nu nobl nowrap ro"
 let g:is_bash = 1
 
 " Use <Leader>s in normal mode to automatically format Go source code.
-nnoremap <Leader>d :! gofmt -w=true %<return>:e<return>
+nnoremap <Leader>s :! gofmt -w=true %<return>:e<return>
 
 " Use <Leader>i to make id uppercase.
-nnoremap <Leader>l :s/id\>/ID/g<return>
-xnoremap <Leader>l :s/id\>/ID/g<return>
+nnoremap <Leader>i :s/id\>/ID/g<return>
+xnoremap <Leader>i :s/id\>/ID/g<return>
 
 " Use <Leader>m to open netrw in new tab.
 nnoremap <Leader>m :Te<return>
@@ -238,8 +272,8 @@ nnoremap <Leader>w <C-W>=
 
 " Use <Leader>l and <Leader>u to set the spell language to English and Spanish
 " respectively.
-nnoremap <Leader>u :set spelllang=en<CR>
-nnoremap <Leader>i :set spelllang=es<CR>
+nnoremap <Leader>l :set spelllang=en<CR>
+nnoremap <Leader>u :set spelllang=es<CR>
 
 " Use \ to go to next tab and <tab> to go to previous tab.
 nnoremap \ :tabn<return>
@@ -247,5 +281,5 @@ nnoremap <Tab> :tabp<return>
 
 " beta stuff
 
-xnoremap gh :s/pick/squash<return>
+autocmd FileType gitrebase xnoremap <Leader>h :s/pick/squash<return>
 let g:netrw_list_hide = "\\(^\\|\\s\\s\\)\\zs\\.\\S\\+"
