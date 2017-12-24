@@ -7,9 +7,9 @@ export EDITOR=vim
 if [[ $(uname) == "Darwin" ]]; then
 	export CLICOLOR=1
 	export LSCOLORS=ExGxBxDxCxEgEdxbxgxcxd
-	alias l="ls"
+	alias l="ls -h"
 else
-	alias l="ls --group-directories-first --color=auto"
+	alias l="ls -h --group-directories-first --color=auto"
 fi
 
 alias c="cd"
@@ -19,7 +19,6 @@ alias duhs="du -hs"
 alias ep="grep"
 alias fh="free -h"
 alias gfmt="gofmt -w=true $GOPATH/src"
-alias hi="history"
 alias hig="history | grep"
 alias lg="git ls-files | xargs grep --color -n"
 alias lgi="lg -i"
@@ -66,6 +65,7 @@ alias glb="git log --graph --decorate --stat --branches --remotes --tags --find-
 alias glol="git log --pretty=oneline"
 alias gm="git merge"
 alias gma="git merge --abort"
+alias gnfd="git clean -f -d"
 alias gp="git push"
 alias gpf="git push --force"
 alias gpo="git push --set-upstream origin"
