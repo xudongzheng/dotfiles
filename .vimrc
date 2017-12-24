@@ -281,5 +281,6 @@ nnoremap <Tab> :tabp<return>
 
 " beta stuff
 
+nnoremap <Leader>f ve~
 autocmd FileType gitrebase xnoremap <Leader>h :s/pick/squash<return>
 let g:netrw_list_hide = "\\(^\\|\\s\\s\\)\\zs\\.\\S\\+"
