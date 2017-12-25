@@ -7,24 +7,27 @@ export EDITOR=vim
 if [[ $(uname) == "Darwin" ]]; then
 	export CLICOLOR=1
 	export LSCOLORS=ExGxBxDxCxEgEdxbxgxcxd
-	alias l="ls -h"
+	alias l="ls"
 else
-	alias l="ls -h --group-directories-first --color=auto"
+	alias l="ls --group-directories-first --color=auto"
 fi
 
+# Figure out the parent directory.
+parent=$(dirname $(dirname ${BASH_SOURCE[0]}))
+
 alias c="cd"
-alias csr="cd ~/src/"
+alias csr="cd $parent/src/"
 alias dr="date -R"
 alias duhs="du -hs"
 alias ep="grep"
 alias fh="free -h"
-alias gfmt="gofmt -w=true $GOPATH/src"
+alias gfmt="gofmt -w=true $parent/src"
 alias hig="history | grep"
 alias lg="git ls-files | xargs grep --color -n"
 alias lgi="lg -i"
 alias lgt="lg TODO"
 alias lgtt="lg 'TODO TODO'"
-alias ll="l -la"
+alias ll="l -hla"
 alias n="netstat -nlp"
 alias ng="netstat -nlp | grep"
 alias p="ps aux"
