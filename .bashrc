@@ -1,5 +1,7 @@
-export HISTSIZE=100000
-export HISTFILESIZE=200000
+HISTTIMEFORMAT="[%F %T %Z] "
+HISTSIZE=100000
+HISTFILESIZE=200000
+
 export EDITOR=vim
 
 # The ls command is different on Linux and macOS. Set color scheme for macOS per
@@ -12,7 +14,7 @@ else
 	alias l="ls --group-directories-first --color=auto"
 fi
 
-# Figure out the parent directory.
+# Resolve the parent directory.
 parent=$(dirname $(dirname ${BASH_SOURCE[0]}))
 
 alias c="cd"
