@@ -1,6 +1,5 @@
 " Map Colemak keys to QWERTY keys (in alphabetical order).
 noremap d g
-noremap dd gg
 noremap e k
 noremap f e
 noremap g t
