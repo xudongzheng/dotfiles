@@ -94,7 +94,8 @@ set wildmenu
 " Have backspace behave as it does in other applications.
 set backspace=2
 
-" Define abbreviation for Go packages.
+" Define abbreviation for Go packages. TODO consider making these abbreviations
+" limited to specific filetypes.
 iab tdsn "database/sql"
 iab tfcn "fusion/context"
 iab tfen "fusion/errors"
@@ -103,9 +104,11 @@ iab tfmtn "fmt"
 iab tfn "fusion"
 iab tfnhn "fusion/net/http"
 iab tion "io"
+iab tnetn "net"
 iab tnhn "net/http"
 iab tosn "os"
 iab tsn "strings"
+iab ttn "time"
 
 " Define abbreviation for Go snippets.
 iab cctx context.Context
