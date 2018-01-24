@@ -55,6 +55,9 @@ let &undodir = s:parent . "/tmp/vim/undo"
 " Enable mouse support.
 set mouse=a
 
+" Allow Vim to use all 256 colors.
+" set t_Co=256
+
 " Enable persistent undo.
 set undofile
 
@@ -81,11 +84,16 @@ set nojoinspaces
 " Increase history for search and command line entries.
 set history=10000
 
-" Highlight current line. and create a vertical column in 81st column.
+" Highlight the active line and the active column.
 set cursorline
+set cursorcolumn
+highlight CursorLine ctermbg=235
+highlight CursorColumn ctermbg=235
+
+" Create a vertical bar in 81st column.
 set colorcolumn=81
 
-" Set scroll offset so current line stays towards the center.
+" Set scroll offset so the active line stays towards the center.
 set scrolloff=8
 
 " Set wildmenu to show options when using tab autocomplete.
@@ -104,10 +112,14 @@ iab tfmtn "fmt"
 iab tfn "fusion"
 iab tfnhn "fusion/net/http"
 iab tion "io"
+iab tioun "io/ioutil"
+iab tmn "math"
 iab tnetn "net"
 iab tnhn "net/http"
+iab tnun "net/url"
 iab tosn "os"
 iab tsn "strings"
+iab ttestn "testing"
 iab ttn "time"
 
 " Define abbreviation for Go snippets.
@@ -117,6 +129,7 @@ iab committn Commit()
 iab ctxg ctx := context.Get(rw)
 iab cvbyte []byte
 iab enl err != nil {<CR>log.Fatal(err)<CR>}
+iab enlw err != nil {<CR>log.Warn(err)<CR>}
 iab enr err != nil {<CR>return err<CR>}
 iab ent err != nil {<CR>t.Fatal(err)<CR>}
 iab errtn err.Error()
@@ -126,10 +139,15 @@ iab hdbb helper.DB.Begin
 iab hdbe helper.DB.Exec
 iab hdbq helper.DB.Query
 iab hdbqr helper.DB.QueryRow
+iab inittn init()
+iab maintn main()
 iab nexttn Next()
 iab nfoid fusion.NewObjectID()
 iab senr sql.ErrNoRows
 iab stringtn String()
+iab tnow time.Now()
+iab ttm t *testing.M
+iab ttt t *testing.T
 
 " Define miscellaneous abbreviations. Three works better than two since at least
 " two will end up on the same line, making it easier to grep.
@@ -140,24 +158,24 @@ iab todot TODO TODO TODO
 " it does not get overwritten language-specific configuration. Python, for
 " example, is configured to expand tabs to spaces. Set text width to 80 for all
 " formats except HTML. Enable spell checker for writing git commits.
-autocmd FileType * setlocal noexpandtab
-autocmd FileType * setlocal shiftwidth=4
-autocmd FileType * setlocal tabstop=4
-autocmd FileType * setlocal textwidth=80
+autocmd FileType * setlocal noexpandtab shiftwidth=4 tabstop=4 textwidth=80
 autocmd FileType html setlocal textwidth=0
 autocmd FileType gitcommit setlocal spell
 
-" Vim assumes .md files are modula2 files, but treat them as regular text files.
-autocmd BufRead,BufNewFile {*.md} set filetype=text
+" Treat .kt (Kotlin) files as Scala files. They are obviously different but are
+" similar enough for the features such as syntax highlighting to work correctly.
+autocmd BufRead,BufNewFile {*.kt} set filetype=scala
 
 " Treat .vue files (for Vue.js) as HTML files.
 autocmd BufRead,BufNewFile {*.vue} set filetype=html
 
+" Treat all unrecognized files as text files.
+autocmd BufEnter * if &filetype == "" | setlocal filetype=text | endif
+
 " Set smartindent, except for text files. Otherwise in text files, lines that
 " start with keywords such as 'do' are indented incorrectly.
-set smartindent
-autocmd FileType text setlocal nosmartindent
-autocmd FileType text setlocal autoindent
+autocmd FileType * setlocal smartindent
+autocmd FileType markdown,text setlocal nosmartindent autoindent
 
 " Use backspace to trigger commands in normal mode. In the command line window,
 " use :w to execute the active line as a command.
