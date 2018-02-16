@@ -102,52 +102,66 @@ set wildmenu
 " Have backspace behave as it does in other applications.
 set backspace=2
 
-" Define abbreviation for Go packages. TODO consider making these abbreviations
-" limited to specific filetypes.
-iab tdsn "database/sql"
-iab tfcn "fusion/context"
-iab tfen "fusion/errors"
-iab tfln "fusion/log"
-iab tfmtn "fmt"
-iab tfn "fusion"
-iab tfnhn "fusion/net/http"
-iab tion "io"
-iab tioun "io/ioutil"
-iab tmn "math"
-iab tnetn "net"
-iab tnhn "net/http"
-iab tnun "net/url"
-iab tosn "os"
-iab tsn "strings"
-iab ttestn "testing"
-iab ttn "time"
+" Define abbreviation for Go import paths.
+func AbbrevGoImport()
+	iab <buffer> tdsn "database/sql"
+	iab <buffer> tfcn "fusion/context"
+	iab <buffer> tfen "fusion/errors"
+	iab <buffer> tfln "fusion/log"
+	iab <buffer> tfmtn "fmt"
+	iab <buffer> tfn "fusion"
+	iab <buffer> tfnhn "fusion/net/http"
+	iab <buffer> tion "io"
+	iab <buffer> tioun "io/ioutil"
+	iab <buffer> tmn "math"
+	iab <buffer> tnetn "net"
+	iab <buffer> tnhn "net/http"
+	iab <buffer> tnun "net/url"
+	iab <buffer> tosn "os"
+	iab <buffer> tsn "strings"
+	iab <buffer> ttestn "testing"
+	iab <buffer> ttn "time"
+endfunc
+autocmd FileType go call AbbrevGoImport()
 
 " Define abbreviation for Go snippets.
-iab cctx context.Context
-iab closetn Close()
-iab committn Commit()
-iab ctxg ctx := context.Get(rw)
-iab cvbyte []byte
-iab enl err != nil {<CR>log.Fatal(err)<CR>}
-iab enlw err != nil {<CR>log.Warn(err)<CR>}
-iab enr err != nil {<CR>return err<CR>}
-iab ent err != nil {<CR>t.Fatal(err)<CR>}
-iab errtn err.Error()
-iab foid fusion.ObjectID
-iab hdb helper.DB
-iab hdbb helper.DB.Begin
-iab hdbe helper.DB.Exec
-iab hdbq helper.DB.Query
-iab hdbqr helper.DB.QueryRow
-iab inittn init()
-iab maintn main()
-iab nexttn Next()
-iab nfoid fusion.NewObjectID()
-iab senr sql.ErrNoRows
-iab stringtn String()
-iab tnow time.Now()
-iab ttm t *testing.M
-iab ttt t *testing.T
+func AbbrevGoSnippets()
+	iab <buffer> cctx context.Context
+	iab <buffer> closetn Close()
+	iab <buffer> committn Commit()
+	iab <buffer> ctxg ctx := context.Get(rw)
+	iab <buffer> cvbyte []byte
+	iab <buffer> enl err != nil {<CR>log.Fatal(err)<CR>}
+	iab <buffer> enlw err != nil {<CR>log.Warn(err)<CR>}
+	iab <buffer> enr err != nil {<CR>return err<CR>}
+	iab <buffer> ent err != nil {<CR>t.Fatal(err)<CR>}
+	iab <buffer> errtn err.Error()
+	iab <buffer> foid fusion.ObjectID
+	iab <buffer> hdb helper.DB
+	iab <buffer> hdbb helper.DB.Begin
+	iab <buffer> hdbe helper.DB.Exec
+	iab <buffer> hdbq helper.DB.Query
+	iab <buffer> hdbqr helper.DB.QueryRow
+	iab <buffer> inittn init()
+	iab <buffer> maintn main()
+	iab <buffer> nexttn Next()
+	iab <buffer> nfoid fusion.NewObjectID()
+	iab <buffer> senr sql.ErrNoRows
+	iab <buffer> stringtn String()
+	iab <buffer> tnow time.Now()
+	iab <buffer> ttm t *testing.M
+	iab <buffer> ttt t *testing.T
+endfunc
+autocmd FileType go call AbbrevGoSnippets()
+
+" Define abbreviations for TeX.
+func AbbrevTeX()
+	iab <buffer> mathbn $ \mathbb{N} $
+	iab <buffer> mathbq $ \mathbb{Q} $
+	iab <buffer> beq \begin{equation}
+	iab <buffer> deq \end{equation}
+endfunc
+autocmd FileType tex call AbbrevTeX()
 
 " Define miscellaneous abbreviations. Three works better than two since at least
 " two will end up on the same line, making it easier to grep.
@@ -222,7 +236,7 @@ autocmd FileType netrw mapclear <buffer>
 
 " Use d to go up a directory and f to enter a directory. NetrwFunction borrows
 " code from https://goo.gl/LP4pww.
-func! NetrwFunction(suffix)
+func NetrwFunction(suffix)
 	redir => scriptnames
 	silent! scriptnames
 	redir END
@@ -232,15 +246,15 @@ func! NetrwFunction(suffix)
 		endif
 	endfor
 endfunc
-func! NetrwBrowse(dest)
+func NetrwBrowse(dest)
 	let NetrwChange = function(NetrwFunction("NetrwBrowseChgDir"))
 	call netrw#LocalBrowseCheck(NetrwChange(1, a:dest))
 endfunc
-func! NetrwReturn()
+func NetrwReturn()
 	let NetrwGetWord = function(NetrwFunction("NetrwGetWord"))
 	call NetrwBrowse(NetrwGetWord())
 endfunc
-func! NetrwParent()
+func NetrwParent()
 	call NetrwBrowse("..")
 endfunc
 autocmd FileType netrw nnoremap <buffer> t :call NetrwReturn()<CR>
