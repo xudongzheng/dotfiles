@@ -4,9 +4,10 @@ HISTFILESIZE=200000
 
 export EDITOR=vim
 
-# The ls command is different on Linux and macOS. Set color scheme for macOS per
-# https://goo.gl/1ps44T.
-if [[ $(uname) == "Darwin" ]]; then
+# The ls command is different on Linux and macOS. Set color scheme for macOS
+# per https://goo.gl/1ps44T.
+uname=$(uname)
+if [[ $uname == "Darwin" ]]; then
 	export CLICOLOR=1
 	export LSCOLORS=ExGxBxDxCxEgEdxbxgxcxd
 	alias l="ls"
@@ -14,9 +15,17 @@ else
 	alias l="ls --group-directories-first --color=auto"
 fi
 
+# If on Windows (under Cygwin), create an alias to access the real user
+# directory. Set $CC to use the MinGW GCC.
+if [[ $uname == "CYGWIN_NT-10.0" ]]; then
+	alias cu="cd /cygdrive/c/Users/$LOGNAME"
+	export CC="$(uname -m)-w64-mingw32-gcc"
+fi
+
 # Resolve the parent directory.
 parent=$(dirname $(dirname ${BASH_SOURCE[0]}))
 
+alias autk="cat ~/.ssh/authorized_keys.pub"
 alias c="cd"
 alias csr="cd $parent/src/"
 alias dr="date -R"

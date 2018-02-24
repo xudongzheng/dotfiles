@@ -104,6 +104,7 @@ set backspace=2
 
 " Define abbreviation for Go import paths.
 func AbbrevGoImport()
+	iab <buffer> tbn "bytes
 	iab <buffer> tdsn "database/sql"
 	iab <buffer> tfcn "fusion/context"
 	iab <buffer> tfen "fusion/errors"
@@ -118,6 +119,8 @@ func AbbrevGoImport()
 	iab <buffer> tnhn "net/http"
 	iab <buffer> tnun "net/url"
 	iab <buffer> tosn "os"
+	iab <buffer> tosen "os/exec"
+	iab <buffer> tren "regexp"
 	iab <buffer> tsn "strings"
 	iab <buffer> ttestn "testing"
 	iab <buffer> ttn "time"
@@ -169,11 +172,17 @@ iab todo TODO
 iab todot TODO TODO TODO
 
 " Set tabs to be 4 spaces and use tabs instead of spaces. This uses autocmd so
-" it does not get overwritten language-specific configuration. Python, for
-" example, is configured to expand tabs to spaces. Set text width to 80 for all
-" formats except HTML. Enable spell checker for writing git commits.
-autocmd FileType * setlocal noexpandtab shiftwidth=4 tabstop=4 textwidth=80
+" we can override language-specific configuration. Python, for example, is
+" configured to expand tabs to spaces. YAML is the only exception where we want
+" to expand tabs to spaces.
+autocmd FileType * setlocal noexpandtab shiftwidth=4 tabstop=4
+autocmd FileType yaml setlocal expandtab softtabstop=4
+
+" Set text width to 80 for all formats except HTML.
+autocmd FileType * setlocal textwidth=80
 autocmd FileType html setlocal textwidth=0
+
+" Enable spell checker for writing git commits.
 autocmd FileType gitcommit setlocal spell
 
 " Treat .kt (Kotlin) files as Scala files. They are obviously different but are
