@@ -104,7 +104,7 @@ set backspace=2
 
 " Define abbreviation for Go import paths.
 func AbbrevGoImport()
-	iab <buffer> tbn "bytes
+	iab <buffer> tbn "bytes"
 	iab <buffer> tdsn "database/sql"
 	iab <buffer> tfcn "fusion/context"
 	iab <buffer> tfen "fusion/errors"
@@ -121,6 +121,7 @@ func AbbrevGoImport()
 	iab <buffer> tosn "os"
 	iab <buffer> tosen "os/exec"
 	iab <buffer> tren "regexp"
+	iab <buffer> tscn "strconv"
 	iab <buffer> tsn "strings"
 	iab <buffer> ttestn "testing"
 	iab <buffer> ttn "time"
@@ -159,10 +160,11 @@ autocmd FileType go call AbbrevGoSnippets()
 
 " Define abbreviations for TeX.
 func AbbrevTeX()
-	iab <buffer> mathbn $ \mathbb{N} $
-	iab <buffer> mathbq $ \mathbb{Q} $
 	iab <buffer> beq \begin{equation}
 	iab <buffer> deq \end{equation}
+	iab <buffer> mathbn \mathbb{N}
+	iab <buffer> mathbq \mathbb{Q}
+	iab <buffer> mathbr \mathbb{R}
 endfunc
 autocmd FileType tex call AbbrevTeX()
 
