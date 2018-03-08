@@ -130,6 +130,7 @@ autocmd FileType go call AbbrevGoImport()
 
 " Define abbreviation for Go snippets.
 func AbbrevGoSnippets()
+	iab <buffer> bnbn bytes.NewBuffer(nil)
 	iab <buffer> cctx context.Context
 	iab <buffer> closetn Close()
 	iab <buffer> committn Commit()
@@ -146,10 +147,13 @@ func AbbrevGoSnippets()
 	iab <buffer> hdbe helper.DB.Exec
 	iab <buffer> hdbq helper.DB.Query
 	iab <buffer> hdbqr helper.DB.QueryRow
-	iab <buffer> inittn init()
-	iab <buffer> maintn main()
+	iab <buffer> imtn import (<return><return>)<return><up><up><bs>
+	iab <buffer> inittn func init()
+	iab <buffer> ioeof io.EOF
+	iab <buffer> maintn func main()
 	iab <buffer> nexttn Next()
 	iab <buffer> nfoid fusion.NewObjectID()
+	iab <buffer> pkgm package main
 	iab <buffer> senr sql.ErrNoRows
 	iab <buffer> stringtn String()
 	iab <buffer> tnow time.Now()
@@ -304,6 +308,9 @@ let g:is_bash = 1
 
 " Use <Leader>s in normal mode to automatically format Go source code.
 nnoremap <Leader>s :! gofmt -w=true %<return>:e<return>
+
+" Use <Leader>t to search for triple TODO.
+nnoremap <Leader>t /TODO TODO<return>
 
 " Use <Leader>i to make id uppercase.
 nnoremap <Leader>i :s/id\>/ID/g<return>
