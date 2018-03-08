@@ -148,9 +148,9 @@ func AbbrevGoSnippets()
 	iab <buffer> hdbq helper.DB.Query
 	iab <buffer> hdbqr helper.DB.QueryRow
 	iab <buffer> imtn import (<return><return>)<return><up><up><bs>
-	iab <buffer> inittn func init()
+	iab <buffer> initn func init() {<return><return>}<up><bs>
 	iab <buffer> ioeof io.EOF
-	iab <buffer> maintn func main()
+	iab <buffer> maintn func main() {<return><return>}<up><bs>
 	iab <buffer> nexttn Next()
 	iab <buffer> nfoid fusion.NewObjectID()
 	iab <buffer> pkgm package main
