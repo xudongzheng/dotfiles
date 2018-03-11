@@ -111,6 +111,7 @@ func AbbrevGoImport()
 	iab <buffer> tfln "fusion/log"
 	iab <buffer> tfmtn "fmt"
 	iab <buffer> tfn "fusion"
+	iab <buffer> tpfn "path/filepath"
 	iab <buffer> tfnhn "fusion/net/http"
 	iab <buffer> tion "io"
 	iab <buffer> tioun "io/ioutil"
@@ -120,6 +121,7 @@ func AbbrevGoImport()
 	iab <buffer> tnun "net/url"
 	iab <buffer> tosn "os"
 	iab <buffer> tosen "os/exec"
+	iab <buffer> tpn "path"
 	iab <buffer> tren "regexp"
 	iab <buffer> tscn "strconv"
 	iab <buffer> tsn "strings"
@@ -306,6 +308,14 @@ let g:netrw_bufsettings = "noma nomod nu nobl nowrap ro"
 " Use bash syntax for shell scripts.
 let g:is_bash = 1
 
+" Use <Leader>4 to convert from standard base64 encoding to URL base64 encoding.
+" Reserve <Leader>6 for the other direction though we don't really see it to be
+" necessary.
+nnoremap <Leader>4 :s/+/-/g<return>:s/\//_/g<return>
+
+" Use <Leader>a to sort visually selected lines.
+xnoremap <Leader>a ! sort<return>
+
 " Use <Leader>s in normal mode to automatically format Go source code.
 nnoremap <Leader>s :! gofmt -w=true %<return>:e<return>
 
@@ -314,7 +324,6 @@ nnoremap <Leader>t /TODO TODO<return>
 
 " Use <Leader>i to make id uppercase.
 nnoremap <Leader>i :s/id\>/ID/g<return>
-xnoremap <Leader>i :s/id\>/ID/g<return>
 
 " Use <Leader>m to open netrw in new tab.
 nnoremap <Leader>m :Te<return>
@@ -324,8 +333,8 @@ nnoremap <Leader>w <C-W>=
 
 " Use <Leader>l and <Leader>u to set the spell language to English and Spanish
 " respectively.
-nnoremap <Leader>l :set spelllang=en<CR>
-nnoremap <Leader>u :set spelllang=es<CR>
+nnoremap <Leader>l :set spelllang=en<return>
+nnoremap <Leader>u :set spelllang=es<return>
 
 " Use \ to go to next tab and <tab> to go to previous tab.
 nnoremap \ :tabn<return>
