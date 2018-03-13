@@ -90,7 +90,8 @@ set cursorcolumn
 highlight CursorLine ctermbg=235
 highlight CursorColumn ctermbg=235
 
-" Create a vertical bar in 81st column.
+" Set the text width to 80 and create a vertical bar in 81st column.
+set textwidth=80
 set colorcolumn=81
 
 " Set scroll offset so the active line stays towards the center.
@@ -186,19 +187,19 @@ iab todot TODO TODO TODO
 autocmd FileType * setlocal noexpandtab shiftwidth=4 tabstop=4
 autocmd FileType yaml setlocal expandtab softtabstop=4
 
-" Set text width to 80 for all formats except HTML.
-autocmd FileType * setlocal textwidth=80
-autocmd FileType html setlocal textwidth=0
+" Do not automatically wrap code except in TeX where standard text is code.
+autocmd FileType * setlocal formatoptions-=t
+autocmd FileType tex setlocal formatoptions+=t
 
 " Enable spell checker for writing git commits.
 autocmd FileType gitcommit setlocal spell
 
 " Treat .kt (Kotlin) files as Scala files. They are obviously different but are
 " similar enough for the features such as syntax highlighting to work correctly.
-autocmd BufRead,BufNewFile {*.kt} set filetype=scala
+autocmd BufRead,BufNewFile {*.kt} setlocal filetype=scala
 
 " Treat .vue files (for Vue.js) as HTML files.
-autocmd BufRead,BufNewFile {*.vue} set filetype=html
+autocmd BufRead,BufNewFile {*.vue} setlocal filetype=html
 
 " Treat all unrecognized files as text files.
 autocmd BufEnter * if &filetype == "" | setlocal filetype=text | endif
