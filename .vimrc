@@ -87,7 +87,6 @@ set history=10000
 " Highlight the active line and the active column.
 set cursorline
 set cursorcolumn
-highlight CursorLine ctermbg=235
 highlight CursorColumn ctermbg=235
 
 " Set the text width to 80 and create a vertical bar in 81st column.
@@ -112,7 +111,6 @@ func AbbrevGoImport()
 	iab <buffer> tfln "fusion/log"
 	iab <buffer> tfmtn "fmt"
 	iab <buffer> tfn "fusion"
-	iab <buffer> tpfn "path/filepath"
 	iab <buffer> tfnhn "fusion/net/http"
 	iab <buffer> tion "io"
 	iab <buffer> tioun "io/ioutil"
@@ -122,6 +120,7 @@ func AbbrevGoImport()
 	iab <buffer> tnun "net/url"
 	iab <buffer> tosn "os"
 	iab <buffer> tosen "os/exec"
+	iab <buffer> tpfn "path/filepath"
 	iab <buffer> tpn "path"
 	iab <buffer> tren "regexp"
 	iab <buffer> tscn "strconv"
@@ -191,8 +190,8 @@ autocmd FileType yaml setlocal expandtab softtabstop=4
 autocmd FileType * setlocal formatoptions-=t
 autocmd FileType tex setlocal formatoptions+=t
 
-" Enable spell checker for writing git commits.
-autocmd FileType gitcommit setlocal spell
+" Enable spell checker for git commits and TeX.
+autocmd FileType gitcommit,tex setlocal spell
 
 " Treat .kt (Kotlin) files as Scala files. They are obviously different but are
 " similar enough for the features such as syntax highlighting to work correctly.
@@ -323,6 +322,10 @@ nnoremap <Leader>s :! gofmt -w=true %<return>:e<return>
 " Use <Leader>t to search for triple TODO.
 nnoremap <Leader>t /TODO TODO<return>
 
+" Use <Leader>h and <Leader>H to simplify git rebase.
+autocmd FileType gitrebase xnoremap <Leader>h :s/pick/squash<return>
+autocmd FileType gitrebase nnoremap <Leader>H G{kkdgg
+
 " Use <Leader>i to make id uppercase.
 nnoremap <Leader>i :s/id\>/ID/g<return>
 
@@ -344,5 +347,4 @@ nnoremap <Tab> :tabp<return>
 " beta stuff
 
 nnoremap <Leader>f ve~
-autocmd FileType gitrebase xnoremap <Leader>h :s/pick/squash<return>
 let g:netrw_list_hide = "\\(^\\|\\s\\s\\)\\zs\\.\\S\\+"
