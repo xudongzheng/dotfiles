@@ -15,11 +15,13 @@ else
 	alias l="ls --group-directories-first --color=auto"
 fi
 
-# If on Windows (under Cygwin), create an alias to access the real user
-# directory. Set $CC to use the MinGW GCC.
+# Run custom commands if running under Cygwin on Windows. Set $CC to use the
+# MinGW GCC. Set $LOCALAPPDATA so Go 1.10 can correctly determine the cache
+# directory (though there are likely other uses as well).
 if [[ $uname == "CYGWIN_NT-10.0" ]]; then
 	alias cu="cd /cygdrive/c/Users/$LOGNAME"
 	export CC="$(uname -m)-w64-mingw32-gcc"
+	export LOCALAPPDATA='C:\Users\'$LOGNAME'\AppData\Local'
 fi
 
 # Resolve the parent directory.

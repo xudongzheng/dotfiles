@@ -186,9 +186,10 @@ iab todot TODO TODO TODO
 autocmd FileType * setlocal noexpandtab shiftwidth=4 tabstop=4
 autocmd FileType yaml setlocal expandtab softtabstop=4
 
-" Do not automatically wrap code except in TeX where standard text is code.
+" Do not automatically wrap code except in text files where there are text
+" outside of comments.
 autocmd FileType * setlocal formatoptions-=t
-autocmd FileType tex setlocal formatoptions+=t
+autocmd FileType markdown,tex,text setlocal formatoptions+=t
 
 " Enable spell checker for git commits and TeX.
 autocmd FileType gitcommit,tex setlocal spell
@@ -324,7 +325,7 @@ nnoremap <Leader>t /TODO TODO<return>
 
 " Use <Leader>h and <Leader>H to simplify git rebase.
 autocmd FileType gitrebase xnoremap <Leader>h :s/pick/squash<return>
-autocmd FileType gitrebase nnoremap <Leader>H G{kkdgg
+autocmd FileType gitcommit nnoremap <Leader>h G{kkdgg
 
 " Use <Leader>i to make id uppercase.
 nnoremap <Leader>i :s/id\>/ID/g<return>
