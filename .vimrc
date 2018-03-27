@@ -104,6 +104,7 @@ set backspace=2
 
 " Define abbreviation for Go import paths.
 func AbbrevGoImport()
+	iab <buffer> tbion "bufio"
 	iab <buffer> tbn "bytes"
 	iab <buffer> tdsn "database/sql"
 	iab <buffer> tfcn "fusion/context"
@@ -118,8 +119,8 @@ func AbbrevGoImport()
 	iab <buffer> tnetn "net"
 	iab <buffer> tnhn "net/http"
 	iab <buffer> tnun "net/url"
-	iab <buffer> tosn "os"
 	iab <buffer> tosen "os/exec"
+	iab <buffer> tosn "os"
 	iab <buffer> tpfn "path/filepath"
 	iab <buffer> tpn "path"
 	iab <buffer> tren "regexp"
@@ -133,6 +134,7 @@ autocmd FileType go call AbbrevGoImport()
 " Define abbreviation for Go snippets.
 func AbbrevGoSnippets()
 	iab <buffer> bnbn bytes.NewBuffer(nil)
+	iab <buffer> bytestn Bytes()
 	iab <buffer> cctx context.Context
 	iab <buffer> closetn Close()
 	iab <buffer> committn Commit()
@@ -152,6 +154,7 @@ func AbbrevGoSnippets()
 	iab <buffer> imtn import (<return><return>)<return><up><up><bs>
 	iab <buffer> initn func init() {<return><return>}<up><bs>
 	iab <buffer> ioeof io.EOF
+	iab <buffer> iss i++
 	iab <buffer> maintn func main() {<return><return>}<up><bs>
 	iab <buffer> nexttn Next()
 	iab <buffer> nfoid fusion.NewObjectID()
@@ -196,10 +199,13 @@ autocmd FileType gitcommit,tex setlocal spell
 
 " Treat .kt (Kotlin) files as Scala files. They are obviously different but are
 " similar enough for the features such as syntax highlighting to work correctly.
-autocmd BufRead,BufNewFile {*.kt} setlocal filetype=scala
+autocmd BufRead,BufNewFile *.kt setlocal filetype=scala
 
 " Treat .vue files (for Vue.js) as HTML files.
-autocmd BufRead,BufNewFile {*.vue} setlocal filetype=html
+autocmd BufRead,BufNewFile *.vue setlocal filetype=html
+
+" We often use fc to edit bash commands in vim. Treat them as shell scripts.
+autocmd BufRead bash-fc-* setlocal filetype=sh
 
 " Treat all unrecognized files as text files.
 autocmd BufEnter * if &filetype == "" | setlocal filetype=text | endif
