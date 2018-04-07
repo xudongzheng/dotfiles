@@ -107,6 +107,7 @@ func AbbrevGoImport()
 	iab <buffer> tbion "bufio"
 	iab <buffer> tbn "bytes"
 	iab <buffer> tdsn "database/sql"
+	iab <buffer> tejn "encoding/json
 	iab <buffer> tfcn "fusion/context"
 	iab <buffer> tfen "fusion/errors"
 	iab <buffer> tfln "fusion/log"
@@ -177,8 +178,9 @@ func AbbrevTeX()
 endfunc
 autocmd FileType tex call AbbrevTeX()
 
-" Define miscellaneous abbreviations. Three works better than two since at least
-" two will end up on the same line, making it easier to grep.
+" Define miscellaneous abbreviations. For TODO, three works better than two
+" since two will always end up on the same line, making it easier to grep.
+autocmd FileType html iab <buffer> // <!-- --> <left><left><left><left><left>
 iab todo TODO
 iab todot TODO TODO TODO
 
@@ -324,7 +326,7 @@ nnoremap <Leader>4 :s/+/-/g<return>:s/\//_/g<return>
 xnoremap <Leader>a ! sort<return>
 
 " Use <Leader>s in normal mode to automatically format Go source code.
-nnoremap <Leader>s :! gofmt -w=true %<return>:e<return>
+nnoremap <Leader>s :! gofmt -w=true -s %<return>:e<return>
 
 " Use <Leader>t to search for triple TODO.
 nnoremap <Leader>t /TODO TODO<return>
