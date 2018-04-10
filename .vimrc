@@ -107,7 +107,7 @@ func AbbrevGoImport()
 	iab <buffer> tbion "bufio"
 	iab <buffer> tbn "bytes"
 	iab <buffer> tdsn "database/sql"
-	iab <buffer> tejn "encoding/json
+	iab <buffer> tejn "encoding/json"
 	iab <buffer> tfcn "fusion/context"
 	iab <buffer> tfen "fusion/errors"
 	iab <buffer> tfln "fusion/log"
@@ -141,22 +141,24 @@ func AbbrevGoSnippets()
 	iab <buffer> committn Commit()
 	iab <buffer> ctxg ctx := context.Get(rw)
 	iab <buffer> cvbyte []byte
-	iab <buffer> enl err != nil {<CR>log.Fatal(err)<CR>}
-	iab <buffer> enlw err != nil {<CR>log.Warn(err)<CR>}
-	iab <buffer> enr err != nil {<CR>return err<CR>}
-	iab <buffer> ent err != nil {<CR>t.Fatal(err)<CR>}
+	iab <buffer> dftn defer func() {<cr><cr>}()<up><bs>
+	iab <buffer> enl err != nil {<cr>log.Fatal(err)<cr>}
+	iab <buffer> enlw err != nil {<cr>log.Warn(err)<cr>}
+	iab <buffer> enr err != nil {<cr>return err<cr>}
+	iab <buffer> ent err != nil {<cr>t.Fatal(err)<cr>}
 	iab <buffer> errtn err.Error()
 	iab <buffer> foid fusion.ObjectID
+	iab <buffer> gftn go func() {<cr><cr>}()<up><bs>
 	iab <buffer> hdb helper.DB
 	iab <buffer> hdbb helper.DB.Begin
 	iab <buffer> hdbe helper.DB.Exec
 	iab <buffer> hdbq helper.DB.Query
 	iab <buffer> hdbqr helper.DB.QueryRow
-	iab <buffer> imtn import (<return><return>)<return><up><up><bs>
-	iab <buffer> initn func init() {<return><return>}<up><bs>
+	iab <buffer> imtn import (<cr><cr>)<cr><up><up><bs>
+	iab <buffer> initn func init() {<cr><cr>}<up><bs>
 	iab <buffer> ioeof io.EOF
 	iab <buffer> iss i++
-	iab <buffer> maintn func main() {<return><return>}<up><bs>
+	iab <buffer> maintn func main() {<cr><cr>}<up><bs>
 	iab <buffer> nexttn Next()
 	iab <buffer> nfoid fusion.NewObjectID()
 	iab <buffer> pkgm package main
@@ -181,6 +183,7 @@ autocmd FileType tex call AbbrevTeX()
 " Define miscellaneous abbreviations. For TODO, three works better than two
 " since two will always end up on the same line, making it easier to grep.
 autocmd FileType html iab <buffer> // <!-- --> <left><left><left><left><left>
+iab mtrm <esc>3a-<esc>a
 iab todo TODO
 iab todot TODO TODO TODO
 
@@ -219,9 +222,9 @@ autocmd FileType markdown,text setlocal nosmartindent autoindent
 
 " Use backspace to trigger commands in normal mode. In the command line window,
 " use :w to execute the active line as a command.
-nnoremap <CR> :
-xnoremap <CR> :
-autocmd CmdwinEnter * cabbrev <buffer> w <CR>
+nnoremap <cr> :
+xnoremap <cr> :
+autocmd CmdwinEnter * cabbrev <buffer> w <cr>
 
 " Use dh, dn, de, and di to navigate splits.
 nnoremap dh <C-W><C-H>
@@ -230,28 +233,28 @@ nnoremap de <C-W><C-K>
 nnoremap di <C-W><C-L>
 
 " Use <F4> to toggle spell checker.
-inoremap <F4> <c-o>:set spell!<return>
-nnoremap <F4> :set spell!<return>
+inoremap <F4> <c-o>:set spell!<cr>
+nnoremap <F4> :set spell!<cr>
 
 " Use <F5> to refresh a file from disk.
-inoremap <F5> <c-o>:e<return>
-nnoremap <F5> :e<return>
+inoremap <F5> <c-o>:e<cr>
+nnoremap <F5> :e<cr>
 
 " Use <F6> to wrap/unwrap text.
 set nowrap
-inoremap <F6> <c-o>:set wrap!<return>
-nnoremap <F6> :set wrap!<return>
+inoremap <F6> <c-o>:set wrap!<cr>
+nnoremap <F6> :set wrap!<cr>
 
 " Use <F9> to toggle paste.
 set pastetoggle=<F9>
 
 " Use <F10> to show diff since file save.
-inoremap <F10> <c-o>:w !diff % -<return>
-nnoremap <F10> :w !diff % -<return>
+inoremap <F10> <c-o>:w !diff % -<cr>
+nnoremap <F10> :w !diff % -<cr>
 
 " Use <F12> key to unhighlight searched text.
-inoremap <F12> <c-o>:noh<return>
-nnoremap <F12> :noh<return>
+inoremap <F12> <c-o>:noh<cr>
+nnoremap <F12> :noh<cr>
 
 " When pasting text, do not overwrite register.
 xnoremap o pgvy
@@ -283,8 +286,8 @@ endfunc
 func NetrwParent()
 	call NetrwBrowse("..")
 endfunc
-autocmd FileType netrw nnoremap <buffer> t :call NetrwReturn()<CR>
-autocmd FileType netrw nnoremap <buffer> s :call NetrwParent()<CR>
+autocmd FileType netrw nnoremap <buffer> t :call NetrwReturn()<cr>
+autocmd FileType netrw nnoremap <buffer> s :call NetrwParent()<cr>
 
 " Map additional functions for creating, renaming, and deleting.
 func! NetrwCreate()
@@ -303,10 +306,10 @@ func! NetrwRemove()
 	let NetrwLocalRm = function(NetrwFunction("NetrwLocalRm"))
 	call NetrwLocalRm(b:netrw_curdir)
 endfunc
-autocmd FileType netrw nnoremap <buffer> c :call NetrwCreate()<CR>
-autocmd FileType netrw nnoremap <buffer> dm :call NetrwMkdir()<CR>
-autocmd FileType netrw nnoremap <buffer> r :call NetrwRename()<CR>
-autocmd FileType netrw nnoremap <buffer> x :call NetrwRemove()<CR>
+autocmd FileType netrw nnoremap <buffer> c :call NetrwCreate()<cr>
+autocmd FileType netrw nnoremap <buffer> dm :call NetrwMkdir()<cr>
+autocmd FileType netrw nnoremap <buffer> r :call NetrwRename()<cr>
+autocmd FileType netrw nnoremap <buffer> x :call NetrwRemove()<cr>
 
 " Display file modification time in netrw browser.
 let g:netrw_liststyle = 1
@@ -320,38 +323,38 @@ let g:is_bash = 1
 " Use <Leader>4 to convert from standard base64 encoding to URL base64 encoding.
 " Reserve <Leader>6 for the other direction though we don't really see it to be
 " necessary.
-nnoremap <Leader>4 :s/+/-/g<return>:s/\//_/g<return>
+nnoremap <Leader>4 :s/+/-/g<cr>:s/\//_/g<cr>
 
 " Use <Leader>a to sort visually selected lines.
-xnoremap <Leader>a ! sort<return>
+xnoremap <Leader>a ! sort<cr>
 
 " Use <Leader>s in normal mode to automatically format Go source code.
-nnoremap <Leader>s :! gofmt -w=true -s %<return>:e<return>
+nnoremap <Leader>s :! gofmt -w=true -s %<cr>:e<cr>
 
 " Use <Leader>t to search for triple TODO.
-nnoremap <Leader>t /TODO TODO<return>
+nnoremap <Leader>t /TODO TODO<cr>
 
 " Use <Leader>h and <Leader>H to simplify git rebase.
-autocmd FileType gitrebase xnoremap <Leader>h :s/pick/squash<return>
+autocmd FileType gitrebase xnoremap <Leader>h :s/pick/squash<cr>
 autocmd FileType gitcommit nnoremap <Leader>h G{kkdgg
 
 " Use <Leader>i to make id uppercase.
-nnoremap <Leader>i :s/id\>/ID/g<return>
+nnoremap <Leader>i :s/id\>/ID/g<cr>
 
 " Use <Leader>m to open netrw in new tab.
-nnoremap <Leader>m :Te<return>
+nnoremap <Leader>m :Te<cr>
 
 " Use <Leader>w to adjusts splits to be even.
 nnoremap <Leader>w <C-W>=
 
 " Use <Leader>l and <Leader>u to set the spell language to English and Spanish
 " respectively.
-nnoremap <Leader>l :set spelllang=en<return>
-nnoremap <Leader>u :set spelllang=es<return>
+nnoremap <Leader>l :set spelllang=en<cr>
+nnoremap <Leader>u :set spelllang=es<cr>
 
 " Use \ to go to next tab and <tab> to go to previous tab.
-nnoremap \ :tabn<return>
-nnoremap <Tab> :tabp<return>
+nnoremap \ :tabn<cr>
+nnoremap <Tab> :tabp<cr>
 
 " beta stuff
 
