@@ -107,6 +107,8 @@ func! AbbrevGoImport()
 	iab <buffer> tbion "bufio"
 	iab <buffer> tbn "bytes"
 	iab <buffer> tdsn "database/sql"
+	iab <buffer> tebn "encoding/base64"
+	iab <buffer> tehn "encoding/hex"
 	iab <buffer> tejn "encoding/json"
 	iab <buffer> tfcn "fusion/context"
 	iab <buffer> tfen "fusion/errors"
@@ -134,6 +136,7 @@ autocmd FileType go call AbbrevGoImport()
 
 " Define abbreviation for Go snippets.
 func! AbbrevGoSnippets()
+	iab <buffer> ;t :=
 	iab <buffer> bnbn bytes.NewBuffer(nil)
 	iab <buffer> bytestn Bytes()
 	iab <buffer> cctx context.Context
@@ -211,8 +214,8 @@ autocmd FileType yaml setlocal expandtab softtabstop=4
 autocmd FileType * setlocal formatoptions-=t
 autocmd FileType markdown,tex,text setlocal formatoptions+=t
 
-" Enable spell checker for git commits and TeX.
-autocmd FileType gitcommit,tex setlocal spell
+" Enable spell checker for git commits, TeX, and text files.
+autocmd FileType gitcommit,markdown,tex,text setlocal spell
 
 " Treat .kt (Kotlin) files as Scala files. They are obviously different but are
 " similar enough for the features such as syntax highlighting to work correctly.
@@ -331,6 +334,9 @@ let g:netrw_bufsettings = "noma nomod nu nobl nowrap ro"
 
 " Use bash syntax for shell scripts.
 let g:is_bash = 1
+
+" Treat all .tex files as LaTeX.
+let g:tex_flavor = "latex"
 
 " Use <Leader>4 to convert from standard base64 encoding to URL base64 encoding.
 " Reserve <Leader>6 for the other direction though we don't really see it to be
