@@ -106,7 +106,7 @@ alias gxr='git commit -m "$(date -R)"'
 alias gy="gu && gaa && gxr && gp"
 
 function gfb {
-	echo git filter-branch --env-filter "$1" -f HEAD~20...HEAD
+	git filter-branch --env-filter "$1" -f HEAD~20...HEAD
 }
 function gfad {
 	gfb 'GIT_AUTHOR_DATE=$GIT_COMMITTER_DATE; export GIT_AUTHOR_DATE'
