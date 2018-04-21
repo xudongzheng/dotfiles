@@ -72,8 +72,6 @@ alias gdcs="git diff --cached --find-renames --stat"
 alias gdk="git diff --check"
 alias gds="git diff --stat"
 alias ge="git blame"
-alias gfad="git filter-branch --env-filter 'GIT_AUTHOR_DATE=\$GIT_COMMITTER_DATE; export GIT_AUTHOR_DATE' -f HEAD~20...HEAD"
-alias gfcd="git filter-branch --env-filter 'GIT_COMMITTER_DATE=\$GIT_AUTHOR_DATE; export GIT_COMMITTER_DATE' -f HEAD~20...HEAD"
 alias gg="git fetch && git reset --hard @{u}"
 alias gh="git show"
 alias ghh="git show HEAD"
@@ -102,11 +100,20 @@ alias gta="git stash apply"
 alias gtp="git stash -p"
 alias gu="git pull -p"
 alias gx="git commit"
-alias gxam="git commit -a -m"
 alias gxm="git commit -m"
 alias gxn="git commit --amend"
-alias gxr="git commit -m \"\`date -R\`\""
+alias gxr='git commit -m "$(date -R)"'
 alias gy="gu && gaa && gxr && gp"
+
+function gfb {
+	echo git filter-branch --env-filter "$1" -f HEAD~20...HEAD
+}
+function gfad {
+	gfb 'GIT_AUTHOR_DATE=$GIT_COMMITTER_DATE; export GIT_AUTHOR_DATE'
+}
+function gfcd {
+	gfb 'GIT_COMMITTER_DATE=$GIT_AUTHOR_DATE; export GIT_COMMITTER_DATE'
+}
 
 function grih {
 	git rebase -i "HEAD~$1"

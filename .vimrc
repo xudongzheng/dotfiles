@@ -197,6 +197,7 @@ iab todot TODO TODO TODO
 autocmd FileType go,java,javascript noremap <Leader>c :normal U// <Esc>
 autocmd FileType python,sh noremap <Leader>c :normal U# <Esc>
 autocmd FileType sql noremap <Leader>c :normal U-- <Esc>
+autocmd FileType tex noremap <Leader>c :normal U% <Esc>
 autocmd FileType vim noremap <Leader>c :normal U" <Esc>
 
 " Use <Leader>s in normal mode to automatically format Go source code.
@@ -209,10 +210,14 @@ autocmd FileType go nnoremap <Leader>s :! gofmt -w=true -s %<CR>:e<CR>
 autocmd FileType * setlocal noexpandtab shiftwidth=4 tabstop=4
 autocmd FileType yaml setlocal expandtab softtabstop=4
 
-" Do not automatically wrap code except in text files where there are text
-" outside of comments.
+" Do not automatically wrap code except in text files, where text is treated as
+" code. Automatic wrapping will still occur in comments.
 autocmd FileType * setlocal formatoptions-=t
 autocmd FileType markdown,tex,text setlocal formatoptions+=t
+
+" Hitting enter on a commented line should not create another comment line. Per
+" https://goo.gl/3pws7z, we should not combine flags when removing.
+autocmd FileType * setlocal formatoptions-=r formatoptions-=o
 
 " Enable spell checker for git commits, TeX, and text files.
 autocmd FileType gitcommit,markdown,tex,text setlocal spell
@@ -225,7 +230,8 @@ autocmd BufRead,BufNewFile *.kt setlocal filetype=scala
 autocmd BufRead,BufNewFile *.vue setlocal filetype=html
 
 " We often use fc to edit bash commands in vim. Treat them as shell scripts.
-autocmd BufRead bash-fc-* setlocal filetype=sh
+" Some versions of bash use a hyphen whereas other versions use a dot.
+autocmd BufRead bash-fc-*,bash-fc.* setlocal filetype=sh
 
 " Treat all unrecognized files as text files.
 autocmd BufEnter * if &filetype == "" | setlocal filetype=text | endif
