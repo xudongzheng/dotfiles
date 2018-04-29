@@ -150,6 +150,7 @@ func! AbbrevGoSnippets()
 	iab <buffer> enr err != nil {<CR>return err<CR>}
 	iab <buffer> ent err != nil {<CR>t.Fatal(err)<CR>}
 	iab <buffer> errtn err.Error()
+	iab <buffer> ertw errors.New("TODO TODO TODO work in progress")
 	iab <buffer> foid fusion.ObjectID
 	iab <buffer> gftn go func() {<CR><CR>}()<up><bs>
 	iab <buffer> hdb helper.DB
@@ -199,6 +200,7 @@ autocmd FileType python,sh noremap <Leader>c :normal U# <Esc>
 autocmd FileType sql noremap <Leader>c :normal U-- <Esc>
 autocmd FileType tex noremap <Leader>c :normal U% <Esc>
 autocmd FileType vim noremap <Leader>c :normal U" <Esc>
+autocmd FileType xdefaults noremap <Leader>c :normal U! <Esc>
 
 " Use <Leader>s in normal mode to automatically format Go source code.
 autocmd FileType go nnoremap <Leader>s :! gofmt -w=true -s %<CR>:e<CR>
@@ -349,8 +351,9 @@ let g:tex_flavor = "latex"
 " necessary.
 nnoremap <Leader>4 :s/+/-/g<CR>:s/\//_/g<CR>
 
-" Use <Leader>a to sort visually selected lines.
-xnoremap <Leader>a ! sort<CR>
+" Use <Leader>a to sort visually selected lines. Sort by ASCII per
+" https://goo.gl/HuZ6KL.
+xnoremap <Leader>a ! LC_ALL=C sort<CR>
 
 " Use <Leader>t to search for triple TODO.
 nnoremap <Leader>t /TODO TODO<CR>

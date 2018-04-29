@@ -1,14 +1,21 @@
-cd $(dirname $0)
+cd "$(dirname "$0")"
 base=$(pwd)
 
+# Source the repository .bashrc and .vimrc. This is preferred over a symlink
+# since accounts may need custom configuration for bash and Vim. The repository
+# .bashrc may be missing some platform-specific features but overwriting the
+# user .bashrc ensures that $HISTSIZE and related variables work correctly.
 if [[ $(uname) == "Darwin" ]]; then
-	echo "source \"$base/.bashrc\"" > ~/.bash_profile
+	bashrc="~/.bash_profile"
 else
-	(echo && echo "source \"$base/.bashrc\"") >> ~/.bashrc
+	bashrc="~/.bashrc"
 fi
+echo 'source "'$base'/.bashrc"' > $bashrc
+echo 'exec "source " . fnameescape("'$base/.vimrc'")' > ~/.vimrc
 
 ln -s "$base/.gitconfig" ~/.gitconfig
 ln -s "$base/.tmux.conf" ~/.tmux.conf
-echo "source $base/.vimrc" > ~/.vimrc
 
-cd .. && mkdir -p tmp/vim/{backup,swap,undo}
+# Create temporary directory for Vim (and possibly other things in the future)
+# in the same directory as the dotfiles repository.
+mkdir -p ../tmp/vim/{backup,swap,undo}
