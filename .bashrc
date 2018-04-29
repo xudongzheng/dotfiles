@@ -27,7 +27,7 @@ fi
 # Resolve the parent directory.
 parent=$(printf %q "$(dirname "$(dirname "${BASH_SOURCE[0]}")")")
 
-alias autk="cat ~/.ssh/authorized_keys.pub"
+alias autk="vi ~/.ssh/authorized_keys"
 alias c="cd"
 alias cdot="c $parent/dot/"
 alias csr="c $parent/src/"
@@ -62,8 +62,8 @@ alias ga="git add"
 alias gaa="ga -A"
 alias gap="ga -p"
 alias gb="git branch"
-alias gba="gb branch -a"
-alias gbhd="gb branch -D"
+alias gba="gb -a"
+alias gbhd="gb -D"
 alias gc="git checkout"
 alias gcb="gc -b"
 alias gcdd="gc --"

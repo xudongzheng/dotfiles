@@ -6,9 +6,9 @@ base=$(pwd)
 # .bashrc may be missing some platform-specific features but overwriting the
 # user .bashrc ensures that $HISTSIZE and related variables work correctly.
 if [[ $(uname) == "Darwin" ]]; then
-	bashrc="~/.bash_profile"
+	bashrc=~/.bash_profile
 else
-	bashrc="~/.bashrc"
+	bashrc=~/.bashrc
 fi
 echo 'source "'$base'/.bashrc"' > $bashrc
 echo 'exec "source " . fnameescape("'$base/.vimrc'")' > ~/.vimrc
