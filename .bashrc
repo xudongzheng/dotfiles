@@ -3,6 +3,7 @@ HISTSIZE=100000
 HISTFILESIZE=200000
 
 export EDITOR=vim
+export TERM=xterm-256color
 
 # The ls command is different on Linux and macOS. Set color scheme for macOS
 # per https://goo.gl/1ps44T.

@@ -87,7 +87,7 @@ set history=10000
 " Highlight the active line and the active column.
 set cursorline
 set cursorcolumn
-highlight CursorColumn ctermbg=235
+highlight CursorColumn ctermbg=lightcyan ctermfg=black
 
 " Set the text width to 80 and create a vertical bar in 81st column.
 set textwidth=80
