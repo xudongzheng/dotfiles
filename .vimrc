@@ -195,8 +195,8 @@ iab todot TODO TODO TODO
 " active line) and in visual line mode. We use U instead of I since the normal
 " command accounts for the Colemak mapping. There are obviously many missing
 " filetypes and they will be added as needed.
+autocmd FileType crontab,python,sh noremap <Leader>c :normal U# <Esc>
 autocmd FileType go,java,javascript noremap <Leader>c :normal U// <Esc>
-autocmd FileType python,sh noremap <Leader>c :normal U# <Esc>
 autocmd FileType sql noremap <Leader>c :normal U-- <Esc>
 autocmd FileType tex noremap <Leader>c :normal U% <Esc>
 autocmd FileType vim noremap <Leader>c :normal U" <Esc>
@@ -211,6 +211,9 @@ autocmd FileType go nnoremap <Leader>s :! gofmt -w=true -s %<CR>:e<CR>
 " to expand tabs to spaces.
 autocmd FileType * setlocal noexpandtab shiftwidth=4 tabstop=4
 autocmd FileType yaml setlocal expandtab softtabstop=4
+
+" Wrap long line even if the initial line is longer than textwidth.
+autocmd FileType * setlocal formatoptions-=l
 
 " Do not automatically wrap code except in text files, where text is treated as
 " code. Automatic wrapping will still occur in comments.
