@@ -158,6 +158,7 @@ func! AbbrevGoSnippets()
 	iab <buffer> hdbe helper.DB.Exec
 	iab <buffer> hdbq helper.DB.Query
 	iab <buffer> hdbqr helper.DB.QueryRow
+	iab <buffer> ifce interface{}
 	iab <buffer> imtn import (<CR><CR>)<CR><up><up><bs>
 	iab <buffer> initn func init() {<CR><CR>}<up><bs>
 	iab <buffer> ioeof io.EOF
@@ -165,6 +166,8 @@ func! AbbrevGoSnippets()
 	iab <buffer> maintn func main() {<CR><CR>}<up><bs>
 	iab <buffer> nexttn Next()
 	iab <buffer> nfoid fusion.NewObjectID()
+	iab <buffer> rntn rows.Next()
+	iab <buffer> rbtn Rollback()
 	iab <buffer> pkgm package main
 	iab <buffer> senr sql.ErrNoRows
 	iab <buffer> stringtn String()

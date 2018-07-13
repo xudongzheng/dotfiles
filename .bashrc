@@ -1,6 +1,12 @@
-HISTTIMEFORMAT="[%F %T %Z] "
+# Increase bash history size.
 HISTSIZE=100000
 HISTFILESIZE=200000
+
+# Store timestamp with history.
+HISTTIMEFORMAT="[%F %T %Z] "
+
+# Ignore consecutive duplicate commands and commands starting with a space.
+HISTCONTROL=erasedups:ignorespace
 
 export EDITOR=vim
 export TERM=xterm-256color
@@ -16,13 +22,18 @@ else
 	alias l="ls --group-directories-first --color=auto"
 fi
 
-# Run custom commands if running under Cygwin on Windows. Set $CC to use the
-# MinGW GCC. Set $LOCALAPPDATA so Go 1.10 can correctly determine the cache
-# directory (though there are likely other uses as well).
 if [[ $uname == "CYGWIN_NT-10.0" ]]; then
 	alias cu="cd /cygdrive/c/Users/$USER"
+
+	# Set $CC to use the MinGW GCC.
 	export CC="$(uname -m)-w64-mingw32-gcc"
+
+	# Set $LOCALAPPDATA so Go 1.10 can correctly determine the cache directory
+	# (though there are other applications as well).
 	export LOCALAPPDATA='C:\Users\'$USER'\AppData\Local'
+
+	# Per https://goo.gl/bSedxZ, create native symlinks.
+	export CYGWIN="winsymlinks:nativestrict"
 fi
 
 # Resolve the parent directory.
@@ -77,6 +88,7 @@ alias gdcs="gdc --stat"
 alias gdk="gd --check"
 alias gds="gd --stat"
 alias ge="git blame"
+alias gf="git fetch"
 alias gg="git fetch && git reset --hard @{u}"
 alias gh="git show"
 alias ghh="gh HEAD"
