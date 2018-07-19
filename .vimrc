@@ -106,6 +106,7 @@ set backspace=2
 func! AbbrevGoImport()
 	iab <buffer> tbion "bufio"
 	iab <buffer> tbn "bytes"
+	iab <buffer> tcn "context"
 	iab <buffer> tdsn "database/sql"
 	iab <buffer> tebn "encoding/base64"
 	iab <buffer> tehn "encoding/hex"
@@ -190,6 +191,7 @@ autocmd FileType tex call AbbrevTeX()
 " Define miscellaneous abbreviations. For TODO, three works better than two
 " since two will always end up on the same line, making it easier to grep.
 autocmd FileType html iab <buffer> // <!-- --> <left><left><left><left><left>
+autocmd FileType javascript iab <buffer> tt ===
 iab mtrm <Esc>3a-<Esc>a
 iab todo TODO
 iab todot TODO TODO TODO
@@ -198,12 +200,12 @@ iab todot TODO TODO TODO
 " active line) and in visual line mode. We use U instead of I since the normal
 " command accounts for the Colemak mapping. There are obviously many missing
 " filetypes and they will be added as needed.
-autocmd FileType crontab,python,sh noremap <Leader>c :normal U# <Esc>
-autocmd FileType go,java,javascript noremap <Leader>c :normal U// <Esc>
-autocmd FileType sql noremap <Leader>c :normal U-- <Esc>
-autocmd FileType tex noremap <Leader>c :normal U% <Esc>
-autocmd FileType vim noremap <Leader>c :normal U" <Esc>
-autocmd FileType xdefaults noremap <Leader>c :normal U! <Esc>
+autocmd FileType crontab,python,sh noremap <buffer> <Leader>c :normal U# <Esc>
+autocmd FileType go,java,javascript noremap <buffer> <Leader>c :normal U// <Esc>
+autocmd FileType sql noremap <buffer> <Leader>c :normal U-- <Esc>
+autocmd FileType tex noremap <buffer> <Leader>c :normal U% <Esc>
+autocmd FileType vim noremap <buffer> <Leader>c :normal U" <Esc>
+autocmd FileType xdefaults noremap <buffer> <Leader>c :normal U! <Esc>
 
 " Use <Leader>s in normal mode to automatically format Go source code.
 autocmd FileType go nnoremap <Leader>s :! gofmt -w=true -s %<CR>:e<CR>
@@ -224,8 +226,11 @@ autocmd FileType * setlocal formatoptions-=t
 autocmd FileType markdown,tex,text setlocal formatoptions+=t
 
 " Hitting enter on a commented line should not create another comment line. Per
-" https://goo.gl/3pws7z, we should not combine flags when removing.
+" https://goo.gl/3pws7z, we should not combine flags when removing. Make an
+" exception for CSS since the standard is block comments as opposed to line
+" comments in most other languages.
 autocmd FileType * setlocal formatoptions-=r formatoptions-=o
+autocmd FileType css setlocal formatoptions+=ro
 
 " Enable spell checker for git commits, TeX, and text files.
 autocmd FileType gitcommit,markdown,tex,text setlocal spell
