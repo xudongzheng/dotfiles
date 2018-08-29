@@ -151,7 +151,7 @@ func! AbbrevGoSnippets()
 	iab <buffer> enr err != nil {<CR>return err<CR>}
 	iab <buffer> ent err != nil {<CR>t.Fatal(err)<CR>}
 	iab <buffer> errtn err.Error()
-	iab <buffer> ertw errors.New("TODO TODO TODO work in progress")
+	iab <buffer> ertw errors.New("TODO TODO TODO wip")
 	iab <buffer> foid fusion.ObjectID
 	iab <buffer> gftn go func() {<CR><CR>}()<up><bs>
 	iab <buffer> hdb helper.DB
@@ -366,6 +366,9 @@ nnoremap <Leader>4 :s/+/-/g<CR>:s/\//_/g<CR>
 " https://goo.gl/HuZ6KL.
 xnoremap <Leader>a ! LC_ALL=C sort<CR>
 
+" Use <Leader>b to show the current buffer number.
+nnoremap <Leader>b :echo bufnr('%')<CR>
+
 " Use <Leader>t to search for triple TODO.
 nnoremap <Leader>t /TODO TODO<CR>
 
@@ -394,4 +397,6 @@ nnoremap <Tab> :tabp<CR>
 " beta stuff
 
 nnoremap <Leader>f ve~
+autocmd FileType go xnoremap <Leader>p y:r! echo "fmt.Println($RANDOM, )"<CR>==$P
+autocmd FileType javascript xnoremap <Leader>p y:r! echo "console.log($RANDOM, )"<CR>==$P
 let g:netrw_list_hide = "\\(^\\|\\s\\s\\)\\zs\\.\\S\\+"
