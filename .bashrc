@@ -39,7 +39,12 @@ fi
 # Resolve the parent directory.
 parent=$(printf %q "$(dirname "$(dirname "${BASH_SOURCE[0]}")")")
 
+# Create an alias for cp and mv as to prompt before overwriting existing files.
+alias cp="cp -i"
+alias mv="mv -i"
+
 alias autk="vi ~/.ssh/authorized_keys"
+alias bhi="vi ~/.bash_history"
 alias c="cd"
 alias cdot="c $parent/dot/"
 alias csr="c $parent/src/"
@@ -48,6 +53,7 @@ alias dr="date -R"
 alias dush="du -sh"
 alias ep="grep"
 alias epi="grep -i"
+alias epri="grep -Ri"
 alias fm="free -m"
 alias fms="fm -s 5"
 alias gfmt="wfmt $parent/src"
