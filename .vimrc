@@ -182,9 +182,13 @@ autocmd FileType go call AbbrevGoSnippets()
 func! AbbrevTeX()
 	iab <buffer> beq \begin{equation}
 	iab <buffer> deq \end{equation}
+	iab <buffer> ber \begin{verbatim}
+	iab <buffer> der \end{verbatim}
+	iab <buffer> mathbc \mathbb{C}
 	iab <buffer> mathbn \mathbb{N}
 	iab <buffer> mathbq \mathbb{Q}
 	iab <buffer> mathbr \mathbb{R}
+	iab <buffer> mathbz \mathbb{Z}
 endfunc
 autocmd FileType tex call AbbrevTeX()
 
@@ -201,21 +205,25 @@ iab todot TODO TODO TODO
 " command accounts for the Colemak mapping. There are obviously many missing
 " filetypes and they will be added as needed.
 autocmd FileType crontab,python,sh noremap <buffer> <Leader>c :normal U# <Esc>
-autocmd FileType go,java,javascript noremap <buffer> <Leader>c :normal U// <Esc>
+autocmd FileType cs,go,java,javascript noremap <buffer> <Leader>c :normal U// <Esc>
 autocmd FileType sql noremap <buffer> <Leader>c :normal U-- <Esc>
-autocmd FileType tex noremap <buffer> <Leader>c :normal U% <Esc>
+autocmd FileType matlab,tex noremap <buffer> <Leader>c :normal U% <Esc>
 autocmd FileType vim noremap <buffer> <Leader>c :normal U" <Esc>
 autocmd FileType xdefaults noremap <buffer> <Leader>c :normal U! <Esc>
+
+" In .eml files, \q is used to quote text. Remove mapping since we are already
+" using \ to go to the next tab and don't want any delay.
+autocmd FileType mail unmap <buffer> \q
 
 " Use <Leader>s in normal mode to automatically format Go source code.
 autocmd FileType go nnoremap <Leader>s :! gofmt -w=true -s %<CR>:e<CR>
 
 " Set tabs to be 4 spaces and use tabs instead of spaces. This uses autocmd so
 " we can override language-specific configuration. Python, for example, is
-" configured to expand tabs to spaces. YAML is the only exception where we want
-" to expand tabs to spaces.
+" configured to expand tabs to spaces. YAML is an exception where we want to
+" expand tabs to spaces and use 2 spaces for indentation.
 autocmd FileType * setlocal noexpandtab shiftwidth=4 tabstop=4
-autocmd FileType yaml setlocal expandtab softtabstop=4
+autocmd FileType yaml setlocal expandtab softtabstop=2
 
 " Wrap long line even if the initial line is longer than textwidth.
 autocmd FileType * setlocal formatoptions-=l
