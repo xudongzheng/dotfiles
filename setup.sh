@@ -16,6 +16,5 @@ echo 'exec "source " . fnameescape("'$base/.vimrc'")' > ~/.vimrc
 ln -s "$base/.gitconfig" ~/.gitconfig
 ln -s "$base/.tmux.conf" ~/.tmux.conf
 
-# Create temporary directory for Vim (and possibly other things in the future)
-# in the same directory as the dotfiles repository.
-mkdir -p ../tmp/vim/{backup,swap,undo}
+# Create directories for Vim temporary files.
+mkdir -p ~/.vim/{backup,swap,undo}

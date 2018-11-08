@@ -44,13 +44,9 @@ filetype plugin indent on
 " Use <Space> as the leader key.
 let mapleader = " "
 
-" Set vim temporary directories to keep working directories clean. We expect the
-" tmp directory to be at the same level as the dot directory containing these
-" dot files (checked out from GitHub).
-let s:parent = expand("<sfile>:h:h")
-let &backupdir = s:parent . "/tmp/vim/backup"
-let &directory = s:parent . "/tmp/vim/swap"
-let &undodir = s:parent . "/tmp/vim/undo"
+" Store temporary files in .vim to keep the working directories clean.
+set directory=~/.vim/swap
+set undodir=~/.vim/undo
 
 " Enable mouse support.
 set mouse=a
@@ -102,6 +98,9 @@ set wildmenu
 " Have backspace behave as it does in other applications.
 set backspace=2
 
+" Allow Ctrl-A and Ctrl-X to increment and decrement alphabetical characters.
+set nrformats+=alpha
+
 " Define abbreviation for Go import paths.
 func! AbbrevGoImport()
 	iab <buffer> tbion "bufio"
@@ -139,20 +138,23 @@ autocmd FileType go call AbbrevGoImport()
 func! AbbrevGoSnippets()
 	iab <buffer> ;t :=
 	iab <buffer> bnbn bytes.NewBuffer(nil)
-	iab <buffer> bytestn Bytes()
+	iab <buffer> bytn Bytes()
 	iab <buffer> cctx context.Context
-	iab <buffer> closetn Close()
+	iab <buffer> cltn Close()
 	iab <buffer> committn Commit()
 	iab <buffer> ctxg ctx := context.Get(rw)
 	iab <buffer> cvbyte []byte
 	iab <buffer> dftn defer func() {<CR><CR>}()<up><bs>
 	iab <buffer> enl err != nil {<CR>log.Fatal(err)<CR>}
-	iab <buffer> enlw err != nil {<CR>log.Warn(err)<CR>}
 	iab <buffer> enr err != nil {<CR>return err<CR>}
 	iab <buffer> ent err != nil {<CR>t.Fatal(err)<CR>}
-	iab <buffer> errtn err.Error()
+	iab <buffer> enw err != nil {<CR>log.Warn(err)<CR>}
+	iab <buffer> ertn err.Error()
 	iab <buffer> ertw errors.New("TODO TODO TODO wip")
+	iab <buffer> fk for key := range
+	iab <buffer> fkv for key, value := range
 	iab <buffer> foid fusion.ObjectID
+	iab <buffer> fv for _, value := range
 	iab <buffer> gftn go func() {<CR><CR>}()<up><bs>
 	iab <buffer> hdb helper.DB
 	iab <buffer> hdbb helper.DB.Begin
@@ -171,7 +173,7 @@ func! AbbrevGoSnippets()
 	iab <buffer> rbtn Rollback()
 	iab <buffer> pkgm package main
 	iab <buffer> senr sql.ErrNoRows
-	iab <buffer> stringtn String()
+	iab <buffer> strtn String()
 	iab <buffer> tnow time.Now()
 	iab <buffer> ttm t *testing.M
 	iab <buffer> ttt t *testing.T
@@ -204,7 +206,7 @@ iab todot TODO TODO TODO
 " active line) and in visual line mode. We use U instead of I since the normal
 " command accounts for the Colemak mapping. There are obviously many missing
 " filetypes and they will be added as needed.
-autocmd FileType crontab,python,sh noremap <buffer> <Leader>c :normal U# <Esc>
+autocmd FileType crontab,perl,python,sh noremap <buffer> <Leader>c :normal U# <Esc>
 autocmd FileType cs,go,java,javascript noremap <buffer> <Leader>c :normal U// <Esc>
 autocmd FileType sql noremap <buffer> <Leader>c :normal U-- <Esc>
 autocmd FileType matlab,tex noremap <buffer> <Leader>c :normal U% <Esc>
@@ -297,9 +299,6 @@ nnoremap <F10> :w !diff % -<CR>
 " Use <F12> key to unhighlight searched text.
 inoremap <F12> <c-o>:noh<CR>
 nnoremap <F12> :noh<CR>
-
-" When pasting text, do not overwrite register.
-xnoremap o pgvy
 
 " Netrw comes with lots of mappings that can lead to unintentional, accidental
 " changes. We will unmap everything and map only the functions that we need.
