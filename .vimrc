@@ -108,6 +108,7 @@ func! AbbrevGoImport()
 	iab <buffer> tcn "context"
 	iab <buffer> tdsn "database/sql"
 	iab <buffer> tebn "encoding/base64"
+	iab <buffer> tecn "encoding/csv"
 	iab <buffer> tehn "encoding/hex"
 	iab <buffer> tejn "encoding/json"
 	iab <buffer> tfcn "fusion/context"
@@ -141,20 +142,22 @@ func! AbbrevGoSnippets()
 	iab <buffer> bytn Bytes()
 	iab <buffer> cctx context.Context
 	iab <buffer> cltn Close()
-	iab <buffer> committn Commit()
+	iab <buffer> cotn Commit()
 	iab <buffer> ctxg ctx := context.Get(rw)
 	iab <buffer> cvbyte []byte
 	iab <buffer> dftn defer func() {<CR><CR>}()<up><bs>
+	iab <buffer> drbc defer resp.Body.Close()
+	iab <buffer> dtrb defer tx.Rollback()
 	iab <buffer> enl err != nil {<CR>log.Fatal(err)<CR>}
 	iab <buffer> enr err != nil {<CR>return err<CR>}
 	iab <buffer> ent err != nil {<CR>t.Fatal(err)<CR>}
 	iab <buffer> enw err != nil {<CR>log.Warn(err)<CR>}
 	iab <buffer> ertn err.Error()
 	iab <buffer> ertw errors.New("TODO TODO TODO wip")
-	iab <buffer> fk for key := range
-	iab <buffer> fkv for key, value := range
+	iab <buffer> fkr for key := range
+	iab <buffer> fkvr for key, value := range
 	iab <buffer> foid fusion.ObjectID
-	iab <buffer> fv for _, value := range
+	iab <buffer> fvr for _, value := range
 	iab <buffer> gftn go func() {<CR><CR>}()<up><bs>
 	iab <buffer> hdb helper.DB
 	iab <buffer> hdbb helper.DB.Begin
@@ -164,15 +167,14 @@ func! AbbrevGoSnippets()
 	iab <buffer> ifce interface{}
 	iab <buffer> imtn import (<CR><CR>)<CR><up><up><bs>
 	iab <buffer> initn func init() {<CR><CR>}<up><bs>
-	iab <buffer> ioeof io.EOF
+	iab <buffer> ioeof err == io.EOF
 	iab <buffer> iss i++
 	iab <buffer> maintn func main() {<CR><CR>}<up><bs>
 	iab <buffer> nexttn Next()
 	iab <buffer> nfoid fusion.NewObjectID()
-	iab <buffer> rntn rows.Next()
-	iab <buffer> rbtn Rollback()
 	iab <buffer> pkgm package main
-	iab <buffer> senr sql.ErrNoRows
+	iab <buffer> rntn rows.Next()
+	iab <buffer> senr err == sql.ErrNoRows
 	iab <buffer> strtn String()
 	iab <buffer> tnow time.Now()
 	iab <buffer> ttm t *testing.M
@@ -194,9 +196,16 @@ func! AbbrevTeX()
 endfunc
 autocmd FileType tex call AbbrevTeX()
 
+" Define abbreviations for HTML.
+func! AbbrevHTML()
+	iab <buffer> // <!-- --> <left><left><left><left><left>
+	iab <buffer> telsn {{else}}
+	iab <buffer> tendn {{end}}
+endfunc
+autocmd FileType html call AbbrevHTML()
+
 " Define miscellaneous abbreviations. For TODO, three works better than two
 " since two will always end up on the same line, making it easier to grep.
-autocmd FileType html iab <buffer> // <!-- --> <left><left><left><left><left>
 autocmd FileType javascript iab <buffer> tt ===
 iab mtrm <Esc>3a-<Esc>a
 iab todo TODO
@@ -206,7 +215,7 @@ iab todot TODO TODO TODO
 " active line) and in visual line mode. We use U instead of I since the normal
 " command accounts for the Colemak mapping. There are obviously many missing
 " filetypes and they will be added as needed.
-autocmd FileType crontab,perl,python,sh noremap <buffer> <Leader>c :normal U# <Esc>
+autocmd FileType conf,crontab,perl,python,sh noremap <buffer> <Leader>c :normal U# <Esc>
 autocmd FileType cs,go,java,javascript noremap <buffer> <Leader>c :normal U// <Esc>
 autocmd FileType sql noremap <buffer> <Leader>c :normal U-- <Esc>
 autocmd FileType matlab,tex noremap <buffer> <Leader>c :normal U% <Esc>
