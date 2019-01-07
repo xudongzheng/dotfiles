@@ -11,6 +11,10 @@ HISTCONTROL=erasedups:ignorespace
 export EDITOR=vim
 export TERM=xterm-256color
 
+# Set the limit for open file descriptors to 1024. It should already be the
+# default on Linux whereas the default is 256 on macOS.
+ulimit -n 1024
+
 # The ls command is different on Linux and macOS. Set color scheme for macOS
 # per https://goo.gl/1ps44T.
 uname=$(uname)

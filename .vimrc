@@ -106,19 +106,24 @@ func! AbbrevGoImport()
 	iab <buffer> tbion "bufio"
 	iab <buffer> tbn "bytes"
 	iab <buffer> tcn "context"
+	iab <buffer> tcsn "crypto/subtle"
+	iab <buffer> tcxn "crypto/x509"
 	iab <buffer> tdsn "database/sql"
 	iab <buffer> tebn "encoding/base64"
 	iab <buffer> tecn "encoding/csv"
 	iab <buffer> tehn "encoding/hex"
 	iab <buffer> tejn "encoding/json"
 	iab <buffer> tfcn "fusion/context"
+	iab <buffer> tfcrn "fusion/crypto/rand"
 	iab <buffer> tfen "fusion/errors"
+	iab <buffer> tfgn "fusion/gopher"
 	iab <buffer> tfln "fusion/log"
 	iab <buffer> tfmtn "fmt"
 	iab <buffer> tfn "fusion"
 	iab <buffer> tfnhn "fusion/net/http"
 	iab <buffer> tion "io"
 	iab <buffer> tioun "io/ioutil"
+	iab <buffer> tln "log"
 	iab <buffer> tmn "math"
 	iab <buffer> tnetn "net"
 	iab <buffer> tnhn "net/http"
@@ -152,6 +157,7 @@ func! AbbrevGoSnippets()
 	iab <buffer> enr err != nil {<CR>return err<CR>}
 	iab <buffer> ent err != nil {<CR>t.Fatal(err)<CR>}
 	iab <buffer> enw err != nil {<CR>log.Warn(err)<CR>}
+	iab <buffer> erows err = rows.Scan(
 	iab <buffer> ertn err.Error()
 	iab <buffer> ertw errors.New("TODO TODO TODO wip")
 	iab <buffer> fkr for key := range
@@ -170,7 +176,6 @@ func! AbbrevGoSnippets()
 	iab <buffer> ioeof err == io.EOF
 	iab <buffer> iss i++
 	iab <buffer> maintn func main() {<CR><CR>}<up><bs>
-	iab <buffer> nexttn Next()
 	iab <buffer> nfoid fusion.NewObjectID()
 	iab <buffer> pkgm package main
 	iab <buffer> rntn rows.Next()
@@ -364,8 +369,14 @@ autocmd FileType netrw nnoremap <buffer> x :call NetrwRemove()<CR>
 " Display file modification time in netrw browser.
 let g:netrw_liststyle = 1
 
-" Netrw hides line numbers by default. Show line numbers in netrw.
-let g:netrw_bufsettings = "noma nomod nu nobl nowrap ro"
+" Netrw hides line numbers by default. Show relative line numbers in netrw.
+let g:netrw_bufsettings = "noma nomod nu nobl nowrap ro rnu"
+
+" Display directories above files but otherwise sort alphabetically.
+let g:netrw_sort_sequence="[\/]$"
+
+" Hide the .git directory, the current directory, and the parent directory.
+let g:netrw_list_hide = "^\\.git/,^\\./,^\\.\\./"
 
 " Use bash syntax for shell scripts.
 let g:is_bash = 1
@@ -374,19 +385,25 @@ let g:is_bash = 1
 let g:tex_flavor = "latex"
 
 " Use <Leader>4 to convert from standard base64 encoding to URL base64 encoding.
-" Reserve <Leader>6 for the other direction though we don't really see it to be
-" necessary.
+" Reserve <Leader>6 for conversion in the other direction though we don't really
+" think it will be necessary.
 nnoremap <Leader>4 :s/+/-/g<CR>:s/\//_/g<CR>
+
+" Use <Leader>w to adjusts splits to be even.
+nnoremap <Leader>w <C-W>=
+
+" Use <Leader>f to change case until end of the word.
+nnoremap <Leader>f ve~
 
 " Use <Leader>a to sort visually selected lines. Sort by ASCII per
 " https://goo.gl/HuZ6KL.
 xnoremap <Leader>a ! LC_ALL=C sort<CR>
 
-" Use <Leader>b to show the current buffer number.
-nnoremap <Leader>b :echo bufnr('%')<CR>
-
 " Use <Leader>t to search for triple TODO.
 nnoremap <Leader>t /TODO TODO<CR>
+
+" Use <Leader>b to show the current buffer number.
+nnoremap <Leader>b :echo bufnr('%')<CR>
 
 " Use <Leader>h and <Leader>H to simplify git rebase.
 autocmd FileType gitrebase xnoremap <Leader>h :s/pick/squash<CR>
@@ -397,9 +414,6 @@ nnoremap <Leader>i :s/id\>/ID/g<CR>
 
 " Use <Leader>m to open netrw in new tab.
 nnoremap <Leader>m :Te<CR>
-
-" Use <Leader>w to adjusts splits to be even.
-nnoremap <Leader>w <C-W>=
 
 " Use <Leader>l and <Leader>u to set the spell language to English and Spanish
 " respectively.
@@ -412,7 +426,20 @@ nnoremap <Tab> :tabp<CR>
 
 " beta stuff
 
-nnoremap <Leader>f ve~
+" Use <Leader>r to highlight non-ascii characters. Alternatively consider
+" <Leader>A or <Leader>U.
+nnoremap <Leader>r /[^\x00-\x7F]<CR>
+
+func! GoDoc()
+	let pkg = substitute(getline("."), "^import", "", "")
+	let pkg = substitute(pkg, "[\t ]", "", "")
+	let pkg = substitute(pkg, "\"", "", "g")
+	tabnew
+	exec "read ! godoc " . pkg
+	setlocal nomodified
+	normal dg
+endfunc
+autocmd FileType go nnoremap <Leader>d :call GoDoc()<CR>
+
 autocmd FileType go xnoremap <Leader>p y:r! echo "fmt.Println($RANDOM, )"<CR>==$P
 autocmd FileType javascript xnoremap <Leader>p y:r! echo "console.log($RANDOM, )"<CR>==$P
-let g:netrw_list_hide = "\\(^\\|\\s\\s\\)\\zs\\.\\S\\+"
