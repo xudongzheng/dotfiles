@@ -279,10 +279,10 @@ autocmd FileType * setlocal smartindent
 autocmd FileType markdown,text setlocal nosmartindent autoindent
 
 " Use backspace to trigger commands in normal mode. In the command line window,
-" use :w to execute the active line as a command.
+" use :x to execute the active line as a command.
 nnoremap <CR> :
 xnoremap <CR> :
-autocmd CmdwinEnter * cabbrev <buffer> w <CR>
+autocmd CmdwinEnter * cabbrev <buffer> x <CR>
 
 " Use dh, dn, de, and di to navigate splits.
 nnoremap dh <C-W><C-H>
