@@ -401,9 +401,15 @@ nnoremap <Leader>w <C-W>=
 " Use <Leader>f to change case until end of the word.
 nnoremap <Leader>f ve~
 
+" Use <Leader>g to jump to the next Git conflict marker.
+nnoremap <Leader>g /=======<CR>
+
 " Use <Leader>a to sort visually selected lines. Sort by ASCII per
 " https://goo.gl/HuZ6KL.
 xnoremap <Leader>a ! LC_ALL=C sort<CR>
+
+" Use <Leader>A to highlight non-ASCII characters.
+nnoremap <Leader>A /[^\x00-\x7F]<CR>
 
 " Use <Leader>t to search for triple TODO.
 nnoremap <Leader>t /TODO TODO<CR>
@@ -431,10 +437,6 @@ nnoremap \ :tabn<CR>
 nnoremap <Tab> :tabp<CR>
 
 " beta stuff
-
-" Use <Leader>r to highlight non-ascii characters. Alternatively consider
-" <Leader>A or <Leader>U.
-nnoremap <Leader>r /[^\x00-\x7F]<CR>
 
 func! GoDoc()
 	let pkg = substitute(getline("."), "^import", "", "")
