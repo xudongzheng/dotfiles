@@ -134,17 +134,30 @@ alias gx="git commit"
 alias gxm="gx -m"
 alias gxn="gx --amend"
 alias gxr='gx -m "$(date -R)"'
-alias gxue='git config user.email $(git log -1 --pretty=format:%ae)'
 alias gy="gu && gaa && gxr && gp"
 
+# Use gxua to set the repository email address to the default alias email. Use
+# gxul to set it to the email of the last commit. We must use single quotes for
+# the latter so the inner command is not executed until running the alias.
+alias gxua="git config user.email 7pkvm5aw@slicealias.com"
+alias gxul='git config user.email $(git log -1 --pretty=format:%ae)'
+
+# Define alias for synchronizing a repository's commit dates and author dates.
+# If no argument is given, only consider the last 20 commits. Use either -- or
+# HEAD as argument to process all branch commits.
 function gfb {
-	git filter-branch --env-filter "$1" -f HEAD~20...HEAD
+	if [ "$2" == "" ]; then
+		list="HEAD~20...HEAD"
+	else
+		list="$2"
+	fi
+	git filter-branch --env-filter "$1" -f "$list"
 }
 function gfad {
-	gfb 'GIT_AUTHOR_DATE=$GIT_COMMITTER_DATE; export GIT_AUTHOR_DATE'
+	gfb 'GIT_AUTHOR_DATE=$GIT_COMMITTER_DATE; export GIT_AUTHOR_DATE' "$1"
 }
 function gfcd {
-	gfb 'GIT_COMMITTER_DATE=$GIT_AUTHOR_DATE; export GIT_COMMITTER_DATE'
+	gfb 'GIT_COMMITTER_DATE=$GIT_AUTHOR_DATE; export GIT_COMMITTER_DATE' "$1"
 }
 
 function grih {

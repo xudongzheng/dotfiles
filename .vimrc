@@ -221,11 +221,15 @@ iab todot TODO TODO TODO
 " command accounts for the Colemak mapping. There are obviously many missing
 " filetypes and they will be added as needed.
 autocmd FileType conf,crontab,perl,python,sh noremap <buffer> <Leader>c :normal U# <Esc>
-autocmd FileType cs,go,java,javascript noremap <buffer> <Leader>c :normal U// <Esc>
+autocmd FileType c,cs,go,java,javascript noremap <buffer> <Leader>c :normal U// <Esc>
 autocmd FileType sql noremap <buffer> <Leader>c :normal U-- <Esc>
 autocmd FileType matlab,tex noremap <buffer> <Leader>c :normal U% <Esc>
 autocmd FileType vim noremap <buffer> <Leader>c :normal U" <Esc>
 autocmd FileType xdefaults noremap <buffer> <Leader>c :normal U! <Esc>
+
+" When modifying crontab, use <Leader>* as a shortcut for defining a cron that
+" runs every minute.
+autocmd FileType crontab noremap <buffer> <Leader>* 5I* <Esc>
 
 " In .eml files, \q is used to quote text. Remove mapping since we are already
 " using \ to go to the next tab and don't want any delay.
@@ -278,11 +282,11 @@ autocmd BufEnter * if &filetype == "" | setlocal filetype=text | endif
 autocmd FileType * setlocal smartindent
 autocmd FileType markdown,text setlocal nosmartindent autoindent
 
-" Use backspace to trigger commands in normal mode. In the command line window,
-" use :x to execute the active line as a command.
+" Use the enter key to trigger commands in normal mode. Note that while <CR> is
+" typically used to execute a command in the command-line window (accessible via
+" Ctrl-F), we can use :x instead.
 nnoremap <CR> :
 xnoremap <CR> :
-autocmd CmdwinEnter * cabbrev <buffer> x <CR>
 
 " Use dh, dn, de, and di to navigate splits.
 nnoremap dh <C-W><C-H>
@@ -375,8 +379,10 @@ let g:netrw_bufsettings = "noma nomod nu nobl nowrap ro rnu"
 " Display directories above files but otherwise sort alphabetically.
 let g:netrw_sort_sequence="[\/]$"
 
-" Hide the .git directory, the current directory, and the parent directory.
-let g:netrw_list_hide = "^\\.git/,^\\./,^\\.\\./"
+" Hide the .DS_Store file, .git directory, the current directory, and the parent
+" directory. We do not have to exclude .swp files since those are stored in a
+" separate directory.
+let g:netrw_list_hide = "^\\.DS_Store,\\.git/,^\\./,^\\.\\./"
 
 " Use bash syntax for shell scripts.
 let g:is_bash = 1
