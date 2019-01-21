@@ -51,8 +51,8 @@ alias autk="vi ~/.ssh/authorized_keys"
 alias bhi="vi ~/.bash_history"
 alias c="cd"
 alias cdot="c '"$(dirname "${BASH_SOURCE[0]}")"'"
+alias crt="crontab -e"
 alias csr="c '$parent/src/'"
-alias cte="crontab -e"
 alias dfh="df -h"
 alias dr="date -R"
 alias dush="du -sh"
@@ -65,11 +65,7 @@ alias fm="free -m"
 alias fms="fm -s 5"
 alias gfmt="wfmt '$parent/src'"
 alias hig="history | ep"
-alias lg="git ls-files | xargs grep --color -n"
-alias lgi="lg -i"
 alias lgr="git ls-files | ep"
-alias lgt="lg TODO"
-alias lgtt="lg 'TODO TODO'"
 alias ll="l -hla"
 alias n="netstat -nlp"
 alias ng="n | ep"
@@ -135,6 +131,15 @@ alias gxm="gx -m"
 alias gxn="gx --amend"
 alias gxr='gx -m "$(date -R)"'
 alias gy="gu && gaa && gxr && gp"
+
+# Define aliases for searching a Git repository. Replace \n with \x00 so xargs
+# correctly handles files with a space in their name. Per https://goo.gl/DLz58m,
+# this uses "git grep" instead of "git ls-files" since the latter includes
+# submodules that are directories, which grep will give an error for.
+alias lg="git grep --cached -l '' | tr '\n' '\0' | xargs -0 grep --color -n"
+alias lgi="lg -i"
+alias lgt="lg TODO"
+alias lgtt="lg 'TODO TODO'"
 
 # Use gxua to set the repository email address to the default alias email. Use
 # gxul to set it to the email of the last commit. We must use single quotes for

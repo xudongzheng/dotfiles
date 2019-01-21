@@ -263,9 +263,11 @@ autocmd FileType css setlocal formatoptions+=ro
 " Enable spell checker for git commits, TeX, and text files.
 autocmd FileType gitcommit,markdown,tex,text setlocal spell
 
-" Treat .kt (Kotlin) files as Scala files. They are obviously different but are
-" similar enough for the features such as syntax highlighting to work correctly.
-autocmd BufRead,BufNewFile *.kt setlocal filetype=scala
+" Treat .fs (F#) and .kt (Kotlin) files as Scala files. They are obviously
+" different but are similar enough for most of syntax highlighting and
+" indentation to work. OCaml is another candidate for F# though it doesn't
+" handle braces well.
+autocmd BufRead,BufNewFile *.fs,*.kt setlocal filetype=scala
 
 " Treat .vue files (for Vue.js) as HTML files.
 autocmd BufRead,BufNewFile *.vue setlocal filetype=html
@@ -282,11 +284,12 @@ autocmd BufEnter * if &filetype == "" | setlocal filetype=text | endif
 autocmd FileType * setlocal smartindent
 autocmd FileType markdown,text setlocal nosmartindent autoindent
 
-" Use the enter key to trigger commands in normal mode. Note that while <CR> is
-" typically used to execute a command in the command-line window (accessible via
-" Ctrl-F), we can use :x instead.
+" Use the enter key to trigger commands in normal mode. Since <CR> is typically
+" used to execute a command in the command-line window (accessible via Ctrl-F),
+" we will use :x instead.
 nnoremap <CR> :
 xnoremap <CR> :
+autocmd CmdwinEnter * cabbrev <buffer> x <CR>
 
 " Use dh, dn, de, and di to navigate splits.
 nnoremap dh <C-W><C-H>
