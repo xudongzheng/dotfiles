@@ -216,16 +216,35 @@ iab mtrm <Esc>3a-<Esc>a
 iab todo TODO
 iab todot TODO TODO TODO
 
-" Setup shortcuts to comment code. This should work in normal mode (for the
-" active line) and in visual line mode. We use U instead of I since the normal
-" command accounts for the Colemak mapping. There are obviously many missing
-" filetypes and they will be added as needed.
+" In .go files, use <Leader>d to show documentation for package at cursor.
+func! GoDoc()
+	let pkg = substitute(getline("."), "^import", "", "")
+	let pkg = substitute(pkg, "[\t ]", "", "")
+	let pkg = substitute(pkg, "\"", "", "g")
+	tabnew
+	exec "read ! go doc " . pkg
+	normal dgss
+	setlocal nomodified
+	setlocal nomodifiable
+endfunc
+autocmd FileType go nnoremap <Leader>d :call GoDoc()<CR>
+
+" Use <Leader>C to comment code. This should work in normal mode (for the active
+" line) and in visual line mode. We use U instead of I since the normal command
+" accounts for the Colemak mapping. There are obviously many missing filetypes
+" and they will be added as needed.
 autocmd FileType conf,crontab,perl,python,sh noremap <buffer> <Leader>c :normal U# <Esc>
 autocmd FileType c,cs,go,java,javascript noremap <buffer> <Leader>c :normal U// <Esc>
 autocmd FileType sql noremap <buffer> <Leader>c :normal U-- <Esc>
 autocmd FileType matlab,tex noremap <buffer> <Leader>c :normal U% <Esc>
 autocmd FileType vim noremap <buffer> <Leader>c :normal U" <Esc>
 autocmd FileType xdefaults noremap <buffer> <Leader>c :normal U! <Esc>
+
+" Use <Leader>p and <Leader>P to print the visually-selected variables.
+autocmd FileType go xnoremap <buffer> <Leader>p y:r! echo "println($RANDOM, )"<CR>==$P
+autocmd FileType go xnoremap <buffer> <Leader>P y:r! echo "fmt.Println($RANDOM, )"<CR>==$P
+autocmd FileType javascript xnoremap <buffer> <Leader>p y:r! echo "console.log($RANDOM, )"<CR>==$P
+autocmd FileType python xnoremap <buffer> <Leader>p y:r! echo "print($RANDOM, )"<CR>==$P
 
 " When modifying crontab, use <Leader>* as a shortcut for defining a cron that
 " runs every minute.
@@ -262,6 +281,11 @@ autocmd FileType css setlocal formatoptions+=ro
 
 " Enable spell checker for git commits, TeX, and text files.
 autocmd FileType gitcommit,markdown,tex,text setlocal spell
+
+" Sometimes the spell checker does not work correctly in large TeX files. This
+" seems to resolve most of the issue. See https://goo.gl/YbxTHp for more
+" information on spell checking in TeX files.
+autocmd FileType tex syntax spell toplevel
 
 " Treat .fs (F#) and .kt (Kotlin) files as Scala files. They are obviously
 " different but are similar enough for most of syntax highlighting and
@@ -440,17 +464,3 @@ nnoremap \ :tabn<CR>
 nnoremap <Tab> :tabp<CR>
 
 " beta stuff
-
-func! GoDoc()
-	let pkg = substitute(getline("."), "^import", "", "")
-	let pkg = substitute(pkg, "[\t ]", "", "")
-	let pkg = substitute(pkg, "\"", "", "g")
-	tabnew
-	exec "read ! godoc " . pkg
-	setlocal nomodified
-	normal dg
-endfunc
-autocmd FileType go nnoremap <Leader>d :call GoDoc()<CR>
-
-autocmd FileType go xnoremap <Leader>p y:r! echo "fmt.Println($RANDOM, )"<CR>==$P
-autocmd FileType javascript xnoremap <Leader>p y:r! echo "console.log($RANDOM, )"<CR>==$P
