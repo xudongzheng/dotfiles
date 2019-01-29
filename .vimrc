@@ -283,8 +283,8 @@ autocmd FileType css setlocal formatoptions+=ro
 autocmd FileType gitcommit,markdown,tex,text setlocal spell
 
 " Sometimes the spell checker does not work correctly in large TeX files. This
-" seems to resolve most of the issue. See https://goo.gl/YbxTHp for more
-" information on spell checking in TeX files.
+" seems to resolve most of the issue per https://goo.gl/dtuJSk. See
+" https://goo.gl/YbxTHp for more information on spell checking in TeX files.
 autocmd FileType tex syntax spell toplevel
 
 " Treat .fs (F#) and .kt (Kotlin) files as Scala files. They are obviously
@@ -464,3 +464,6 @@ nnoremap \ :tabn<CR>
 nnoremap <Tab> :tabp<CR>
 
 " beta stuff
+
+set foldmethod=syntax
+set foldlevel=99

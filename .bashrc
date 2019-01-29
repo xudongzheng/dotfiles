@@ -43,10 +43,6 @@ fi
 # Resolve the parent directory.
 parent=$(dirname "$(dirname "${BASH_SOURCE[0]}")")
 
-# Create an alias for cp and mv as to prompt before overwriting existing files.
-alias cp="cp -i"
-alias mv="mv -i"
-
 alias autk="vi ~/.ssh/authorized_keys"
 alias bhi="vi ~/.bash_history"
 alias c="cd"
@@ -82,6 +78,33 @@ alias wfmt="gofmt -w=true -s"
 alias wl="wc -l"
 alias ws="git ls-files | xargs cat | wc -l"
 
+# Create an alias for cp and mv as to prompt before overwriting existing files.
+alias cp="cp -i"
+alias mv="mv -i"
+
+# Use dqap (like in Vim) to undo line wrapping in a file. Per
+# https://goo.gl/PfzvyS, the "fmt" command does not accept widths larger than
+# 2500. This appears to be an issue on Linux but not MacOS. If this turns out to
+# be an issue, consider using Perl among other alternatives.
+function dqap {
+	fmt -w 2500 "$@" | sed "s/  / /g"
+}
+
+# Use jfmt command to format JSON using Python if Python available.
+if hash python3 2>/dev/null; then
+	alias jfmt="python3 -m json.tool"
+elif hash python 2>/dev/null; then
+	alias jfmt="python -m json.tool"
+fi
+
+# If wget is not available but cURL is available (likely on macOS), allow cURL
+# to be invoked using the wget command.
+if ! hash wget 2>/dev/null; then
+	if hash curl 2>/dev/null; then
+		alias wget="curl -O"
+	fi
+fi
+
 alias ga="git add"
 alias gaa="ga -A"
 alias gap="ga -p"
@@ -107,7 +130,8 @@ alias gian="git update-index --no-assume-unchanged"
 alias giau="git update-index --assume-unchanged"
 alias gl="git log --graph --decorate --stat --find-renames --date-order --show-signature"
 alias glb="gl --branches --remotes --tags"
-alias glol="git log --pretty=oneline"
+alias glf="gl --pretty=fuller"
+alias glo="git log --pretty=oneline"
 alias gm="git merge"
 alias gma="gm --abort"
 alias gnfd="git clean -f -d"
@@ -151,10 +175,9 @@ alias gxul='git config user.email $(git log -1 --pretty=format:%ae)'
 # If no argument is given, only consider the last 20 commits. Use either -- or
 # HEAD as argument to process all branch commits.
 function gfb {
+	list="$2"
 	if [ "$2" == "" ]; then
 		list="HEAD~20...HEAD"
-	else
-		list="$2"
 	fi
 	git filter-branch --env-filter "$1" -f "$list"
 }
