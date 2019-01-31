@@ -244,6 +244,7 @@ autocmd FileType xdefaults noremap <buffer> <Leader>c :normal U! <Esc>
 autocmd FileType go xnoremap <buffer> <Leader>p y:r! echo "println($RANDOM, )"<CR>==$P
 autocmd FileType go xnoremap <buffer> <Leader>P y:r! echo "fmt.Println($RANDOM, )"<CR>==$P
 autocmd FileType javascript xnoremap <buffer> <Leader>p y:r! echo "console.log($RANDOM, )"<CR>==$P
+autocmd FileType php xnoremap <buffer> <Leader>p y:r! echo "var_dump($RANDOM, )"<CR>==$P
 autocmd FileType python xnoremap <buffer> <Leader>p y:r! echo "print($RANDOM, )"<CR>==$P
 
 " When modifying crontab, use <Leader>* as a shortcut for defining a cron that

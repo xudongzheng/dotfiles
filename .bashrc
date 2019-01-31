@@ -40,7 +40,8 @@ if [[ $uname == "CYGWIN_NT-10.0" ]]; then
 	export CYGWIN="winsymlinks:nativestrict"
 fi
 
-# Resolve the parent directory.
+# Resolve the parent directory. It is commonly where we would find the primary
+# src directory.
 parent=$(dirname "$(dirname "${BASH_SOURCE[0]}")")
 
 alias autk="vi ~/.ssh/authorized_keys"
@@ -48,10 +49,8 @@ alias bhi="vi ~/.bash_history"
 alias c="cd"
 alias cdot="c '"$(dirname "${BASH_SOURCE[0]}")"'"
 alias crt="crontab -e"
-alias csr="c '$parent/src/'"
 alias dfh="df -h"
 alias dr="date -R"
-alias dush="du -sh"
 alias ep="grep --color"
 alias epi="ep -i"
 alias epr="ep -R"
@@ -82,6 +81,23 @@ alias ws="git ls-files | xargs cat | wc -l"
 alias cp="cp -i"
 alias mv="mv -i"
 
+# Create aliases for calculating size of directories and files. Use --summarize
+# (-s) subdirectories are not calculated separately. Use the -b flag to consider
+# the size of the file contents rather than the size used on disk.
+alias dubh="du -sbh"
+alias duh="du -sh"
+
+# Create aliases for changing to common directories for directories that exists.
+function aliasDir {
+	if [ -d "$2" ]; then
+		alias $1="c '$2'"
+	fi
+}
+aliasDir csr "$parent/src"
+aliasDir cde ~/Desktop
+aliasDir cdl ~/Downloads
+aliasDir cdoc ~/Documents
+
 # Use dqap (like in Vim) to undo line wrapping in a file. Per
 # https://goo.gl/PfzvyS, the "fmt" command does not accept widths larger than
 # 2500. This appears to be an issue on Linux but not MacOS. If this turns out to
@@ -98,10 +114,10 @@ elif hash python 2>/dev/null; then
 fi
 
 # If wget is not available but cURL is available (likely on macOS), allow cURL
-# to be invoked using the wget command.
+# to be invoked using the wget command. Include -L to follow redirects.
 if ! hash wget 2>/dev/null; then
 	if hash curl 2>/dev/null; then
-		alias wget="curl -O"
+		alias wget="curl -O -L"
 	fi
 fi
 
