@@ -41,7 +41,7 @@ if [[ $uname == "CYGWIN_NT-10.0" ]]; then
 fi
 
 # Resolve the parent directory. It is commonly where we would find the primary
-# src directory.
+# src directory. TODO use the first component of $GOPATH.
 parent=$(dirname "$(dirname "${BASH_SOURCE[0]}")")
 
 alias autk="vi ~/.ssh/authorized_keys"
@@ -55,6 +55,7 @@ alias ep="grep --color"
 alias epi="ep -i"
 alias epr="ep -R"
 alias epri="epr -i"
+alias eprtt="epr 'TODO TODO'"
 alias fig="find . | ep"
 alias fm="free -m"
 alias fms="fm -s 5"
@@ -97,6 +98,7 @@ aliasDir csr "$parent/src"
 aliasDir cde ~/Desktop
 aliasDir cdl ~/Downloads
 aliasDir cdoc ~/Documents
+aliasDir cgo "$GOROOT"
 
 # Use dqap (like in Vim) to undo line wrapping in a file. Per
 # https://goo.gl/PfzvyS, the "fmt" command does not accept widths larger than
@@ -105,6 +107,17 @@ aliasDir cdoc ~/Documents
 function dqap {
 	fmt -w 2500 "$@" | sed "s/  / /g"
 }
+
+# On MacOS where the shasum command is used for the entire SHA family, define
+# aliases so we can use the same commands as Linux. Similarly alias md5sum.
+if hash shasum 2>/dev/null; then
+	alias md5sum="md5"
+	alias sha1sum="shasum"
+	alias sha224sum="shasum -a 224"
+	alias sha256sum="shasum -a 256"
+	alias sha384sum="shasum -a 384"
+	alias sha512sum="shasum -a 512"
+fi
 
 # Use jfmt command to format JSON using Python if Python available.
 if hash python3 2>/dev/null; then
@@ -121,6 +134,18 @@ if ! hash wget 2>/dev/null; then
 	fi
 fi
 
+# If apt-get is available and user is root, define aliases. We use ags instead
+# of acs for "apt-cache search" since c and s use the same finger.
+if hash apt-get 2>/dev/null; then
+	if [ "$USER" == "root" ]; then
+		alias ag="apt-get"
+		alias agi="ag install"
+		alias agu="ag update && ag upgrade"
+		alias ags="apt-cache search"
+	fi
+fi
+
+# Define basic aliases for Git.
 alias ga="git add"
 alias gaa="ga -A"
 alias gap="ga -p"
@@ -170,7 +195,8 @@ alias gx="git commit"
 alias gxm="gx -m"
 alias gxn="gx --amend"
 alias gxr='gx -m "$(date -R)"'
-alias gy="gu && gaa && gxr && gp"
+alias gxar="gaa && gxr"
+alias gy="gu && gxar && gp"
 
 # Define aliases for searching a Git repository. Replace \n with \x00 so xargs
 # correctly handles files with a space in their name. Per https://goo.gl/DLz58m,

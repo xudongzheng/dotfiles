@@ -51,9 +51,6 @@ set undodir=~/.vim/undo
 " Enable mouse support.
 set mouse=a
 
-" Allow Vim to use all 256 colors.
-" set t_Co=256
-
 " Enable persistent undo.
 set undofile
 
@@ -201,10 +198,11 @@ func! AbbrevTeX()
 endfunc
 autocmd FileType tex call AbbrevTeX()
 
-" Define abbreviations for HTML.
+" Define abbreviations for HTML and XML.
+autocmd FileType html,xml iab <buffer> // <!-- --> <left><left><left><left><left>
 func! AbbrevHTML()
-	iab <buffer> // <!-- --> <left><left><left><left><left>
-	iab <buffer> telsn {{else}}
+	iab <buffer> tifn {{if}}<left><left>
+	iab <buffer> teln {{else}}
 	iab <buffer> tendn {{end}}
 endfunc
 autocmd FileType html call AbbrevHTML()
@@ -229,16 +227,24 @@ func! GoDoc()
 endfunc
 autocmd FileType go nnoremap <Leader>d :call GoDoc()<CR>
 
-" Use <Leader>C to comment code. This should work in normal mode (for the active
-" line) and in visual line mode. We use U instead of I since the normal command
+" Use <Leader>c to comment code. This should work in normal mode (for the active
+" line) and in visual line mode. We use U instead of I since the :normal command
 " accounts for the Colemak mapping. There are obviously many missing filetypes
 " and they will be added as needed.
-autocmd FileType conf,crontab,perl,python,sh noremap <buffer> <Leader>c :normal U# <Esc>
+autocmd FileType conf,crontab,perl,python,sh,yaml noremap <buffer> <Leader>c :normal U# <Esc>
 autocmd FileType c,cs,go,java,javascript noremap <buffer> <Leader>c :normal U// <Esc>
 autocmd FileType sql noremap <buffer> <Leader>c :normal U-- <Esc>
 autocmd FileType matlab,tex noremap <buffer> <Leader>c :normal U% <Esc>
 autocmd FileType vim noremap <buffer> <Leader>c :normal U" <Esc>
 autocmd FileType xdefaults noremap <buffer> <Leader>c :normal U! <Esc>
+
+" Define <Leader>c for HTML and XML. For normal mode, append first since
+" prepending first may cause the line to be wrapped into multiple lines. Since
+" we handle normal and visual mode separately, we do not need to use the :normal
+" command and should use the underlying QWERTY mapping. TODO look into multiline
+" comments for other languages as well.
+autocmd FileType html,xml nnoremap <buffer> <Leader>c A --><Esc>I<!-- <Esc>
+autocmd FileType html,xml xnoremap <buffer> <Leader>c c<!--<CR>--><Esc>P
 
 " Use <Leader>p and <Leader>P to print the visually-selected variables.
 autocmd FileType go xnoremap <buffer> <Leader>p y:r! echo "println($RANDOM, )"<CR>==$P
@@ -246,6 +252,7 @@ autocmd FileType go xnoremap <buffer> <Leader>P y:r! echo "fmt.Println($RANDOM, 
 autocmd FileType javascript xnoremap <buffer> <Leader>p y:r! echo "console.log($RANDOM, )"<CR>==$P
 autocmd FileType php xnoremap <buffer> <Leader>p y:r! echo "var_dump($RANDOM, )"<CR>==$P
 autocmd FileType python xnoremap <buffer> <Leader>p y:r! echo "print($RANDOM, )"<CR>==$P
+autocmd FileType sh xnoremap <buffer> <Leader>p y:r! echo "echo $RANDOM $"<CR>==$p
 
 " When modifying crontab, use <Leader>* as a shortcut for defining a cron that
 " runs every minute.
@@ -442,6 +449,9 @@ nnoremap <Leader>A /[^\x00-\x7F]<CR>
 " Use <Leader>t to search for triple TODO.
 nnoremap <Leader>t /TODO TODO<CR>
 
+" Use <Leader>z to correct word under cursor to first suggestion.
+nnoremap <Leader>z z=1<CR><CR>
+
 " Use <Leader>b to show the current buffer number.
 nnoremap <Leader>b :echo bufnr('%')<CR>
 
@@ -464,7 +474,6 @@ nnoremap <Leader>u :set spelllang=es<CR>
 nnoremap \ :tabn<CR>
 nnoremap <Tab> :tabp<CR>
 
-" beta stuff
-
+" TODO beta: enable code folding per https://goo.gl/PJLbbF.
 set foldmethod=syntax
 set foldlevel=99
