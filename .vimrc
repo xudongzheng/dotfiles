@@ -95,8 +95,9 @@ set wildmenu
 " Have backspace behave as it does in other applications.
 set backspace=2
 
-" Allow Ctrl-A and Ctrl-X to increment and decrement alphabetical characters.
-set nrformats+=alpha
+" Allow Ctrl-A and Ctrl-X to increment and decrement alphabetical characters. Do
+" not treat numbers that begin with 0 as octal.
+set nrformats+=alpha nrformats-=octal
 
 " Define abbreviation for Go import paths.
 func! AbbrevGoImport()
@@ -190,11 +191,11 @@ func! AbbrevTeX()
 	iab <buffer> deq \end{equation}
 	iab <buffer> ber \begin{verbatim}
 	iab <buffer> der \end{verbatim}
-	iab <buffer> mathbc \mathbb{C}
-	iab <buffer> mathbn \mathbb{N}
-	iab <buffer> mathbq \mathbb{Q}
-	iab <buffer> mathbr \mathbb{R}
-	iab <buffer> mathbz \mathbb{Z}
+	iab <buffer> mbc \mathbb{C}
+	iab <buffer> mbn \mathbb{N}
+	iab <buffer> mbq \mathbb{Q}
+	iab <buffer> mbr \mathbb{R}
+	iab <buffer> mbz \mathbb{Z}
 endfunc
 autocmd FileType tex call AbbrevTeX()
 
