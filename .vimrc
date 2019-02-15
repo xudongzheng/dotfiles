@@ -119,6 +119,7 @@ func! AbbrevGoImport()
 	iab <buffer> tfmtn "fmt"
 	iab <buffer> tfn "fusion"
 	iab <buffer> tfnhn "fusion/net/http"
+	iab <buffer> thtn "html/template"
 	iab <buffer> tion "io"
 	iab <buffer> tioun "io/ioutil"
 	iab <buffer> tln "log"
