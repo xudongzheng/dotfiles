@@ -197,6 +197,8 @@ func! AbbrevTeX()
 	iab <buffer> mbq \mathbb{Q}
 	iab <buffer> mbr \mathbb{R}
 	iab <buffer> mbz \mathbb{Z}
+	iab <buffer> infty \infty
+	iab <buffer> ninfty -\infty
 endfunc
 autocmd FileType tex call AbbrevTeX()
 
@@ -255,6 +257,17 @@ autocmd FileType javascript xnoremap <buffer> <Leader>p y:r! echo "console.log($
 autocmd FileType php xnoremap <buffer> <Leader>p y:r! echo "var_dump($RANDOM, )"<CR>==$P
 autocmd FileType python xnoremap <buffer> <Leader>p y:r! echo "print($RANDOM, )"<CR>==$P
 autocmd FileType sh xnoremap <buffer> <Leader>p y:r! echo "echo $RANDOM $"<CR>==$p
+
+" Use <Leader>1 through <Leader>6 for making a line into a heading.
+func! HeadingMarkdown()
+	nnoremap <buffer> <Leader>1 I# <Esc>
+	nnoremap <buffer> <Leader>2 I## <Esc>
+	nnoremap <buffer> <Leader>3 I### <Esc>
+	nnoremap <buffer> <Leader>4 I#### <Esc>
+	nnoremap <buffer> <Leader>5 I##### <Esc>
+	nnoremap <buffer> <Leader>6 I###### <Esc>
+endfunc
+autocmd FileType markdown call HeadingMarkdown()
 
 " When modifying crontab, use <Leader>* as a shortcut for defining a cron that
 " runs every minute.

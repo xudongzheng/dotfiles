@@ -27,8 +27,8 @@ fi
 echo 'source "'$base'/.bashrc"' > $bashrc
 echo 'exec "source " . fnameescape("'$base/.vimrc'")' > ~/.vimrc
 
-ln -s "$base/.gitconfig" ~/.gitconfig
-ln -s "$base/.tmux.conf" ~/.tmux.conf
+ln -s "$base/.gitconfig" ~
+ln -s "$base/.tmux.conf" ~
 
 # Create directories for Vim temporary files.
 mkdir -p ~/.vim/{backup,swap,undo}

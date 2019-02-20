@@ -119,7 +119,7 @@ if ! hash shasum 2>/dev/null; then
 	alias sha512sum="shasum -a 512"
 fi
 
-# Use jfmt command to format JSON using Python if Python available.
+# Use jfmt to format JSON using Python if Python available.
 if hash python3 2>/dev/null; then
 	alias jfmt="python3 -m json.tool"
 elif hash python 2>/dev/null; then
@@ -190,6 +190,7 @@ alias grh="git reset HEAD"
 alias grhc="git reset HEAD^"
 alias gri="gr -i"
 alias grs="gr --skip"
+alias grv="git remote -v"
 alias gs="git status"
 alias gt="git stash"
 alias gta="gt apply"
