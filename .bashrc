@@ -134,16 +134,18 @@ if ! hash wget 2>/dev/null; then
 	fi
 fi
 
-# If apt-get is available and user is root, define aliases. Use ags instead of
-# acs for "apt-cache search" since c and s use the same finger. Use ali to list
-# all installed packages. This uses dpkg rather than "apt list --installed"
+# If apt-get is available, define related aliases. Use ags instead of acs for
+# "apt-cache search" since c and s use the same finger. agu and aguu are
+# separate since the former may be used before installing a package. Use ali to
+# list all installed packages. This uses dpkg rather than "apt list --installed"
 # since apt will give a warning about not having a stable CLI interface.
 if hash apt-get 2>/dev/null; then
 	if [ "$USER" == "root" ]; then
 		alias ag="apt-get"
 		alias agi="ag install"
-		alias agu="ag update && ag upgrade"
 		alias ags="apt-cache search"
+		alias agu="ag update"
+		alias aguu="agu && ag upgrade"
 	fi
 	alias ali="dpkg --get-selections"
 	alias alig="ali | ep"

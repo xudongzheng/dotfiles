@@ -236,7 +236,7 @@ autocmd FileType go nnoremap <Leader>d :call GoDoc()<CR>
 " accounts for the Colemak mapping. There are obviously many missing filetypes
 " and they will be added as needed.
 autocmd FileType conf,crontab,perl,python,sh,yaml noremap <buffer> <Leader>c :normal U# <Esc>
-autocmd FileType c,cs,go,java,javascript noremap <buffer> <Leader>c :normal U// <Esc>
+autocmd FileType arduino,c,cs,go,java,javascript noremap <buffer> <Leader>c :normal U// <Esc>
 autocmd FileType sql noremap <buffer> <Leader>c :normal U-- <Esc>
 autocmd FileType matlab,tex noremap <buffer> <Leader>c :normal U% <Esc>
 autocmd FileType vim noremap <buffer> <Leader>c :normal U" <Esc>
