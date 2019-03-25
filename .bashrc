@@ -78,6 +78,12 @@ alias wfmt="gofmt -w=true -s"
 alias wl="wc -l"
 alias ws="git ls-files | xargs cat | wc -l"
 
+# Define alias for insecure SSH. This is useful before we reserve a static IP
+# for a new device. Generally we use SSH for authentication so there's no real
+# security risk.
+alias sins="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+alias sinsr="sins -l root"
+
 # Create an alias for cp and mv as to prompt before overwriting existing files.
 alias cp="cp -i"
 alias mv="mv -i"

@@ -107,6 +107,7 @@ func! AbbrevGoImport()
 	iab <buffer> tcsn "crypto/subtle"
 	iab <buffer> tcxn "crypto/x509"
 	iab <buffer> tdsn "database/sql"
+	iab <buffer> tebin "encoding/binary"
 	iab <buffer> tebn "encoding/base64"
 	iab <buffer> tecn "encoding/csv"
 	iab <buffer> tehn "encoding/hex"
@@ -136,6 +137,7 @@ func! AbbrevGoImport()
 	iab <buffer> tsn "strings"
 	iab <buffer> ttestn "testing"
 	iab <buffer> ttn "time"
+	iab <buffer> tttn "text/template"
 endfunc
 autocmd FileType go call AbbrevGoImport()
 
@@ -170,6 +172,7 @@ func! AbbrevGoSnippets()
 	iab <buffer> hdbq helper.DB.Query
 	iab <buffer> hdbqr helper.DB.QueryRow
 	iab <buffer> ifce interface{}
+	iab <buffer> imc import "C"
 	iab <buffer> imtn import (<CR><CR>)<CR><up><up><bs>
 	iab <buffer> initn func init() {<CR><CR>}<up><bs>
 	iab <buffer> ioeof err == io.EOF
@@ -236,7 +239,7 @@ autocmd FileType go nnoremap <Leader>d :call GoDoc()<CR>
 " accounts for the Colemak mapping. There are obviously many missing filetypes
 " and they will be added as needed.
 autocmd FileType conf,crontab,perl,python,sh,yaml noremap <buffer> <Leader>c :normal U# <Esc>
-autocmd FileType arduino,c,cs,go,java,javascript noremap <buffer> <Leader>c :normal U// <Esc>
+autocmd FileType arduino,c,cpp,cs,go,java,javascript noremap <buffer> <Leader>c :normal U// <Esc>
 autocmd FileType sql noremap <buffer> <Leader>c :normal U-- <Esc>
 autocmd FileType matlab,tex noremap <buffer> <Leader>c :normal U% <Esc>
 autocmd FileType vim noremap <buffer> <Leader>c :normal U" <Esc>
