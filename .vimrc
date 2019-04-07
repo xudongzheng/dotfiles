@@ -216,6 +216,7 @@ autocmd FileType html call AbbrevHTML()
 
 " Define miscellaneous abbreviations. For TODO, three works better than two
 " since two will always end up on the same line, making it easier to grep.
+autocmd FileType c,cpp iab <buffer> maintn int main() {<CR><CR>}<up><bs>
 autocmd FileType javascript iab <buffer> tt ===
 iab mtrm <Esc>3a-<Esc>a
 iab todo TODO
@@ -261,14 +262,20 @@ autocmd FileType php xnoremap <buffer> <Leader>p y:r! echo "var_dump($RANDOM, )"
 autocmd FileType python xnoremap <buffer> <Leader>p y:r! echo "print($RANDOM, )"<CR>==$P
 autocmd FileType sh xnoremap <buffer> <Leader>p y:r! echo "echo $RANDOM $"<CR>==$p
 
-" Use <Leader>1 through <Leader>6 for making a line into a heading.
 func! HeadingMarkdown()
-	nnoremap <buffer> <Leader>1 I# <Esc>
-	nnoremap <buffer> <Leader>2 I## <Esc>
-	nnoremap <buffer> <Leader>3 I### <Esc>
-	nnoremap <buffer> <Leader>4 I#### <Esc>
-	nnoremap <buffer> <Leader>5 I##### <Esc>
-	nnoremap <buffer> <Leader>6 I###### <Esc>
+	" In Markdown, use <Leader><CR>1 through <Leader><CR>6 for making a line
+	" into a heading.
+	nnoremap <buffer> <Leader><CR>1 I# <Esc>
+	nnoremap <buffer> <Leader><CR>2 I## <Esc>
+	nnoremap <buffer> <Leader><CR>3 I### <Esc>
+	nnoremap <buffer> <Leader><CR>4 I#### <Esc>
+	nnoremap <buffer> <Leader><CR>5 I##### <Esc>
+	nnoremap <buffer> <Leader><CR>6 I###### <Esc>
+
+	" Use <Leader><CR>b to make the selected text bold. Use <Leader><CR>i for
+	" italics.
+	xnoremap <buffer> <Leader><CR>b c****<Esc><left>P
+	xnoremap <buffer> <Leader><CR>i c**<Esc>P
 endfunc
 autocmd FileType markdown call HeadingMarkdown()
 
@@ -348,8 +355,8 @@ nnoremap de <C-W><C-K>
 nnoremap di <C-W><C-L>
 
 " Use <F4> to toggle spell checker.
-inoremap <F4> <c-o>:set spell!<CR>
-nnoremap <F4> :set spell!<CR>
+inoremap <F4> <c-o>:setlocak spell!<CR>
+nnoremap <F4> :setlocak spell!<CR>
 
 " Use <F5> to refresh a file from disk.
 inoremap <F5> <c-o>:e<CR>
@@ -357,8 +364,8 @@ nnoremap <F5> :e<CR>
 
 " Use <F6> to wrap/unwrap text.
 set nowrap
-inoremap <F6> <c-o>:set wrap!<CR>
-nnoremap <F6> :set wrap!<CR>
+inoremap <F6> <c-o>:setlocal wrap!<CR>
+nnoremap <F6> :setlocal wrap!<CR>
 
 " Use <F9> to toggle paste.
 set pastetoggle=<F9>
@@ -443,10 +450,8 @@ let g:is_bash = 1
 " Treat all .tex files as LaTeX.
 let g:tex_flavor = "latex"
 
-" Use <Leader>4 to convert from standard base64 encoding to URL base64 encoding.
-" Reserve <Leader>6 for conversion in the other direction though we don't really
-" think it will be necessary.
-nnoremap <Leader>4 :s/+/-/g<CR>:s/\//_/g<CR>
+" Use <Leader>u to convert from standard base64 encoding to URL base64 encoding.
+nnoremap <Leader>u :s/+/-/g<CR>:s/\//_/g<CR>
 
 " Use <Leader>w to adjusts splits to be even.
 nnoremap <Leader>w <C-W>=
@@ -483,12 +488,16 @@ nnoremap <Leader>i :s/id\>/ID/g<CR>
 " Use <Leader>m to open netrw in new tab.
 nnoremap <Leader>m :Te<CR>
 
-" Use <Leader>l and <Leader>u to set the spell language to English and Spanish
+" Use <Leader>l and <Leader>L to set the spell language to English and Spanish
 " respectively.
-nnoremap <Leader>l :set spelllang=en<CR>
-nnoremap <Leader>u :set spelllang=es<CR>
+nnoremap <Leader>l :setlocal spelllang=en<CR>
+nnoremap <Leader>L :setlocal spelllang=es<CR>
 
-" Use \ to go to next tab and <tab> to go to previous tab.
+" Use <Leader><Tab> convert to tabs. In normal mode, it affects the current
+" line. In visual mode, it affects every selected line.
+noremap <Leader><Tab> :s/    /\t/g<CR>
+
+" Use \ to go to next tab and <Tab> to go to previous tab.
 nnoremap \ :tabn<CR>
 nnoremap <Tab> :tabp<CR>
 
