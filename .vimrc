@@ -151,13 +151,13 @@ func! AbbrevGoSnippets()
 	iab <buffer> cotn Commit()
 	iab <buffer> ctxg ctx := context.Get(rw)
 	iab <buffer> cvbyte []byte
-	iab <buffer> dftn defer func() {<CR><CR>}()<up><bs>
+	iab <buffer> dftn defer func() {<cr><cr>}()<up><bs>
 	iab <buffer> drbc defer resp.Body.Close()
 	iab <buffer> dtrb defer tx.Rollback()
-	iab <buffer> enl err != nil {<CR>log.Fatal(err)<CR>}
-	iab <buffer> enr err != nil {<CR>return err<CR>}
-	iab <buffer> ent err != nil {<CR>t.Fatal(err)<CR>}
-	iab <buffer> enw err != nil {<CR>log.Warn(err)<CR>}
+	iab <buffer> enl err != nil {<cr>log.Fatal(err)<cr>}
+	iab <buffer> enr err != nil {<cr>return err<cr>}
+	iab <buffer> ent err != nil {<cr>t.Fatal(err)<cr>}
+	iab <buffer> enw err != nil {<cr>log.Warn(err)<cr>}
 	iab <buffer> erows err = rows.Scan(
 	iab <buffer> ertn err.Error()
 	iab <buffer> ertw errors.New("TODO TODO TODO wip")
@@ -165,7 +165,7 @@ func! AbbrevGoSnippets()
 	iab <buffer> fkvr for key, value := range
 	iab <buffer> foid fusion.ObjectID
 	iab <buffer> fvr for _, value := range
-	iab <buffer> gftn go func() {<CR><CR>}()<up><bs>
+	iab <buffer> gftn go func() {<cr><cr>}()<up><bs>
 	iab <buffer> hdb helper.DB
 	iab <buffer> hdbb helper.DB.Begin
 	iab <buffer> hdbe helper.DB.Exec
@@ -173,11 +173,11 @@ func! AbbrevGoSnippets()
 	iab <buffer> hdbqr helper.DB.QueryRow
 	iab <buffer> ifce interface{}
 	iab <buffer> imc import "C"
-	iab <buffer> imtn import (<CR><CR>)<CR><up><up><bs>
-	iab <buffer> initn func init() {<CR><CR>}<up><bs>
+	iab <buffer> imtn import (<cr><cr>)<cr><up><up><bs>
+	iab <buffer> initn func init() {<cr><cr>}<up><bs>
 	iab <buffer> ioeof err == io.EOF
 	iab <buffer> iss i++
-	iab <buffer> maintn func main() {<CR><CR>}<up><bs>
+	iab <buffer> maintn func main() {<cr><cr>}<up><bs>
 	iab <buffer> nfoid fusion.NewObjectID()
 	iab <buffer> pkgm package main
 	iab <buffer> rntn rows.Next()
@@ -216,13 +216,13 @@ autocmd FileType html call AbbrevHTML()
 
 " Define miscellaneous abbreviations. For TODO, three works better than two
 " since two will always end up on the same line, making it easier to grep.
-autocmd FileType c,cpp iab <buffer> maintn int main() {<CR><CR>}<up><bs>
+autocmd FileType c,cpp iab <buffer> maintn int main() {<cr><cr>}<up><bs>
 autocmd FileType javascript iab <buffer> tt ===
-iab mtrm <Esc>3a-<Esc>a
-iab todo TODO
-iab todot TODO TODO TODO
+iab mtrm <esc>3a-<esc>a
+iab tst TODO
+iab trt TODO TODO TODO
 
-" In .go files, use <Leader>d to show documentation for package at cursor.
+" In .go files, use <leader>d to show documentation for package at cursor.
 func! GoDoc()
 	let pkg = substitute(getline("."), "^import", "", "")
 	let pkg = substitute(pkg, "[\t ]", "", "")
@@ -233,62 +233,69 @@ func! GoDoc()
 	setlocal nomodified
 	setlocal nomodifiable
 endfunc
-autocmd FileType go nnoremap <Leader>d :call GoDoc()<CR>
+autocmd FileType go nnoremap <leader>d :call GoDoc()<cr>
 
-" Use <Leader>c to comment code. This should work in normal mode (for the active
+" In text files, use <leader>d to insert the date in the American format. This
+" code comes from https://bit.ly/2UWmveA. Use <leader>D for the time and
+" <leader><cr>d for the time in parenthesis.
+autocmd FileType markdown,text nnoremap <leader>d "=strftime('%B %-d, %Y')<CR>p
+autocmd FileType markdown,text nnoremap <leader>D "=strftime('%H:%M')<CR>p
+autocmd FileType markdown,text nnoremap <leader><cr>d "=strftime('(%H:%M)')<CR>p
+
+" Use <leader>c to comment code. This should work in normal mode (for the active
 " line) and in visual line mode. We use U instead of I since the :normal command
 " accounts for the Colemak mapping. There are obviously many missing filetypes
 " and they will be added as needed.
-autocmd FileType conf,crontab,perl,python,sh,yaml noremap <buffer> <Leader>c :normal U# <Esc>
-autocmd FileType arduino,c,cpp,cs,go,java,javascript noremap <buffer> <Leader>c :normal U// <Esc>
-autocmd FileType sql noremap <buffer> <Leader>c :normal U-- <Esc>
-autocmd FileType matlab,tex noremap <buffer> <Leader>c :normal U% <Esc>
-autocmd FileType vim noremap <buffer> <Leader>c :normal U" <Esc>
-autocmd FileType xdefaults noremap <buffer> <Leader>c :normal U! <Esc>
+autocmd FileType conf,crontab,perl,python,ruby,sh,yaml noremap <buffer> <leader>c :normal U# <esc>
+autocmd FileType arduino,c,cpp,cs,go,java,javascript noremap <buffer> <leader>c :normal U// <esc>
+autocmd FileType sql noremap <buffer> <leader>c :normal U-- <esc>
+autocmd FileType matlab,tex noremap <buffer> <leader>c :normal U% <esc>
+autocmd FileType vim noremap <buffer> <leader>c :normal U" <esc>
+autocmd FileType xdefaults noremap <buffer> <leader>c :normal U! <esc>
 
-" Define <Leader>c for HTML and XML. For normal mode, append first since
+" Define <leader>c for HTML and XML. For normal mode, append first since
 " prepending first may cause the line to be wrapped into multiple lines. Since
 " we handle normal and visual mode separately, we do not need to use the :normal
 " command and should use the underlying QWERTY mapping. TODO look into multiline
 " comments for other languages as well.
-autocmd FileType html,xml nnoremap <buffer> <Leader>c A --><Esc>I<!-- <Esc>
-autocmd FileType html,xml xnoremap <buffer> <Leader>c c<!--<CR>--><Esc>P
+autocmd FileType html,xml nnoremap <buffer> <leader>c A --><esc>I<!-- <esc>
+autocmd FileType html,xml xnoremap <buffer> <leader>c c<!--<cr>--><esc>P
 
-" Use <Leader>p and <Leader>P to print the visually-selected variables.
-autocmd FileType go xnoremap <buffer> <Leader>p y:r! echo "println($RANDOM, )"<CR>==$P
-autocmd FileType go xnoremap <buffer> <Leader>P y:r! echo "fmt.Println($RANDOM, )"<CR>==$P
-autocmd FileType javascript xnoremap <buffer> <Leader>p y:r! echo "console.log($RANDOM, )"<CR>==$P
-autocmd FileType php xnoremap <buffer> <Leader>p y:r! echo "var_dump($RANDOM, )"<CR>==$P
-autocmd FileType python xnoremap <buffer> <Leader>p y:r! echo "print($RANDOM, )"<CR>==$P
-autocmd FileType sh xnoremap <buffer> <Leader>p y:r! echo "echo $RANDOM $"<CR>==$p
+" Use <leader>p and <leader>P to print the visually-selected variables.
+autocmd FileType go xnoremap <buffer> <leader>p y:r! echo "println($RANDOM, )"<cr>==$P
+autocmd FileType go xnoremap <buffer> <leader>P y:r! echo "fmt.Println($RANDOM, )"<cr>==$P
+autocmd FileType javascript xnoremap <buffer> <leader>p y:r! echo "console.log($RANDOM, )"<cr>==$P
+autocmd FileType php xnoremap <buffer> <leader>p y:r! echo "var_dump($RANDOM, )"<cr>==$P
+autocmd FileType python xnoremap <buffer> <leader>p y:r! echo "print($RANDOM, )"<cr>==$P
+autocmd FileType sh xnoremap <buffer> <leader>p y:r! echo "echo $RANDOM $"<cr>==$p
 
 func! HeadingMarkdown()
-	" In Markdown, use <Leader><CR>1 through <Leader><CR>6 for making a line
+	" In Markdown, use <leader><cr>1 through <leader><cr>6 for making a line
 	" into a heading.
-	nnoremap <buffer> <Leader><CR>1 I# <Esc>
-	nnoremap <buffer> <Leader><CR>2 I## <Esc>
-	nnoremap <buffer> <Leader><CR>3 I### <Esc>
-	nnoremap <buffer> <Leader><CR>4 I#### <Esc>
-	nnoremap <buffer> <Leader><CR>5 I##### <Esc>
-	nnoremap <buffer> <Leader><CR>6 I###### <Esc>
+	nnoremap <buffer> <leader><cr>1 I# <esc>
+	nnoremap <buffer> <leader><cr>2 I## <esc>
+	nnoremap <buffer> <leader><cr>3 I### <esc>
+	nnoremap <buffer> <leader><cr>4 I#### <esc>
+	nnoremap <buffer> <leader><cr>5 I##### <esc>
+	nnoremap <buffer> <leader><cr>6 I###### <esc>
 
-	" Use <Leader><CR>b to make the selected text bold. Use <Leader><CR>i for
+	" Use <leader><cr>b to make the selected text bold. Use <leader><cr>i for
 	" italics.
-	xnoremap <buffer> <Leader><CR>b c****<Esc><left>P
-	xnoremap <buffer> <Leader><CR>i c**<Esc>P
+	xnoremap <buffer> <leader><cr>b c****<esc><left>P
+	xnoremap <buffer> <leader><cr>i c**<esc>P
 endfunc
 autocmd FileType markdown call HeadingMarkdown()
 
-" When modifying crontab, use <Leader>* as a shortcut for defining a cron that
+" When modifying crontab, use <leader>* as a shortcut for defining a cron that
 " runs every minute.
-autocmd FileType crontab noremap <buffer> <Leader>* 5I* <Esc>
+autocmd FileType crontab noremap <buffer> <leader>* 5I* <esc>
 
 " In .eml files, \q is used to quote text. Remove mapping since we are already
 " using \ to go to the next tab and don't want any delay.
 autocmd FileType mail unmap <buffer> \q
 
-" Use <Leader>s in normal mode to automatically format Go source code.
-autocmd FileType go nnoremap <Leader>s :! gofmt -w=true -s %<CR>:e<CR>
+" Use <leader>s in normal mode to automatically format Go source code.
+autocmd FileType go nnoremap <leader>s :! gofmt -w=true -s %<cr>:e<cr>
 
 " Set tabs to be 4 spaces and use tabs instead of spaces. This uses autocmd so
 " we can override language-specific configuration. Python, for example, is
@@ -341,42 +348,50 @@ autocmd BufEnter * if &filetype == "" | setlocal filetype=text | endif
 autocmd FileType * setlocal smartindent
 autocmd FileType markdown,text setlocal nosmartindent autoindent
 
-" Use the enter key to trigger commands in normal mode. Since <CR> is typically
+" Use the enter key to trigger commands in normal mode. Since <cr> is typically
 " used to execute a command in the command-line window (accessible via Ctrl-F),
 " we will use :x instead.
-nnoremap <CR> :
-xnoremap <CR> :
-autocmd CmdwinEnter * cabbrev <buffer> x <CR>
+nnoremap <cr> :
+xnoremap <cr> :
+autocmd CmdwinEnter * cabbrev <buffer> x <cr>
+
+" Ctrl-U deletes to beginning of line and Ctrl-W deletes the last word.
+" Recovering the deleted text is difficult. Ctrl-U can happen by accident such
+" as when accidentally inserting a Unicode character with Ctrl-Shift-U. Create a
+" separate change for Ctrl-U and Ctrl-W so they can be undone like other
+" changes per https://bit.ly/2ZSlinw.
+inoremap <c-u> <c-g>u<c-u>
+inoremap <c-w> <c-g>u<c-w>
 
 " Use dh, dn, de, and di to navigate splits.
-nnoremap dh <C-W><C-H>
-nnoremap dn <C-W><C-J>
-nnoremap de <C-W><C-K>
-nnoremap di <C-W><C-L>
+nnoremap dh <c-w><c-h>
+nnoremap dn <c-w><c-j>
+nnoremap de <c-w><c-k>
+nnoremap di <c-w><c-l>
 
 " Use <F4> to toggle spell checker.
-inoremap <F4> <c-o>:setlocak spell!<CR>
-nnoremap <F4> :setlocak spell!<CR>
+inoremap <F4> <c-o>:setlocal spell!<cr>
+nnoremap <F4> :setlocal spell!<cr>
 
 " Use <F5> to refresh a file from disk.
-inoremap <F5> <c-o>:e<CR>
-nnoremap <F5> :e<CR>
+inoremap <F5> <c-o>:e<cr>
+nnoremap <F5> :e<cr>
 
 " Use <F6> to wrap/unwrap text.
 set nowrap
-inoremap <F6> <c-o>:setlocal wrap!<CR>
-nnoremap <F6> :setlocal wrap!<CR>
+inoremap <F6> <c-o>:setlocal wrap!<cr>
+nnoremap <F6> :setlocal wrap!<cr>
 
 " Use <F9> to toggle paste.
 set pastetoggle=<F9>
 
 " Use <F10> to show diff since file save.
-inoremap <F10> <c-o>:w !diff % -<CR>
-nnoremap <F10> :w !diff % -<CR>
+inoremap <F10> <c-o>:w !diff % -<cr>
+nnoremap <F10> :w !diff % -<cr>
 
 " Use <F12> key to unhighlight searched text.
-inoremap <F12> <c-o>:noh<CR>
-nnoremap <F12> :noh<CR>
+inoremap <F12> <c-o>:noh<cr>
+nnoremap <F12> :noh<cr>
 
 " Netrw comes with lots of mappings that can lead to unintentional, accidental
 " changes. We will unmap everything and map only the functions that we need.
@@ -405,8 +420,8 @@ endfunc
 func! NetrwParent()
 	call NetrwBrowse("..")
 endfunc
-autocmd FileType netrw nnoremap <buffer> t :call NetrwReturn()<CR>
-autocmd FileType netrw nnoremap <buffer> s :call NetrwParent()<CR>
+autocmd FileType netrw nnoremap <buffer> t :call NetrwReturn()<cr>
+autocmd FileType netrw nnoremap <buffer> s :call NetrwParent()<cr>
 
 " Map additional functions for creating, renaming, and deleting.
 func! NetrwCreate()
@@ -425,10 +440,10 @@ func! NetrwRemove()
 	let NetrwLocalRm = function(NetrwFunction("NetrwLocalRm"))
 	call NetrwLocalRm(b:netrw_curdir)
 endfunc
-autocmd FileType netrw nnoremap <buffer> c :call NetrwCreate()<CR>
-autocmd FileType netrw nnoremap <buffer> dm :call NetrwMkdir()<CR>
-autocmd FileType netrw nnoremap <buffer> r :call NetrwRename()<CR>
-autocmd FileType netrw nnoremap <buffer> x :call NetrwRemove()<CR>
+autocmd FileType netrw nnoremap <buffer> c :call NetrwCreate()<cr>
+autocmd FileType netrw nnoremap <buffer> dm :call NetrwMkdir()<cr>
+autocmd FileType netrw nnoremap <buffer> r :call NetrwRename()<cr>
+autocmd FileType netrw nnoremap <buffer> x :call NetrwRemove()<cr>
 
 " Display file modification time in netrw browser.
 let g:netrw_liststyle = 1
@@ -450,56 +465,56 @@ let g:is_bash = 1
 " Treat all .tex files as LaTeX.
 let g:tex_flavor = "latex"
 
-" Use <Leader>u to convert from standard base64 encoding to URL base64 encoding.
-nnoremap <Leader>u :s/+/-/g<CR>:s/\//_/g<CR>
+" Use <leader>u to convert from standard base64 encoding to URL base64 encoding.
+nnoremap <leader>u :s/+/-/g<cr>:s/\//_/g<cr>
 
-" Use <Leader>w to adjusts splits to be even.
-nnoremap <Leader>w <C-W>=
+" Use <leader>w to adjusts splits to be even.
+nnoremap <leader>w <c-w>=
 
-" Use <Leader>f to change case until end of the word.
-nnoremap <Leader>f ve~
+" Use <leader>f to change case until end of the word.
+nnoremap <leader>f ve~
 
-" Use <Leader>g to jump to the next Git conflict marker.
-nnoremap <Leader>g /=======<CR>
+" Use <leader>g to jump to the next Git conflict marker.
+nnoremap <leader>g /=======<cr>
 
-" Use <Leader>a to sort visually selected lines. Sort by ASCII per
+" Use <leader>a to sort visually selected lines. Sort by ASCII per
 " https://goo.gl/HuZ6KL.
-xnoremap <Leader>a ! LC_ALL=C sort<CR>
+xnoremap <leader>a ! LC_ALL=C sort<cr>
 
-" Use <Leader>A to highlight non-ASCII characters.
-nnoremap <Leader>A /[^\x00-\x7F]<CR>
+" Use <leader>A to highlight non-ASCII characters.
+nnoremap <leader>A /[^\x00-\x7F]<cr>
 
-" Use <Leader>t to search for triple TODO.
-nnoremap <Leader>t /TODO TODO<CR>
+" Use <leader>t to search for triple TODO.
+nnoremap <leader>t /TODO TODO<cr>
 
-" Use <Leader>z to correct word under cursor to first suggestion.
-nnoremap <Leader>z z=1<CR><CR>
+" Use <leader>z to correct word under cursor to first suggestion.
+nnoremap <leader>z z=1<cr><cr>
 
-" Use <Leader>b to show the current buffer number.
-nnoremap <Leader>b :echo bufnr('%')<CR>
+" Use <leader>b to show the current buffer number.
+nnoremap <leader>b :echo bufnr('%')<cr>
 
-" Use <Leader>h and <Leader>H to simplify git rebase.
-autocmd FileType gitrebase xnoremap <Leader>h :s/pick/squash<CR>
-autocmd FileType gitcommit nnoremap <Leader>h G{kkdgg
+" Use <leader>h and <leader>H to simplify git rebase.
+autocmd FileType gitrebase xnoremap <leader>h :s/pick/squash<cr>
+autocmd FileType gitcommit nnoremap <leader>h G{kkdgg
 
-" Use <Leader>i to make id uppercase.
-nnoremap <Leader>i :s/id\>/ID/g<CR>
+" Use <leader>i to make id uppercase.
+nnoremap <leader>i :s/id\>/ID/g<cr>
 
-" Use <Leader>m to open netrw in new tab.
-nnoremap <Leader>m :Te<CR>
+" Use <leader>m to open netrw in new tab.
+nnoremap <leader>m :Te<cr>
 
-" Use <Leader>l and <Leader>L to set the spell language to English and Spanish
+" Use <leader>l and <leader>L to set the spell language to English and Spanish
 " respectively.
-nnoremap <Leader>l :setlocal spelllang=en<CR>
-nnoremap <Leader>L :setlocal spelllang=es<CR>
+nnoremap <leader>l :setlocal spelllang=en<cr>
+nnoremap <leader>L :setlocal spelllang=es<cr>
 
-" Use <Leader><Tab> convert to tabs. In normal mode, it affects the current
+" Use <leader><Tab> convert to tabs. In normal mode, it affects the current
 " line. In visual mode, it affects every selected line.
-noremap <Leader><Tab> :s/    /\t/g<CR>
+noremap <leader><Tab> :s/    /\t/g<cr>
 
 " Use \ to go to next tab and <Tab> to go to previous tab.
-nnoremap \ :tabn<CR>
-nnoremap <Tab> :tabp<CR>
+nnoremap \ :tabn<cr>
+nnoremap <Tab> :tabp<cr>
 
 " TODO beta: enable code folding per https://goo.gl/PJLbbF.
 set foldmethod=syntax

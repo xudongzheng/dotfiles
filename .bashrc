@@ -53,10 +53,10 @@ alias dfh="df -h"
 alias dr="date -R"
 alias ep="grep --color"
 alias epi="ep -i"
-alias epr="ep -R"
+alias epr="ep -Rn"
 alias epri="epr -i"
 alias eprtt="epr 'TODO TODO'"
-alias fig="find . | ep"
+alias fep="find . | ep"
 alias fm="free -m"
 alias fms="fm -s 5"
 alias gfmt="wfmt '$parent/src'"
@@ -140,21 +140,28 @@ if ! hash wget 2>/dev/null; then
 	fi
 fi
 
-# If apt-get is available, define related aliases. Use ags instead of acs for
-# "apt-cache search" since c and s use the same finger. agu and aguu are
-# separate since the former may be used before installing a package. Use ali to
-# list all installed packages. This uses dpkg rather than "apt list --installed"
-# since apt will give a warning about not having a stable CLI interface.
+# If apt-get is available, define related aliases. Some are only necessary of
+# the user is root.
 if hash apt-get 2>/dev/null; then
 	if [ "$USER" == "root" ]; then
 		alias ag="apt-get"
 		alias agi="ag install"
+
+		# Use ags instead of acs for "apt-cache search" since c and s use the
+		# same finger.
 		alias ags="apt-cache search"
+
+		# Define agu and aguu separately since the former may be used before
+		# installing a package.
 		alias agu="ag update"
 		alias aguu="agu && ag upgrade"
 	fi
-	alias ali="dpkg --get-selections"
-	alias alig="ali | ep"
+
+	# Use ali to list all installed packages. This writes standard error of "apt
+	# list" to /dev/null since it give a warning about not having a stable CLI
+	# interface when the output goes to a pipe instead of a terminal.
+	alias ali="apt list --installed 2>/dev/null"
+	alias aliep="ali | ep"
 fi
 
 # Define basic aliases for Git.
@@ -205,6 +212,7 @@ alias gta="gt apply"
 alias gtp="gt -p"
 alias gu="git pull -p"
 alias gx="git commit"
+alias gxa="gx -a"
 alias gxm="gx -m"
 alias gxn="gx --amend"
 alias gxr='gx -m "$(date -R)"'
