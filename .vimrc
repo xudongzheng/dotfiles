@@ -247,7 +247,7 @@ autocmd FileType markdown,text nnoremap <leader><cr>d "=strftime('(%H:%M)')<CR>p
 " accounts for the Colemak mapping. There are obviously many missing filetypes
 " and they will be added as needed.
 autocmd FileType conf,crontab,perl,python,ruby,sh,yaml noremap <buffer> <leader>c :normal U# <esc>
-autocmd FileType arduino,c,cpp,cs,go,java,javascript noremap <buffer> <leader>c :normal U// <esc>
+autocmd FileType arduino,c,cpp,cs,go,java,javascript,php noremap <buffer> <leader>c :normal U// <esc>
 autocmd FileType sql noremap <buffer> <leader>c :normal U-- <esc>
 autocmd FileType matlab,tex noremap <buffer> <leader>c :normal U% <esc>
 autocmd FileType vim noremap <buffer> <leader>c :normal U" <esc>
@@ -261,11 +261,12 @@ autocmd FileType xdefaults noremap <buffer> <leader>c :normal U! <esc>
 autocmd FileType html,xml nnoremap <buffer> <leader>c A --><esc>I<!-- <esc>
 autocmd FileType html,xml xnoremap <buffer> <leader>c c<!--<cr>--><esc>P
 
-" Use <leader>p and <leader>P to print the visually-selected variables.
+" Use <leader>p and <leader>P to print the visually-selected variables. TODO
+" TODO TODO <leader>c for php, also semicolon here
 autocmd FileType go xnoremap <buffer> <leader>p y:r! echo "println($RANDOM, )"<cr>==$P
 autocmd FileType go xnoremap <buffer> <leader>P y:r! echo "fmt.Println($RANDOM, )"<cr>==$P
 autocmd FileType javascript xnoremap <buffer> <leader>p y:r! echo "console.log($RANDOM, )"<cr>==$P
-autocmd FileType php xnoremap <buffer> <leader>p y:r! echo "var_dump($RANDOM, )"<cr>==$P
+autocmd FileType php xnoremap <buffer> <leader>p y:r! echo "var_dump($RANDOM, );"<cr>==$<left>P
 autocmd FileType python xnoremap <buffer> <leader>p y:r! echo "print($RANDOM, )"<cr>==$P
 autocmd FileType sh xnoremap <buffer> <leader>p y:r! echo "echo $RANDOM $"<cr>==$p
 

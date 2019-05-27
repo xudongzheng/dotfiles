@@ -106,12 +106,13 @@ aliasDir cdl ~/Downloads
 aliasDir cdoc ~/Documents
 aliasDir cgo "$GOROOT"
 
-# Use dqap (like in Vim) to undo line wrapping in a file. Per
-# https://goo.gl/PfzvyS, the "fmt" command does not accept widths larger than
-# 2500. This appears to be an issue on Linux but not MacOS. If this turns out to
-# be an issue, consider using Perl among other alternatives.
+# Use dqap (like in Vim) to undo line wrapping in a file. This is very similar
+# to the "fmt" command. Per https://goo.gl/PfzvyS, the Linux "fmt" has a limit
+# of 2500 characters per line whereas the Perl command does not. The "fmt"
+# command also has some strange behavior with regards to lines that end with a
+# period, especially when they are indented. The Perl command has no such issue.
 function dqap {
-	fmt -w 2500 "$@" | sed "s/  / /g"
+	perl -00ple 's/\s*\n\s*/ /g' "$@"
 }
 
 # On MacOS where the shasum command is used for the entire SHA family, define
@@ -192,6 +193,7 @@ alias gl="git log --graph --decorate --stat --find-renames --date-order --show-s
 alias glb="gl --branches --remotes --tags"
 alias glf="gl --pretty=fuller"
 alias glo="git log --pretty=oneline"
+alias glom="gl origin/master"
 alias gm="git merge"
 alias gma="gm --abort"
 alias gnfd="git clean -f -d"
