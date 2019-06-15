@@ -68,7 +68,6 @@ alias ng="n | ep"
 alias p="ps aux"
 alias pg="p | ep"
 alias pub="cat ~/.ssh/id_*.pub"
-alias skg="ssh-keygen -t ed25519"
 alias t="tmux new-session -t 0 || tmux"
 alias tm="touch -m"
 alias vi="vim"
@@ -113,6 +112,13 @@ aliasDir cgo "$GOROOT"
 # period, especially when they are indented. The Perl command has no such issue.
 function dqap {
 	perl -00ple 's/\s*\n\s*/ /g' "$@"
+}
+
+# Use skg to generate ed25519 SSH key if one does not exist.
+function skg {
+	if [ ! -f ~/.ssh/id_ed25519 ]; then
+		ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N ""
+	fi
 }
 
 # On MacOS where the shasum command is used for the entire SHA family, define

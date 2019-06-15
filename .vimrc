@@ -112,6 +112,7 @@ func! AbbrevGoImport()
 	iab <buffer> tecn "encoding/csv"
 	iab <buffer> tehn "encoding/hex"
 	iab <buffer> tejn "encoding/json"
+	iab <buffer> tepn "encoding/pem"
 	iab <buffer> tfcn "fusion/context"
 	iab <buffer> tfcrn "fusion/crypto/rand"
 	iab <buffer> tfen "fusion/errors"
@@ -328,11 +329,11 @@ autocmd FileType gitcommit,markdown,tex,text setlocal spell
 " https://goo.gl/YbxTHp for more information on spell checking in TeX files.
 autocmd FileType tex syntax spell toplevel
 
-" Treat .fs (F#) and .kt (Kotlin) files as Scala files. They are obviously
-" different but are similar enough for most of syntax highlighting and
-" indentation to work. OCaml is another candidate for F# though it doesn't
-" handle braces well.
-autocmd BufRead,BufNewFile *.fs,*.kt setlocal filetype=scala
+" Treat .fs (F#), .kt (Kotlin), and .swift files as Scala files. They are
+" obviously different but are similar enough for most of syntax highlighting and
+" indentation to work. OCaml is another candidate for F# but it doesn't handle
+" braces well.
+autocmd BufRead,BufNewFile *.fs,*.kt,*.swift setlocal filetype=scala
 
 " Treat .vue files (for Vue.js) as HTML files.
 autocmd BufRead,BufNewFile *.vue setlocal filetype=html
@@ -465,6 +466,22 @@ let g:is_bash = 1
 
 " Treat all .tex files as LaTeX.
 let g:tex_flavor = "latex"
+
+" Use <leader>q to save Vim session to file and use <leader>Q to load Vim
+" session from file.
+set sessionoptions=tabpages
+func! SaveSession()
+	try
+		mksession ~/vim-session
+		quitall
+	endtry
+endfunc
+nnoremap <leader>q :call SaveSession()<cr>
+func! LoadSession()
+	source ~/vim-session
+	call delete(expand("~/vim-session"))
+endfunc
+nnoremap <leader>Q :call LoadSession()<cr>
 
 " Use <leader>u to convert from standard base64 encoding to URL base64 encoding.
 nnoremap <leader>u :s/+/-/g<cr>:s/\//_/g<cr>
