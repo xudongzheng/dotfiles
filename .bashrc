@@ -1,3 +1,6 @@
+export EDITOR=vim
+export TERM=xterm-256color
+
 # Increase bash history size.
 HISTSIZE=100000
 HISTFILESIZE=200000
@@ -8,8 +11,11 @@ HISTTIMEFORMAT="[%F %T %Z] "
 # Ignore consecutive duplicate commands and commands starting with a space.
 HISTCONTROL=erasedups:ignorespace
 
-export EDITOR=vim
-export TERM=xterm-256color
+# Python pip can install packages without root into ~/.local/bin. If such
+# directory exists, add it to $PATH.
+if [ -d ~/.local/bin ]; then
+	PATH=~/.local/bin:$PATH
+fi
 
 # Set the limit for open file descriptors to 1024. It should already be the
 # default on Linux whereas the default is 256 on macOS.
@@ -121,6 +127,12 @@ function skg {
 	fi
 }
 
+# Use sri to print subresource integrity value for file.
+function sri {
+	digest=$(openssl sha384 -binary "$1" | base64)
+	echo "sha384-$digest"
+}
+
 # On MacOS where the shasum command is used for the entire SHA family, define
 # aliases so we can use the same commands as Linux. Similarly alias md5sum.
 if ! hash shasum 2>/dev/null; then
@@ -153,6 +165,7 @@ if hash apt-get 2>/dev/null; then
 	if [ "$USER" == "root" ]; then
 		alias ag="apt-get"
 		alias agi="ag install"
+		alias agr="ag remove"
 
 		# Use ags instead of acs for "apt-cache search" since c and s use the
 		# same finger.
@@ -262,3 +275,6 @@ function gfcd {
 function grih {
 	gr -i "HEAD~$1"
 }
+
+# TODO TODO TODO
+alias osx509="openssl x509 -text -noout -in"

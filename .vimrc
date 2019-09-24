@@ -126,19 +126,23 @@ func! AbbrevGoImport()
 	iab <buffer> tioun "io/ioutil"
 	iab <buffer> tln "log"
 	iab <buffer> tmn "math"
-	iab <buffer> tnetn "net"
+	iab <buffer> tnen "net"
 	iab <buffer> tnhn "net/http"
+	iab <buffer> tnsn "net/smtp"
+	iab <buffer> tntn "net/textproto"
 	iab <buffer> tnun "net/url"
 	iab <buffer> tosen "os/exec"
 	iab <buffer> tosn "os"
 	iab <buffer> tpfn "path/filepath"
 	iab <buffer> tpn "path"
 	iab <buffer> tren "regexp"
+	iab <buffer> trfn "reflect"
 	iab <buffer> tscn "strconv"
 	iab <buffer> tsn "strings"
 	iab <buffer> ttestn "testing"
 	iab <buffer> ttn "time"
 	iab <buffer> tttn "text/template"
+	iab <buffer> tuun "unicode/utf8"
 endfunc
 autocmd FileType go call AbbrevGoImport()
 
@@ -152,6 +156,8 @@ func! AbbrevGoSnippets()
 	iab <buffer> cotn Commit()
 	iab <buffer> ctxg ctx := context.Get(rw)
 	iab <buffer> cvbyte []byte
+	iab <buffer> dcc defer conn.Close()
+	iab <buffer> dfc defer f.Close()
 	iab <buffer> dftn defer func() {<cr><cr>}()<up><bs>
 	iab <buffer> drbc defer resp.Body.Close()
 	iab <buffer> dtrb defer tx.Rollback()
@@ -177,6 +183,8 @@ func! AbbrevGoSnippets()
 	iab <buffer> imtn import (<cr><cr>)<cr><up><up><bs>
 	iab <buffer> initn func init() {<cr><cr>}<up><bs>
 	iab <buffer> ioeof err == io.EOF
+	iab <buffer> ior io.Reader
+	iab <buffer> iow io.Writer
 	iab <buffer> iss i++
 	iab <buffer> maintn func main() {<cr><cr>}<up><bs>
 	iab <buffer> nfoid fusion.NewObjectID()
@@ -187,6 +195,7 @@ func! AbbrevGoSnippets()
 	iab <buffer> tnow time.Now()
 	iab <buffer> ttm t *testing.M
 	iab <buffer> ttt t *testing.T
+	iab <buffer> utctn UTC()
 endfunc
 autocmd FileType go call AbbrevGoSnippets()
 
@@ -207,7 +216,7 @@ endfunc
 autocmd FileType tex call AbbrevTeX()
 
 " Define abbreviations for HTML and XML.
-autocmd FileType html,xml iab <buffer> // <!-- --> <left><left><left><left><left>
+autocmd FileType html,xml iab <buffer> // <!-- --><left><left><left><left>
 func! AbbrevHTML()
 	iab <buffer> tifn {{if}}<left><left>
 	iab <buffer> teln {{else}}
@@ -219,6 +228,7 @@ autocmd FileType html call AbbrevHTML()
 " since two will always end up on the same line, making it easier to grep.
 autocmd FileType c,cpp iab <buffer> maintn int main() {<cr><cr>}<up><bs>
 autocmd FileType javascript iab <buffer> tt ===
+autocmd FileType go,sh iab <buffer> countk COUNT(*)
 iab mtrm <esc>3a-<esc>a
 iab tst TODO
 iab trt TODO TODO TODO
@@ -247,7 +257,7 @@ autocmd FileType markdown,text nnoremap <leader><cr>d "=strftime('(%H:%M)')<CR>p
 " line) and in visual line mode. We use U instead of I since the :normal command
 " accounts for the Colemak mapping. There are obviously many missing filetypes
 " and they will be added as needed.
-autocmd FileType conf,crontab,perl,python,ruby,sh,yaml noremap <buffer> <leader>c :normal U# <esc>
+autocmd FileType conf,crontab,perl,python,ruby,sh,sshconfig,yaml noremap <buffer> <leader>c :normal U# <esc>
 autocmd FileType arduino,c,cpp,cs,go,java,javascript,php noremap <buffer> <leader>c :normal U// <esc>
 autocmd FileType sql noremap <buffer> <leader>c :normal U-- <esc>
 autocmd FileType matlab,tex noremap <buffer> <leader>c :normal U% <esc>
@@ -365,6 +375,9 @@ autocmd CmdwinEnter * cabbrev <buffer> x <cr>
 inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
 
+" When pasting over text, do not copy the deleted text.
+xnoremap o "_dP
+
 " Use dh, dn, de, and di to navigate splits.
 nnoremap dh <c-w><c-h>
 nnoremap dn <c-w><c-j>
@@ -399,7 +412,7 @@ nnoremap <F12> :noh<cr>
 " changes. We will unmap everything and map only the functions that we need.
 autocmd FileType netrw mapclear <buffer>
 
-" Use d to go up a directory and f to enter a directory. NetrwFunction borrows
+" Use s to go up a directory and t to enter a directory. NetrwFunction borrows
 " code from https://goo.gl/LP4pww.
 func! NetrwFunction(suffix)
 	redir => scriptnames
