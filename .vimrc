@@ -331,6 +331,9 @@ autocmd FileType markdown,tex,text setlocal formatoptions+=t
 autocmd FileType * setlocal formatoptions-=r formatoptions-=o
 autocmd FileType css setlocal formatoptions+=ro
 
+" Use the same word boundary for all file types.
+autocmd FileType * set iskeyword=@,48-57,_
+
 " Enable spell checker for git commits, TeX, and text files.
 autocmd FileType gitcommit,markdown,tex,text setlocal spell
 
@@ -412,8 +415,10 @@ nnoremap <F12> :noh<cr>
 " changes. We will unmap everything and map only the functions that we need.
 autocmd FileType netrw mapclear <buffer>
 
-" Use s to go up a directory and t to enter a directory. NetrwFunction borrows
-" code from https://goo.gl/LP4pww.
+" Define function for calling internal Netrw function. Ideally we would use
+" netrw#Call but there is a bug in the implementation per http://bit.ly/2l9fLtd.
+" The bug is fixed in Vim 8.1.1715 and we can switch to netrw#Call once the
+" patch is included everywhere.
 func! NetrwFunction(suffix)
 	redir => scriptnames
 	silent! scriptnames
@@ -424,21 +429,38 @@ func! NetrwFunction(suffix)
 		endif
 	endfor
 endfunc
+
+" Use s to go up a directory and t to enter a directory.
 func! NetrwBrowse(dest)
 	let NetrwChange = function(NetrwFunction("NetrwBrowseChgDir"))
 	call netrw#LocalBrowseCheck(NetrwChange(1, a:dest))
 endfunc
-func! NetrwReturn()
+func! NetrwReturn() range
 	let NetrwGetWord = function(NetrwFunction("NetrwGetWord"))
 	call NetrwBrowse(NetrwGetWord())
 endfunc
-func! NetrwParent()
-	call NetrwBrowse("..")
-endfunc
+autocmd FileType netrw nnoremap <buffer> s :call NetrwBrowse("..")<cr>
 autocmd FileType netrw nnoremap <buffer> t :call NetrwReturn()<cr>
-autocmd FileType netrw nnoremap <buffer> s :call NetrwParent()<cr>
 
-" Map additional functions for creating, renaming, and deleting.
+" Vim has a hard time when d above is preceded by a number. In Netrw, it only
+" works when the preceding number is less than or equal to the number of lines
+" between the current line and the end of the Netrw listing (inclusive). Use o
+" for going up multiple directories. Typically the number of levels is small and
+" the operation will use a right handed key followed by a left handed key.
+for i in range(1,9)
+	let path = repeat("../", i)
+	let cmd = printf('autocmd FileType netrw nnoremap <buffer> o%d :call NetrwBrowse("%s")<cr>', i, path)
+	exec cmd
+endfor
+
+" Define additional o keys for navigating to the root directory and the home
+" directory.
+autocmd FileType netrw nnoremap <buffer> os :call NetrwBrowse("/")<cr>
+autocmd FileType netrw nnoremap <buffer> oh :call NetrwBrowse($HOME)<cr>
+
+" Map additional functions for creating, renaming, and deleting. This uses M
+" instead of m for creating a new directory since Netrw's NetrwBrowseChgDir
+" internally uses m for marking and redefining m would break NetrwBrowse().
 func! NetrwCreate()
 	let NetrwOpenFile = function(NetrwFunction("NetrwOpenFile"))
 	call NetrwOpenFile(1)
@@ -456,7 +478,7 @@ func! NetrwRemove()
 	call NetrwLocalRm(b:netrw_curdir)
 endfunc
 autocmd FileType netrw nnoremap <buffer> c :call NetrwCreate()<cr>
-autocmd FileType netrw nnoremap <buffer> dm :call NetrwMkdir()<cr>
+autocmd FileType netrw nnoremap <buffer> M :call NetrwMkdir()<cr>
 autocmd FileType netrw nnoremap <buffer> r :call NetrwRename()<cr>
 autocmd FileType netrw nnoremap <buffer> x :call NetrwRemove()<cr>
 
@@ -502,6 +524,9 @@ nnoremap <leader>u :s/+/-/g<cr>:s/\//_/g<cr>
 " Use <leader>w to adjusts splits to be even.
 nnoremap <leader>w <c-w>=
 
+" Use <leader>W to close tab, similar to Ctrl-W in GUI programs.
+nnoremap <leader>W :tabclose<cr>
+
 " Use <leader>f to change case until end of the word.
 nnoremap <leader>f ve~
 
@@ -546,7 +571,3 @@ noremap <leader><Tab> :s/    /\t/g<cr>
 " Use \ to go to next tab and <Tab> to go to previous tab.
 nnoremap \ :tabn<cr>
 nnoremap <Tab> :tabp<cr>
-
-" TODO beta: enable code folding per https://goo.gl/PJLbbF.
-set foldmethod=syntax
-set foldlevel=99
