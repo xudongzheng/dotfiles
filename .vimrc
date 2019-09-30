@@ -41,7 +41,9 @@ syntax on
 " Enable plugins and indentation for specific file types.
 filetype plugin indent on
 
-" Use <Space> as the leader key.
+" Use <Space> as the leader key. Some articles such as https://bit.ly/2on9Qlu
+" advocate for setting a local leader rather than limiting a map to a buffer.
+" I've decided against doing that since
 let mapleader = " "
 
 " Store temporary files in .vim to keep the working directories clean.
@@ -192,7 +194,9 @@ func! AbbrevGoSnippets()
 	iab <buffer> rntn rows.Next()
 	iab <buffer> senr err == sql.ErrNoRows
 	iab <buffer> strtn String()
+	iab <buffer> tdur time.Duration
 	iab <buffer> tnow time.Now()
+	iab <buffer> ttime time.Time
 	iab <buffer> ttm t *testing.M
 	iab <buffer> ttt t *testing.T
 	iab <buffer> utctn UTC()
@@ -244,14 +248,24 @@ func! GoDoc()
 	setlocal nomodified
 	setlocal nomodifiable
 endfunc
-autocmd FileType go nnoremap <leader>d :call GoDoc()<cr>
+autocmd FileType go nnoremap <buffer> <leader>d :call GoDoc()<cr>
 
-" In text files, use <leader>d to insert the date in the American format. This
-" code comes from https://bit.ly/2UWmveA. Use <leader>D for the time and
-" <leader><cr>d for the time in parenthesis.
-autocmd FileType markdown,text nnoremap <leader>d "=strftime('%B %-d, %Y')<CR>p
-autocmd FileType markdown,text nnoremap <leader>D "=strftime('%H:%M')<CR>p
-autocmd FileType markdown,text nnoremap <leader><cr>d "=strftime('(%H:%M)')<CR>p
+" Use <leader>s in normal mode to automatically format Go source code.
+autocmd FileType go nnoremap <buffer> <leader>s :! gofmt -w=true -s %<cr>:e<cr>
+
+func! MapText()
+	" In text files, use <leader>d to insert the date in the American format.
+	" This code comes from https://bit.ly/2UWmveA. Use <leader>D for the time
+	" and <leader><cr>d for the time in parenthesis.
+	nnoremap <buffer> <leader>d "=strftime('%B %-d, %Y')<CR>p
+	nnoremap <buffer> <leader>D "=strftime('%H:%M')<CR>p
+	nnoremap <buffer> <leader><cr>d "=strftime('(%H:%M)')<CR>p
+
+	" Use <leader>x for checking a checkbox and <leader>X for unchecking.
+	nnoremap <buffer> <leader>x ^t]rx
+	nnoremap <buffer> <leader>X ^t]r
+endfunc
+autocmd FileType markdown,text call MapText()
 
 " Use <leader>c to comment code. This should work in normal mode (for the active
 " line) and in visual line mode. We use U instead of I since the :normal command
@@ -306,8 +320,9 @@ autocmd FileType crontab noremap <buffer> <leader>* 5I* <esc>
 " using \ to go to the next tab and don't want any delay.
 autocmd FileType mail unmap <buffer> \q
 
-" Use <leader>s in normal mode to automatically format Go source code.
-autocmd FileType go nnoremap <leader>s :! gofmt -w=true -s %<cr>:e<cr>
+" Use <leader>h and <leader>H to simplify git rebase.
+autocmd FileType gitrebase xnoremap <buffer> <leader>h :s/pick/squash<cr>
+autocmd FileType gitcommit nnoremap <buffer> <leader>h G{kkdgg
 
 " Set tabs to be 4 spaces and use tabs instead of spaces. This uses autocmd so
 " we can override language-specific configuration. Python, for example, is
@@ -548,10 +563,6 @@ nnoremap <leader>z z=1<cr><cr>
 
 " Use <leader>b to show the current buffer number.
 nnoremap <leader>b :echo bufnr('%')<cr>
-
-" Use <leader>h and <leader>H to simplify git rebase.
-autocmd FileType gitrebase xnoremap <leader>h :s/pick/squash<cr>
-autocmd FileType gitcommit nnoremap <leader>h G{kkdgg
 
 " Use <leader>i to make id uppercase.
 nnoremap <leader>i :s/id\>/ID/g<cr>
