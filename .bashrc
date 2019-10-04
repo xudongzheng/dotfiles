@@ -99,6 +99,9 @@ alias mv="mv -i"
 alias dubh="du -sbh"
 alias duh="du -sh"
 
+# Create alias for parsing x509 certificate.
+alias osx509="openssl x509 -text -noout -in"
+
 # Create aliases for changing to common directories for directories that exists.
 function aliasDir {
 	if [ -d "$2" ]; then
@@ -118,6 +121,13 @@ aliasDir cgo "$GOROOT"
 # period, especially when they are indented. The Perl command has no such issue.
 function dqap {
 	perl -00ple 's/\s*\n\s*/ /g' "$@"
+}
+
+# Use cu to travel up multiple parent directories.
+function cu {
+	for i in $(seq 1 $1); do
+		c ..
+	done
 }
 
 # Use skg to generate ed25519 SSH key if one does not exist.
@@ -275,6 +285,3 @@ function gfcd {
 function grih {
 	gr -i "HEAD~$1"
 }
-
-# TODO TODO TODO
-alias osx509="openssl x509 -text -noout -in"

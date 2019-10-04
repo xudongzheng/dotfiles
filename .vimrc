@@ -41,9 +41,9 @@ syntax on
 " Enable plugins and indentation for specific file types.
 filetype plugin indent on
 
-" Use <Space> as the leader key. Some articles such as https://bit.ly/2on9Qlu
+" Use space as the leader key. Some articles such as https://bit.ly/2on9Qlu
 " advocate for setting a local leader rather than limiting a map to a buffer.
-" I've decided against doing that since
+" I've decided against doing that since TODO TODO TODO
 let mapleader = " "
 
 " Store temporary files in .vim to keep the working directories clean.
@@ -257,13 +257,15 @@ func! MapText()
 	" In text files, use <leader>d to insert the date in the American format.
 	" This code comes from https://bit.ly/2UWmveA. Use <leader>D for the time
 	" and <leader><cr>d for the time in parenthesis.
-	nnoremap <buffer> <leader>d "=strftime('%B %-d, %Y')<CR>p
-	nnoremap <buffer> <leader>D "=strftime('%H:%M')<CR>p
-	nnoremap <buffer> <leader><cr>d "=strftime('(%H:%M)')<CR>p
+	nnoremap <buffer> <leader>d "=strftime('%B %-d, %Y')<cr>p
+	nnoremap <buffer> <leader>D "=strftime('%H:%M')<cr>p
+	nnoremap <buffer> <leader><cr>d "=strftime('(%H:%M)')<cr>p
 
-	" Use <leader>x for checking a checkbox and <leader>X for unchecking.
+	" Use <leader>x for checking a checkbox and <leader>X for unchecking. The
+	" latter uses s instead of r so the line doesn't end with a space, which
+	" would trigger an error with 'git diff --check'.
 	nnoremap <buffer> <leader>x ^t]rx
-	nnoremap <buffer> <leader>X ^t]r
+	nnoremap <buffer> <leader>X ^t]s <esc>
 endfunc
 autocmd FileType markdown,text call MapText()
 
@@ -349,8 +351,11 @@ autocmd FileType css setlocal formatoptions+=ro
 " Use the same word boundary for all file types.
 autocmd FileType * set iskeyword=@,48-57,_
 
-" Enable spell checker for git commits, TeX, and text files.
-autocmd FileType gitcommit,markdown,tex,text setlocal spell
+" Enable spell checker for git commits, TeX, and text files. Since spell is
+" 'local to window' rather than 'local to buffer', it is insufficient to use
+" autocmd FileType. While it works when opening a file, opening the file again
+" in a separate window will no longer have the spell checker enabled.
+autocmd BufEnter * if index(["gitcommit", "markdown", "tex", "text"], &filetype) >= 0 | setlocal spell | endif
 
 " Sometimes the spell checker does not work correctly in large TeX files. This
 " seems to resolve most of the issue per https://goo.gl/dtuJSk. See
@@ -393,8 +398,16 @@ autocmd CmdwinEnter * cabbrev <buffer> x <cr>
 inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
 
-" When pasting over text, do not copy the deleted text.
-xnoremap o "_dP
+" When pasting over text with o, do not copy the deleted text. See
+" https://bit.ly/2Mc0Ac9 for more information. Use O for the default visual
+" pasting behavior.
+xnoremap o pgvy
+xnoremap O p
+
+" When selecting until the end of the line, do not include the newline
+" character. Otherwise pasting over the selected text would move up the next
+" line of text.
+xnoremap $ g_
 
 " Use dh, dn, de, and di to navigate splits.
 nnoremap dh <c-w><c-h>
@@ -414,9 +427,6 @@ nnoremap <F5> :e<cr>
 set nowrap
 inoremap <F6> <c-o>:setlocal wrap!<cr>
 nnoremap <F6> :setlocal wrap!<cr>
-
-" Use <F9> to toggle paste.
-set pastetoggle=<F9>
 
 " Use <F10> to show diff since file save.
 inoremap <F10> <c-o>:w !diff % -<cr>
@@ -440,7 +450,7 @@ func! NetrwFunction(suffix)
 	redir END
 	for script in split(l:scriptnames, "\n")
 		if l:script =~ "netrw.vim"
-			return printf("<SNR>%d_%s", str2nr(split(l:script, ":")[0]), a:suffix)
+			return printf("<snr>%d_%s", str2nr(split(l:script, ":")[0]), a:suffix)
 		endif
 	endfor
 endfunc
@@ -575,10 +585,10 @@ nnoremap <leader>m :Te<cr>
 nnoremap <leader>l :setlocal spelllang=en<cr>
 nnoremap <leader>L :setlocal spelllang=es<cr>
 
-" Use <leader><Tab> convert to tabs. In normal mode, it affects the current
+" Use <leader><tab> convert to tabs. In normal mode, it affects the current
 " line. In visual mode, it affects every selected line.
-noremap <leader><Tab> :s/    /\t/g<cr>
+noremap <leader><tab> :s/    /\t/g<cr>
 
-" Use \ to go to next tab and <Tab> to go to previous tab.
+" Use \ to go to next tab and <tab> to go to previous tab.
 nnoremap \ :tabn<cr>
-nnoremap <Tab> :tabp<cr>
+nnoremap <tab> :tabp<cr>
