@@ -280,6 +280,9 @@ autocmd FileType matlab,tex noremap <buffer> <leader>c :normal U% <esc>
 autocmd FileType vim noremap <buffer> <leader>c :normal U" <esc>
 autocmd FileType xdefaults noremap <buffer> <leader>c :normal U! <esc>
 
+" Use <leader>c to comment .ssh/known_hosts.
+autocmd BufRead known_hosts noremap <buffer> <leader>c :normal U#<esc>
+
 " Define <leader>c for HTML and XML. For normal mode, append first since
 " prepending first may cause the line to be wrapped into multiple lines. Since
 " we handle normal and visual mode separately, we do not need to use the :normal

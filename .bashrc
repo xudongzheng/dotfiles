@@ -73,7 +73,6 @@ alias n="netstat -nlp"
 alias ng="n | ep"
 alias p="ps aux"
 alias pg="p | ep"
-alias pub="cat ~/.ssh/id_*.pub"
 alias t="tmux new-session -t 0 || tmux"
 alias tm="touch -m"
 alias vi="vim"
@@ -108,11 +107,12 @@ function aliasDir {
 		alias $1="c '$2'"
 	fi
 }
-aliasDir csr "$parent/src"
 aliasDir cde ~/Desktop
 aliasDir cdl ~/Downloads
 aliasDir cdoc ~/Documents
 aliasDir cgo "$GOROOT"
+aliasDir csh ~/.ssh
+aliasDir csr "$parent/src"
 
 # Use dqap (like in Vim) to undo line wrapping in a file. This is very similar
 # to the "fmt" command. Per https://goo.gl/PfzvyS, the Linux "fmt" has a limit
@@ -130,11 +130,12 @@ function cu {
 	done
 }
 
-# Use skg to generate ed25519 SSH key if one does not exist.
-function skg {
+# Use pub to print Ed25519 public key. It will the key if one does not exist.
+function pub {
 	if [ ! -f ~/.ssh/id_ed25519 ]; then
 		ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N ""
 	fi
+	cat ~/.ssh/id_ed25519.pub
 }
 
 # Use sri to print subresource integrity value for file.
