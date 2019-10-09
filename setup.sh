@@ -24,11 +24,19 @@ if [[ $(uname) == "Darwin" ]]; then
 else
 	bashrc=~/.bashrc
 fi
-echo 'source "'$base'/.bashrc"' > $bashrc
-echo 'exec "source " . fnameescape("'$base/.vimrc'")' > ~/.vimrc
+if [ ! -f $bashrc ]; then
+	echo 'source "'$base'/.bashrc"' > $bashrc
+fi
+if [ ! -f ~/.vimrc ]; then
+	echo 'exec "source " . fnameescape("'$base/.vimrc'")' > ~/.vimrc
+fi
 
-ln -s "$base/.gitconfig" ~
-ln -s "$base/.tmux.conf" ~
+if [ ! -f ~/.gitconfig ]; then
+	ln -s "$base/.gitconfig" ~
+fi
+if [ ! -f ~/.tmux.conf ]; then
+	ln -s "$base/.tmux.conf" ~
+fi
 
 # Create directories for Vim temporary files.
 mkdir -p ~/.vim/{backup,swap,undo}

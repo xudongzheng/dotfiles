@@ -460,7 +460,7 @@ func! NetrwBrowse(dest)
 	let NetrwChange = function(NetrwFunction("NetrwBrowseChgDir"))
 	call netrw#LocalBrowseCheck(NetrwChange(1, a:dest))
 endfunc
-func! NetrwReturn() range
+func! NetrwReturn()
 	let NetrwGetWord = function(NetrwFunction("NetrwGetWord"))
 	call NetrwBrowse(NetrwGetWord())
 endfunc
