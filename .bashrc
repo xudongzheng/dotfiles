@@ -186,6 +186,7 @@ if hash apt-get 2>/dev/null; then
 		# installing a package.
 		alias agu="ag update"
 		alias aguu="agu && ag upgrade"
+		alias agar="ag autoremove"
 	fi
 
 	# Use ali to list all installed packages. This writes standard error of "apt

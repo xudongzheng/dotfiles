@@ -273,7 +273,7 @@ autocmd FileType markdown,text call MapText()
 " line) and in visual line mode. We use U instead of I since the :normal command
 " accounts for the Colemak mapping. There are obviously many missing filetypes
 " and they will be added as needed.
-autocmd FileType conf,crontab,perl,python,ruby,sh,sshconfig,yaml noremap <buffer> <leader>c :normal U# <esc>
+autocmd FileType conf,crontab,perl,python,ruby,sh,sshconfig,tmux,yaml noremap <buffer> <leader>c :normal U# <esc>
 autocmd FileType arduino,c,cpp,cs,go,java,javascript,php noremap <buffer> <leader>c :normal U// <esc>
 autocmd FileType sql noremap <buffer> <leader>c :normal U-- <esc>
 autocmd FileType matlab,tex noremap <buffer> <leader>c :normal U% <esc>
@@ -409,8 +409,8 @@ xnoremap O p
 
 " When selecting until the end of the line, do not include the newline
 " character. Otherwise pasting over the selected text would move up the next
-" line of text.
-xnoremap $ g_
+" line of text. This selects trailing whitespaces unlike g_.
+xnoremap $ $<left>
 
 " Use dh, dn, de, and di to navigate splits.
 nnoremap dh <c-w><c-h>

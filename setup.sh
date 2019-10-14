@@ -15,28 +15,35 @@ if hash gpg 2>/dev/null; then
 	fi
 fi
 
-# Source the repository .bashrc and .vimrc. This is preferred over a symlink
-# since accounts may need custom configuration for bash and Vim. The repository
-# .bashrc may be missing some platform-specific features but overwriting the
-# user .bashrc ensures that $HISTSIZE and related variables work correctly.
-if [[ $(uname) == "Darwin" ]]; then
-	bashrc=~/.bash_profile
+# On MacOS and CoreOS, use .bash_profile for Bash configuration. Use .bashrc
+# everywhere else.
+if [[ $(uname) == "Darwin" ]] || [ -d /etc/coreos ]; then
+	bashrcSrc=~/.bash_profile
 else
-	bashrc=~/.bashrc
-fi
-if [ ! -f $bashrc ]; then
-	echo 'source "'$base'/.bashrc"' > $bashrc
-fi
-if [ ! -f ~/.vimrc ]; then
-	echo 'exec "source " . fnameescape("'$base/.vimrc'")' > ~/.vimrc
+	bashrcSrc=~/.bashrc
 fi
 
-if [ ! -f ~/.gitconfig ]; then
-	ln -s "$base/.gitconfig" ~
+# Update Bash and Vim to source the repository .bashrc and .vimrc. This is
+# preferred over a symlink since accounts may need custom configuration for Bash
+# and Vim. The repository .bashrc may be missing some platform-specific features
+# but overwriting the user .bashrc ensures that $HISTSIZE and similar variables
+# work correctly.
+bashrcDst="$base/.bashrc"
+if ! grep -qs "$bashrcDst" $bashrcSrc; then
+	echo "source \"$bashrcDst\"" > $bashrcSrc
 fi
-if [ ! -f ~/.tmux.conf ]; then
-	ln -s "$base/.tmux.conf" ~
+vimrcDst="$base/.vimrc"
+if ! grep -qs "$vimrcDst" ~/.vimrc; then
+	echo 'exec "source " . fnameescape("'"$vimrcDst"'")' > ~/.vimrc
 fi
+
+# Create symlinks for other configuration files.
+files=(.gitconfig .tmux.conf .inputrc)
+for file in "${files[@]}"; do
+	if [ ! -f "~/$file" ]; then
+		ln -fs "$base/$file" ~
+	fi
+done
 
 # Create directories for Vim temporary files.
 mkdir -p ~/.vim/{backup,swap,undo}
