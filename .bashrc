@@ -17,6 +17,17 @@ if [ -d ~/.local/bin ]; then
 	PATH=~/.local/bin:$PATH
 fi
 
+if [[ $SHELL == "/bin/zsh" ]]; then
+	# Setup Ctrl-X Ctrl-E for editing active command in Zsh. This is not ideal
+	# as it requires an additional Enter to execute after editing in Vim.
+	autoload -U edit-command-line
+	zle -N edit-command-line
+	bindkey '^x^e' edit-command-line
+
+	# use the same prompt format as Bash on Linux.
+	PROMPT="%n@%m:%~$ "
+fi
+
 # Set the limit for open file descriptors to 1024. It should already be the
 # default on Linux whereas the default is 256 on macOS.
 ulimit -n 1024
@@ -46,14 +57,9 @@ if [[ $uname == "CYGWIN_NT-10.0" ]]; then
 	export CYGWIN="winsymlinks:nativestrict"
 fi
 
-# Resolve the parent directory. It is commonly where we would find the primary
-# src directory. TODO use the first component of $GOPATH.
-parent=$(dirname "$(dirname "${BASH_SOURCE[0]}")")
-
 alias autk="vi ~/.ssh/authorized_keys"
 alias bhi="vi ~/.bash_history"
 alias c="cd"
-alias cdot="c '"$(dirname "${BASH_SOURCE[0]}")"'"
 alias crt="crontab -e"
 alias dfh="df -h"
 alias dr="date -R"
@@ -65,7 +71,6 @@ alias eprtt="epr 'TODO TODO'"
 alias fep="find . | ep"
 alias fm="free -m"
 alias fms="fm -s 5"
-alias gfmt="wfmt '$parent/src'"
 alias hig="history | ep"
 alias lgr="git ls-files | ep"
 alias ll="l -hla"
@@ -112,7 +117,11 @@ aliasDir cdl ~/Downloads
 aliasDir cdoc ~/Documents
 aliasDir cgo "$GOROOT"
 aliasDir csh ~/.ssh
-aliasDir csr "$parent/src"
+
+# Define alias for changing to the dotfiles directory. See
+# https://bit.ly/33OR2Lh for way to get the path of this file in Bash and Zsh.
+dotDir=$(dirname "${BASH_SOURCE[0]:-${(%):-%x}}")
+aliasDir cdot "$dotDir"
 
 # Use dqap (like in Vim) to undo line wrapping in a file. This is very similar
 # to the "fmt" command. Per https://goo.gl/PfzvyS, the Linux "fmt" has a limit
