@@ -15,10 +15,12 @@ if hash gpg 2>/dev/null; then
 	fi
 fi
 
-# On MacOS and CoreOS, use .bash_profile for Bash configuration. Use .bashrc
-# everywhere else.
-if [[ $(uname) == "Darwin" ]] || [ -d /etc/coreos ]; then
+# On CoreOS, use .bash_profile for Bash configuration. Otherwise use .bashrc for
+# Bash and .zshrc for Zsh.
+if [ -d /etc/coreos ]; then
 	bashrcSrc=~/.bash_profile
+elif [ "$SHELL" == "/bin/zsh" ]; then
+	bashrcSrc=~/.zsh
 else
 	bashrcSrc=~/.bashrc
 fi
@@ -38,7 +40,10 @@ if ! grep -qs "$vimrcDst" ~/.vimrc; then
 fi
 
 # Create symlinks for other configuration files.
-files=(.gitconfig .tmux.conf .inputrc)
+files=(.gitconfig .inputrc)
+if hash tmux 2>/dev/null; then
+	files+=(.tmux.conf)
+fi
 for file in "${files[@]}"; do
 	if [ ! -f "~/$file" ]; then
 		ln -fs "$base/$file" ~

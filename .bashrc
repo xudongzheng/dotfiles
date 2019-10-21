@@ -123,11 +123,23 @@ function dqap {
 	perl -00ple 's/\s*\n\s*/ /g' "$@"
 }
 
-# Use cu to travel up multiple parent directories.
+# Use cu to travel up multiple parent directories. If no arguments, go up one
+# directory.
 function cu {
+	count="$1"
+	if [ "$count" == "" ]; then
+		count=1
+	fi
 	for i in $(seq 1 $1); do
 		c ..
 	done
+}
+
+# Use cdn to go to the directory containing a given file. This is helpful when
+# using recursive grep as one can double click the path (assuming it does not
+# contain spaces) and use this to change to the directory containing the file.
+function cdn {
+	cd $(dirname "$1")
 }
 
 # Use pub to print Ed25519 public key. It will the key if one does not exist.
@@ -142,6 +154,12 @@ function pub {
 function sri {
 	digest=$(openssl sha384 -binary "$1" | base64)
 	echo "sha384-$digest"
+}
+
+# Use mkc to create and change to a directory. Create parent directories if
+# necessary.
+function mkc {
+	mkdir -p "$1" && cd "$1"
 }
 
 # On MacOS where the shasum command is used for the entire SHA family, define
@@ -195,6 +213,12 @@ if hash apt-get 2>/dev/null; then
 	alias ali="apt list --installed 2>/dev/null"
 	alias aliep="ali | ep"
 fi
+
+# Define aliases for Go.
+alias gob="go build"
+alias gog="go generate"
+alias got="go test -c"
+alias gotn="got -o /dev/null"
 
 # Define basic aliases for Git.
 alias ga="git add"
