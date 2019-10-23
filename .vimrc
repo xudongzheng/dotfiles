@@ -219,12 +219,15 @@ func! AbbrevTeX()
 endfunc
 autocmd FileType tex call AbbrevTeX()
 
-" Define abbreviations for HTML and XML.
+" Define abbreviations for HTML and XML. Many of the HTML abbreviations are for
+" working with Go templates.
 autocmd FileType html,xml iab <buffer> // <!-- --><left><left><left><left>
 func! AbbrevHTML()
-	iab <buffer> tifn {{if}}<left><left>
+	iab <buffer> tdotn {{.}}
 	iab <buffer> teln {{else}}
 	iab <buffer> tendn {{end}}
+	iab <buffer> tifn {{if}}<left><left>
+	iab <buffer> trn {{range}}<left><left>
 endfunc
 autocmd FileType html call AbbrevHTML()
 

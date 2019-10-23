@@ -83,9 +83,14 @@ alias tm="touch -m"
 alias vi="vim"
 alias vie="vim -c Explore"
 alias viun="vim -u NONE"
-alias wfmt="gofmt -w=true -s"
 alias wl="wc -l"
 alias ws="git ls-files | xargs cat | wc -l"
+
+# Use dfmt to format Go code using gofmt. Use wfmt to format it in the working
+# directory. Use gfmt to do it across the entire Git repository.
+alias dfmt="gofmt -w=true -s"
+alias wfmt="dfmt ."
+alias gfmt='dfmt $(git rev-parse --show-toplevel)'
 
 # Define alias for insecure SSH. This is useful before we reserve a static IP
 # for a new device. Generally we use SSH for authentication so there's no real
@@ -122,6 +127,10 @@ aliasDir csh ~/.ssh
 # https://bit.ly/33OR2Lh for way to get the path of this file in Bash and Zsh.
 dotDir=$(dirname "${BASH_SOURCE[0]:-${(%):-%x}}")
 aliasDir cdot "$dotDir"
+
+# In some environments, there will be a src directory in the same directory as
+# the dotfiles directory. Use csr to change to it if it exists.
+aliasDir csr "$dotDir/../src"
 
 # Use dqap (like in Vim) to undo line wrapping in a file. This is very similar
 # to the "fmt" command. Per https://goo.gl/PfzvyS, the Linux "fmt" has a limit
