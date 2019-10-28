@@ -20,7 +20,7 @@ fi
 if [ -d /etc/coreos ]; then
 	bashrcSrc=~/.bash_profile
 elif [ "$SHELL" == "/bin/zsh" ]; then
-	bashrcSrc=~/.zsh
+	bashrcSrc=~/.zshrc
 else
 	bashrcSrc=~/.bashrc
 fi

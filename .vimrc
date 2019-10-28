@@ -189,6 +189,7 @@ func! AbbrevGoSnippets()
 	iab <buffer> iow io.Writer
 	iab <buffer> iss i++
 	iab <buffer> maintn func main() {<cr><cr>}<up><bs>
+	iab <buffer> netip net.IP
 	iab <buffer> nfoid fusion.NewObjectID()
 	iab <buffer> pkgm package main
 	iab <buffer> rntn rows.Next()
@@ -276,8 +277,8 @@ autocmd FileType markdown,text call MapText()
 " line) and in visual line mode. We use U instead of I since the :normal command
 " accounts for the Colemak mapping. There are obviously many missing filetypes
 " and they will be added as needed.
-autocmd FileType conf,crontab,perl,python,ruby,sh,sshconfig,tmux,yaml noremap <buffer> <leader>c :normal U# <esc>
-autocmd FileType arduino,c,cpp,cs,go,java,javascript,php noremap <buffer> <leader>c :normal U// <esc>
+autocmd FileType conf,crontab,perl,python,readline,ruby,sh,sshconfig,tmux,yaml noremap <buffer> <leader>c :normal U# <esc>
+autocmd FileType arduino,c,cpp,cs,go,java,javascript,php,scala noremap <buffer> <leader>c :normal U// <esc>
 autocmd FileType sql noremap <buffer> <leader>c :normal U-- <esc>
 autocmd FileType matlab,tex noremap <buffer> <leader>c :normal U% <esc>
 autocmd FileType vim noremap <buffer> <leader>c :normal U" <esc>
@@ -336,7 +337,7 @@ autocmd FileType gitcommit nnoremap <buffer> <leader>h G{kkdgg
 " we can override language-specific configuration. Python, for example, is
 " configured to expand tabs to spaces. YAML is an exception where we want to
 " expand tabs to spaces and use 2 spaces for indentation.
-autocmd FileType * setlocal noexpandtab shiftwidth=4 tabstop=4
+autocmd FileType * setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=0
 autocmd FileType yaml setlocal expandtab softtabstop=2
 
 " Wrap long line even if the initial line is longer than textwidth.

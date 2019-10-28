@@ -59,6 +59,7 @@ fi
 
 alias autk="vi ~/.ssh/authorized_keys"
 alias bhi="vi ~/.bash_history"
+alias brc="vi .bashrc"
 alias c="cd"
 alias crt="crontab -e"
 alias dfh="df -h"
@@ -81,8 +82,8 @@ alias pg="p | ep"
 alias t="tmux new-session -t 0 || tmux"
 alias tm="touch -m"
 alias vi="vim"
-alias vie="vim -c Explore"
-alias viun="vim -u NONE"
+alias vie="vi -c Explore"
+alias vrc="vi .vimrc"
 alias wl="wc -l"
 alias ws="git ls-files | xargs cat | wc -l"
 
@@ -160,12 +161,19 @@ function cdn {
 	cd $(dirname "$1")
 }
 
-# Use pub to print Ed25519 public key. It will the key if one does not exist.
+# Use pub to print Ed25519 public key. It will generate a new key if one does
+# not exist.
 function pub {
 	if [ ! -f ~/.ssh/id_ed25519 ]; then
-		ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N ""
+		ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N "" > /dev/null
 	fi
 	cat ~/.ssh/id_ed25519.pub
+}
+
+# Use pubc to print command that can be copied and pasted onto another server to
+# add the local public key.
+function pubc {
+	echo 'mkdir -p ~/.ssh && echo "'$(pub)'" >> ~/.ssh/authorized_keys'
 }
 
 # Use sri to print subresource integrity value for file.
@@ -211,18 +219,16 @@ fi
 if hash apt-get 2>/dev/null; then
 	if [ "$USER" == "root" ]; then
 		alias ag="apt-get"
+		alias agar="ag autoremove"
+		alias agd="ag update"
+		alias agg="ag upgrade"
 		alias agi="ag install"
 		alias agr="ag remove"
+		alias agu="agd && agg"
 
 		# Use ags instead of acs for "apt-cache search" since c and s use the
 		# same finger.
 		alias ags="apt-cache search"
-
-		# Define agu and aguu separately since the former may be used before
-		# installing a package.
-		alias agu="ag update"
-		alias aguu="agu && ag upgrade"
-		alias agar="ag autoremove"
 	fi
 
 	# Use ali to list all installed packages. This writes standard error of "apt
