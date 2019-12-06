@@ -43,7 +43,8 @@ filetype plugin indent on
 
 " Use space as the leader key. Some articles such as https://bit.ly/2on9Qlu
 " advocate for setting a local leader rather than limiting a map to a buffer.
-" I've decided against doing that since TODO TODO TODO
+" I've decided against doing that since I don't run any plugins and don't need
+" the additional complexity.
 let mapleader = " "
 
 " Store temporary files in .vim to keep the working directories clean.
@@ -141,6 +142,7 @@ func! AbbrevGoImport()
 	iab <buffer> trfn "reflect"
 	iab <buffer> tscn "strconv"
 	iab <buffer> tsn "strings"
+	iab <buffer> tsyn "sync"
 	iab <buffer> ttestn "testing"
 	iab <buffer> ttn "time"
 	iab <buffer> tttn "text/template"
@@ -189,6 +191,7 @@ func! AbbrevGoSnippets()
 	iab <buffer> iow io.Writer
 	iab <buffer> iss i++
 	iab <buffer> maintn func main() {<cr><cr>}<up><bs>
+	iab <buffer> netcn net.Conn
 	iab <buffer> netip net.IP
 	iab <buffer> nfoid fusion.NewObjectID()
 	iab <buffer> pkgm package main
@@ -204,6 +207,15 @@ func! AbbrevGoSnippets()
 endfunc
 autocmd FileType go call AbbrevGoSnippets()
 
+" Define mapping for common Go snippets.
+func! MapGoSnippets()
+	xnoremap <leader>b c[]byte()<esc>P
+	xnoremap <leader>l clen()<esc>P
+	xnoremap <leader>s cstring()<esc>P
+endfunc
+autocmd FileType go call MapGoSnippets()
+
+autocmd FileType go call AbbrevGoSnippets()
 " Define abbreviations for TeX.
 func! AbbrevTeX()
 	iab <buffer> beq \begin{equation}
@@ -295,8 +307,7 @@ autocmd BufRead known_hosts noremap <buffer> <leader>c :normal U#<esc>
 autocmd FileType html,xml nnoremap <buffer> <leader>c A --><esc>I<!-- <esc>
 autocmd FileType html,xml xnoremap <buffer> <leader>c c<!--<cr>--><esc>P
 
-" Use <leader>p and <leader>P to print the visually-selected variables. TODO
-" TODO TODO <leader>c for php, also semicolon here
+" Use <leader>p and <leader>P to print the visually-selected variables.
 autocmd FileType go xnoremap <buffer> <leader>p y:r! echo "println($RANDOM, )"<cr>==$P
 autocmd FileType go xnoremap <buffer> <leader>P y:r! echo "fmt.Println($RANDOM, )"<cr>==$P
 autocmd FileType javascript xnoremap <buffer> <leader>p y:r! echo "console.log($RANDOM, )"<cr>==$P
@@ -396,6 +407,11 @@ autocmd FileType markdown,text setlocal nosmartindent autoindent
 nnoremap <cr> :
 xnoremap <cr> :
 autocmd CmdwinEnter * cabbrev <buffer> x <cr>
+
+" Automatically resize splits in the active tab when the window is resized.
+" Resize splits when switching to a tab to account for splits in background tabs
+" when the window is resized.
+autocmd VimResized,TabEnter * wincmd =
 
 " Ctrl-U deletes to beginning of line and Ctrl-W deletes the last word.
 " Recovering the deleted text is difficult. Ctrl-U can happen by accident such
@@ -553,11 +569,8 @@ nnoremap <leader>Q :call LoadSession()<cr>
 " Use <leader>u to convert from standard base64 encoding to URL base64 encoding.
 nnoremap <leader>u :s/+/-/g<cr>:s/\//_/g<cr>
 
-" Use <leader>w to adjusts splits to be even.
-nnoremap <leader>w <c-w>=
-
-" Use <leader>W to close tab, similar to Ctrl-W in GUI programs.
-nnoremap <leader>W :tabclose<cr>
+" Use <leader>w to close tab, similar to Ctrl-W in GUI programs.
+nnoremap <leader>w :tabclose<cr>
 
 " Use <leader>f to change case until end of the word.
 nnoremap <leader>f ve~
