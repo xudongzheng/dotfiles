@@ -211,6 +211,15 @@ if ! hash wget 2>/dev/null; then
 	fi
 fi
 
+# On macOS, define alias to quickly enable and disable the system-wide SOCKS
+# proxy when using WiFi. To enable and disable, use "nswfon" and "nswfoff"
+# respectively.
+if ! hash networksetup 2>/dev/null; then
+	alias nswf="networksetup -setsocksfirewallproxystate Wi-Fi"
+	alias nswfon="nswf on"
+	alias nswfoff="nswf off"
+fi
+
 # If apt-get is available, define related aliases. Some are only necessary of
 # the user is root.
 if hash apt-get 2>/dev/null; then

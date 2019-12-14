@@ -108,6 +108,7 @@ func! AbbrevGoImport()
 	iab <buffer> tbn "bytes"
 	iab <buffer> tcn "context"
 	iab <buffer> tcsn "crypto/subtle"
+	iab <buffer> tctn "crypto/tls"
 	iab <buffer> tcxn "crypto/x509"
 	iab <buffer> tdsn "database/sql"
 	iab <buffer> tebin "encoding/binary"
@@ -165,7 +166,9 @@ func! AbbrevGoSnippets()
 	iab <buffer> dftn defer func() {<cr><cr>}()<up><bs>
 	iab <buffer> drbc defer resp.Body.Close()
 	iab <buffer> dtrb defer tx.Rollback()
+	iab <buffer> eioe err == io.EOF
 	iab <buffer> enl err != nil {<cr>log.Fatal(err)<cr>}
+	iab <buffer> enp err != nil {<cr>panic(err)<cr>}
 	iab <buffer> enr err != nil {<cr>return err<cr>}
 	iab <buffer> ent err != nil {<cr>t.Fatal(err)<cr>}
 	iab <buffer> enw err != nil {<cr>log.Warn(err)<cr>}
@@ -186,7 +189,7 @@ func! AbbrevGoSnippets()
 	iab <buffer> imc import "C"
 	iab <buffer> imtn import (<cr><cr>)<cr><up><up><bs>
 	iab <buffer> initn func init() {<cr><cr>}<up><bs>
-	iab <buffer> ioeof err == io.EOF
+	iab <buffer> ioe io.EOF
 	iab <buffer> ior io.Reader
 	iab <buffer> iow io.Writer
 	iab <buffer> iss i++
