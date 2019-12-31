@@ -154,6 +154,8 @@ autocmd FileType go call AbbrevGoImport()
 " Define abbreviation for Go snippets.
 func! AbbrevGoSnippets()
 	iab <buffer> ;t :=
+	iab <buffer> b64std base64.StdEncoding
+	iab <buffer> b64url base64.URLEncoding
 	iab <buffer> bnbn bytes.NewBuffer(nil)
 	iab <buffer> bytn Bytes()
 	iab <buffer> cctx context.Context
@@ -173,7 +175,8 @@ func! AbbrevGoSnippets()
 	iab <buffer> ent err != nil {<cr>t.Fatal(err)<cr>}
 	iab <buffer> enw err != nil {<cr>log.Warn(err)<cr>}
 	iab <buffer> erows err = rows.Scan(
-	iab <buffer> ertn err.Error()
+	iab <buffer> errtn err.Error()
+	iab <buffer> ertn Error()
 	iab <buffer> ertw errors.New("TODO TODO TODO wip")
 	iab <buffer> fkr for key := range
 	iab <buffer> fkvr for key, value := range
@@ -194,6 +197,7 @@ func! AbbrevGoSnippets()
 	iab <buffer> iow io.Writer
 	iab <buffer> iss i++
 	iab <buffer> maintn func main() {<cr><cr>}<up><bs>
+	iab <buffer> nametn Name()
 	iab <buffer> netcn net.Conn
 	iab <buffer> netip net.IP
 	iab <buffer> nfoid fusion.NewObjectID()
@@ -215,6 +219,10 @@ func! MapGoSnippets()
 	xnoremap <leader>b c[]byte()<esc>P
 	xnoremap <leader>l clen()<esc>P
 	xnoremap <leader>s cstring()<esc>P
+
+	" When an exec.Command variable from os/exec is visually selected, use
+	" <leader>e to pipe the command standard output and standard error.
+	xnoremap <leader>w yo..Stdout = os.Stdout<cr>..Stderr = os.Stderr<esc>^<c-v>kP
 endfunc
 autocmd FileType go call MapGoSnippets()
 
@@ -252,9 +260,11 @@ autocmd FileType html call AbbrevHTML()
 autocmd FileType c,cpp iab <buffer> maintn int main() {<cr><cr>}<up><bs>
 autocmd FileType javascript iab <buffer> tt ===
 autocmd FileType go,sh iab <buffer> countk COUNT(*)
+iab dq ""
 iab mtrm <esc>3a-<esc>a
-iab tst TODO
+iab sq ''
 iab trt TODO TODO TODO
+iab tst TODO
 
 " In .go files, use <leader>d to show documentation for package at cursor.
 func! GoDoc()

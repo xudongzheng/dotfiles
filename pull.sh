@@ -1,5 +1,9 @@
 set -e
 
+# Allow script to run from any directory.
+cd $(dirname $0)
+
+# Fetch remote changes.
 git fetch
 
 # If a commit was specified, merge the specified commit. Otherwise merge the

@@ -1,5 +1,10 @@
-export EDITOR=vim
 export TERM=xterm-256color
+
+# Set default editor. On most platforms, Vi and Vim both refer to the same
+# editor. When using Ctrl-X Ctrl-E, Zsh tries to advance the cursor to the same
+# position as it was in terminal, which is not the behavior that we want. Per
+# https://bit.ly/2PZ3iVn, Zsh does this with Vim but not Vi.
+export EDITOR=vi
 
 # Increase bash history size.
 HISTSIZE=100000
@@ -77,7 +82,7 @@ alias p="ps aux"
 alias pg="p | ep"
 alias t="tmux new-session -t 0 || tmux"
 alias tm="touch -m"
-alias usm=m"useradd -s /bin/bash -m"
+alias usm="useradd -s /bin/bash -m"
 alias vi="vim"
 alias vie="vi -c Explore"
 alias vrc="vi .vimrc"
@@ -156,6 +161,11 @@ function cu {
 # contain spaces) and use this to change to the directory containing the file.
 function cdn {
 	cd $(dirname "$1")
+}
+
+# Similar to cdn above, use ndc to do edit the file.
+function ndc {
+	vi $(awk -F: '{print $1}' <<< "$1")
 }
 
 # Use pub to print Ed25519 public key. It will generate a new key if one does
@@ -270,7 +280,6 @@ alias ge="git blame"
 alias gf="git fetch"
 alias gg="git fetch && git reset --hard @{u}"
 alias gh="git show"
-alias ghh="gh HEAD"
 alias ghns="gh --name-status"
 alias gian="git update-index --no-assume-unchanged"
 alias giau="git update-index --assume-unchanged"
@@ -321,9 +330,18 @@ alias lgtt="lg 'TODO TODO'"
 alias gxua="git config user.email 7pkvm5aw@slicealias.com"
 alias gxul='git config user.email $(git log -1 --pretty=format:%ae)'
 
-# Define alias for synchronizing a repository's commit dates and author dates.
-# If no argument is given, only consider the last 20 commits. Use either -- or
-# HEAD as argument to process all branch commits.
+# Define function to show commit diff relative to HEAD.
+function ghh {
+	if [ "$1" == "" ]; then
+		gh HEAD
+	else
+		gh HEAD~$1
+	fi
+}
+
+# Define function for synchronizing a repository's commit dates and author
+# dates. If no argument is given, consider the last 20 commits. Use either -- or
+# HEAD as the second argument to process all branch commits.
 function gfb {
 	list="$2"
 	if [ "$2" == "" ]; then
