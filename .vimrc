@@ -160,14 +160,16 @@ func! AbbrevGoSnippets()
 	iab <buffer> bytn Bytes()
 	iab <buffer> cctx context.Context
 	iab <buffer> cltn Close()
-	iab <buffer> cotn Commit()
 	iab <buffer> ctxg ctx := context.Get(rw)
 	iab <buffer> cvbyte []byte
+	iab <buffer> dbb DB.Begin()<cr>defer tx.Rollback()<cr>
+	iab <buffer> dbe DB.Exec
+	iab <buffer> dbq DB.Query
+	iab <buffer> dbqr DB.QueryRow
 	iab <buffer> dcc defer conn.Close()
 	iab <buffer> dfc defer f.Close()
 	iab <buffer> dftn defer func() {<cr><cr>}()<up><bs>
 	iab <buffer> drbc defer resp.Body.Close()
-	iab <buffer> dtrb defer tx.Rollback()
 	iab <buffer> eioe err == io.EOF
 	iab <buffer> enl err != nil {<cr>log.Fatal(err)<cr>}
 	iab <buffer> enp err != nil {<cr>panic(err)<cr>}
@@ -183,11 +185,6 @@ func! AbbrevGoSnippets()
 	iab <buffer> foid fusion.ObjectID
 	iab <buffer> fvr for _, value := range
 	iab <buffer> gftn go func() {<cr><cr>}()<up><bs>
-	iab <buffer> hdb helper.DB
-	iab <buffer> hdbb helper.DB.Begin
-	iab <buffer> hdbe helper.DB.Exec
-	iab <buffer> hdbq helper.DB.Query
-	iab <buffer> hdbqr helper.DB.QueryRow
 	iab <buffer> ifce interface{}
 	iab <buffer> imc import "C"
 	iab <buffer> imtn import (<cr><cr>)<cr><up><up><bs>
@@ -205,12 +202,15 @@ func! AbbrevGoSnippets()
 	iab <buffer> rntn rows.Next()
 	iab <buffer> senr err == sql.ErrNoRows
 	iab <buffer> strtn String()
+	iab <buffer> tcotn tx.Commit()
 	iab <buffer> tdur time.Duration
 	iab <buffer> tnow time.Now()
 	iab <buffer> ttime time.Time
 	iab <buffer> ttm t *testing.M
 	iab <buffer> ttt t *testing.T
+	iab <buffer> txerr tx, err :=
 	iab <buffer> utctn UTC()
+	iab <buffer> x5c *x509.Certificate
 endfunc
 autocmd FileType go call AbbrevGoSnippets()
 
@@ -226,7 +226,6 @@ func! MapGoSnippets()
 endfunc
 autocmd FileType go call MapGoSnippets()
 
-autocmd FileType go call AbbrevGoSnippets()
 " Define abbreviations for TeX.
 func! AbbrevTeX()
 	iab <buffer> beq \begin{equation}
@@ -245,7 +244,6 @@ autocmd FileType tex call AbbrevTeX()
 
 " Define abbreviations for HTML and XML. Many of the HTML abbreviations are for
 " working with Go templates.
-autocmd FileType html,xml iab <buffer> // <!-- --><left><left><left><left>
 func! AbbrevHTML()
 	iab <buffer> tdotn {{.}}
 	iab <buffer> teln {{else}}
@@ -254,6 +252,11 @@ func! AbbrevHTML()
 	iab <buffer> trn {{range}}<left><left>
 endfunc
 autocmd FileType html call AbbrevHTML()
+
+" Define abbreviations for comments in various languages.
+autocmd FileType css iab <buffer> // /* */<left><left><left>
+autocmd FileType html,xml iab <buffer> // <!-- --><left><left><left><left>
+autocmd FileType sql iab <buffer> // --
 
 " Define miscellaneous abbreviations. For TODO, three works better than two
 " since two will always end up on the same line, making it easier to grep.
@@ -617,6 +620,11 @@ nnoremap <leader>m :Te<cr>
 " respectively.
 nnoremap <leader>l :setlocal spelllang=en<cr>
 nnoremap <leader>L :setlocal spelllang=es<cr>
+
+" Use <leader>y and <leader>Y to yank respectively the relative and absolute
+" file/directory path. This comes from https://bit.ly/2TdYq0O.
+nnoremap <leader>y :let @" = expand("%")<cr>
+nnoremap <leader>Y :let @" = expand("%:p")<cr>
 
 " Use <leader><tab> convert to tabs. In normal mode, it affects the current
 " line. In visual mode, it affects every selected line.
