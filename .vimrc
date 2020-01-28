@@ -429,13 +429,18 @@ autocmd CmdwinEnter * cabbrev <buffer> x <cr>
 " when the window is resized.
 autocmd VimResized,TabEnter * wincmd =
 
-" Ctrl-U deletes to beginning of line and Ctrl-W deletes the last word.
-" Recovering the deleted text is difficult. Ctrl-U can happen by accident such
-" as when accidentally inserting a Unicode character with Ctrl-Shift-U. Create a
-" separate change for Ctrl-U and Ctrl-W so they can be undone like other
-" changes per https://bit.ly/2ZSlinw.
+" By default Ctrl-U deletes to beginning of line and Ctrl-W deletes the last
+" word. Recovering the deleted text is difficult. Ctrl-U can happen by accident
+" such as when accidentally inserting a Unicode character with Ctrl-Shift-U.
+" Create a separate change for Ctrl-U and Ctrl-W so they can be undone like
+" other changes per https://bit.ly/2ZSlinw.
 inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
+
+" In insert and normal mode, use Ctrl-C to save file. When starting in insert
+" mode, this will leave the user in normal mode.
+inoremap <c-c> <c-c>:w<cr>
+nnoremap <c-c> <c-c>:w<cr>
 
 " When pasting over text with o, do not copy the deleted text. See
 " https://bit.ly/2Mc0Ac9 for more information. Use O for the default visual
@@ -626,10 +631,21 @@ nnoremap <leader>L :setlocal spelllang=es<cr>
 nnoremap <leader>y :let @" = expand("%")<cr>
 nnoremap <leader>Y :let @" = expand("%:p")<cr>
 
-" Use <leader><tab> convert to tabs. In normal mode, it affects the current
-" line. In visual mode, it affects every selected line.
-noremap <leader><tab> :s/    /\t/g<cr>
+" Define mappings to convert spaces to tabs. Use <leader>4 to convert 4 spaces
+" to tabs and <leader>8 for 8 spaces. In normal mode, it affects the entire
+" file. In visual mode, it affects every selected line.
+noremap <leader>4 :retab! 4<cr>
+noremap <leader>8 :retab! 8<cr>:setlocal tabstop=4<cr>
+
+" Use <leader>$ to go to the last tab.
+nnoremap <leader>$ :tablast<cr>
 
 " Use \ to go to next tab and <tab> to go to previous tab.
 nnoremap \ :tabn<cr>
 nnoremap <tab> :tabp<cr>
+
+" Use <leader>' to convert the surrounding double quotes to single quotes.
+" Simiarly use <leader>" to convert from single quotes to double quotes. Both
+" use `` to return to the previous cursor location after replacing a quote.
+nnoremap <leader>' ?"<cr>r'``/"<cr>r'``
+nnoremap <leader>" ?'<cr>r"``/'<cr>r"``
