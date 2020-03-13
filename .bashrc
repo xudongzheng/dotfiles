@@ -101,6 +101,19 @@ alias gfmt='dfmt $(git rev-parse --show-toplevel)'
 alias sins="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 alias sinsr="sins -l root"
 
+# Define aliases for working with tar. The command when running as root on Linux
+# and macOS by default will maintain the file owner and permission if possible.
+# In particular, extracted files may retain the setuid/setgid attributes. When
+# untrusted files are extracted to a public location, users may run the binary
+# as other users.
+alias tarcf="tar cf"
+alias tarzcf="tar zcf"
+if [[ $uname == "Darwin" ]]; then
+	alias tarxf="tar xfo"
+else
+	alias tarxf="tar --no-same-permissions -xf"
+fi
+
 # Create an alias for cp and mv as to prompt before overwriting existing files.
 alias cp="cp -i"
 alias mv="mv -i"
@@ -290,6 +303,7 @@ alias glo="git log --pretty=oneline"
 alias glom="gl origin/master"
 alias gm="git merge"
 alias gma="gm --abort"
+alias gn="git clone"
 alias gnfd="git clean -f -d"
 alias gp="git push"
 alias gpf="gp --force"

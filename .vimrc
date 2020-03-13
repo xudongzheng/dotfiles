@@ -287,11 +287,8 @@ autocmd FileType go nnoremap <buffer> <leader>s :! gofmt -w=true -s %<cr>:e<cr>
 
 func! MapText()
 	" In text files, use <leader>d to insert the date in the American format.
-	" This code comes from https://bit.ly/2UWmveA. Use <leader>D for the time
-	" and <leader><cr>d for the time in parenthesis.
+	" This code comes from https://bit.ly/2UWmveA.
 	nnoremap <buffer> <leader>d "=strftime('%B %-d, %Y')<cr>p
-	nnoremap <buffer> <leader>D "=strftime('%H:%M')<cr>p
-	nnoremap <buffer> <leader><cr>d "=strftime('(%H:%M)')<cr>p
 
 	" Use <leader>x for checking a checkbox and <leader>X for unchecking. The
 	" latter uses s instead of r so the line doesn't end with a space, which
@@ -306,7 +303,7 @@ autocmd FileType markdown,text call MapText()
 " accounts for the Colemak mapping. There are obviously many missing filetypes
 " and they will be added as needed.
 autocmd FileType conf,crontab,perl,python,readline,ruby,sh,sshconfig,tmux,yaml noremap <buffer> <leader>c :normal U# <esc>
-autocmd FileType arduino,c,cpp,cs,go,java,javascript,php,scala noremap <buffer> <leader>c :normal U// <esc>
+autocmd FileType arduino,c,cpp,cs,go,java,javascript,objc,php,scala noremap <buffer> <leader>c :normal U// <esc>
 autocmd FileType sql noremap <buffer> <leader>c :normal U-- <esc>
 autocmd FileType matlab,tex noremap <buffer> <leader>c :normal U% <esc>
 autocmd FileType vim noremap <buffer> <leader>c :normal U" <esc>
@@ -323,13 +320,18 @@ autocmd BufRead known_hosts noremap <buffer> <leader>c :normal U#<esc>
 autocmd FileType html,xml nnoremap <buffer> <leader>c A --><esc>I<!-- <esc>
 autocmd FileType html,xml xnoremap <buffer> <leader>c c<!--<cr>--><esc>P
 
-" Use <leader>p and <leader>P to print the visually-selected variables.
+" In a code file, use  <leader>p and <leader>P to print the visually-selected
+" variables.
 autocmd FileType go xnoremap <buffer> <leader>p y:r! echo "println($RANDOM, )"<cr>==$P
 autocmd FileType go xnoremap <buffer> <leader>P y:r! echo "fmt.Println($RANDOM, )"<cr>==$P
 autocmd FileType javascript xnoremap <buffer> <leader>p y:r! echo "console.log($RANDOM, )"<cr>==$P
 autocmd FileType php xnoremap <buffer> <leader>p y:r! echo "var_dump($RANDOM, );"<cr>==$<left>P
 autocmd FileType python xnoremap <buffer> <leader>p y:r! echo "print($RANDOM, )"<cr>==$P
 autocmd FileType sh xnoremap <buffer> <leader>p y:r! echo "echo $RANDOM $"<cr>==$p
+
+" When editing a diff file using 'git add -p', use <leader>p to exclude the
+" visual selection.
+autocmd BufRead addp-hunk-edit.diff xnoremap <buffer> <leader>p :s/^-/ /e<cr>gv:g/^+/d<cr>
 
 func! HeadingMarkdown()
 	" In Markdown, use <leader><cr>1 through <leader><cr>6 for making a line
