@@ -269,19 +269,6 @@ iab sq ''
 iab trt TODO TODO TODO
 iab tst TODO
 
-" In .go files, use <leader>d to show documentation for package at cursor.
-func! GoDoc()
-	let pkg = substitute(getline("."), "^import", "", "")
-	let pkg = substitute(pkg, "[\t ]", "", "")
-	let pkg = substitute(pkg, "\"", "", "g")
-	tabnew
-	exec "read ! go doc " . pkg
-	normal dgss
-	setlocal nomodified
-	setlocal nomodifiable
-endfunc
-autocmd FileType go nnoremap <buffer> <leader>d :call GoDoc()<cr>
-
 " Use <leader>s in normal mode to automatically format Go source code.
 autocmd FileType go nnoremap <buffer> <leader>s :! gofmt -w=true -s %<cr>:e<cr>
 
@@ -387,11 +374,18 @@ autocmd FileType css setlocal formatoptions+=ro
 " Use the same word boundary for all file types.
 autocmd FileType * set iskeyword=@,48-57,_
 
-" Enable spell checker for git commits, TeX, and text files. Since spell is
-" 'local to window' rather than 'local to buffer', it is insufficient to use
-" autocmd FileType. While it works when opening a file, opening the file again
-" in a separate window will no longer have the spell checker enabled.
-autocmd BufEnter * if index(["gitcommit", "markdown", "tex", "text"], &filetype) >= 0 | setlocal spell | endif
+" Enable spell checker for git commits, TeX, and text files. Note that spell is
+" 'local to window' rather than 'local to buffer'. This means using 'autocmd
+" FileType' will work when opening a file but the spell checker will not be
+" enabled when opening the file again in a separate window. Note that this will
+" also enable the spell checker again even if it was manually disabled in the
+" same buffer previously. Default to English and ignore Chinese characters.
+func! EnableSpell()
+	if index(["gitcommit", "markdown", "tex", "text"], &filetype) >= 0
+		setlocal spell spelllang=en,cjk
+	endif
+endfunc
+autocmd BufEnter * call EnableSpell()
 
 " Sometimes the spell checker does not work correctly in large TeX files. This
 " seems to resolve most of the issue per https://goo.gl/dtuJSk. See
@@ -624,9 +618,9 @@ nnoremap <leader>i :s/id\>/ID/g<cr>
 nnoremap <leader>m :Te<cr>
 
 " Use <leader>l and <leader>L to set the spell language to English and Spanish
-" respectively.
-nnoremap <leader>l :setlocal spelllang=en<cr>
-nnoremap <leader>L :setlocal spelllang=es<cr>
+" respectively. For both, ignore Chinese characters.
+nnoremap <leader>l :setlocal spelllang=en,cjk<cr>
+nnoremap <leader>L :setlocal spelllang=es,cjk<cr>
 
 " Use <leader>y and <leader>Y to yank respectively the relative and absolute
 " file/directory path. This comes from https://bit.ly/2TdYq0O.
