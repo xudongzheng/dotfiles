@@ -85,8 +85,10 @@ set cursorline
 set cursorcolumn
 highlight CursorColumn ctermbg=lightcyan ctermfg=black
 
-" Set the text width to 80 and create a vertical bar in 81st column.
-set textwidth=80
+" Set the text width to 80 and create a vertical bar in 81st column. Some
+" filetypes such as gitcommit have a custom width defined and we use autocmd
+" here so our textwidth value takes precedence.
+autocmd FileType * setlocal textwidth=80
 set colorcolumn=81
 
 " Set scroll offset so the active line stays towards the center.
@@ -226,8 +228,14 @@ func! MapGoSnippets()
 endfunc
 autocmd FileType go call MapGoSnippets()
 
-" Define abbreviations for TeX.
-func! AbbrevTeX()
+" Define abbreviations for JavaScript snippets.
+func! AbbrevJSSnippets()
+	iab <buffer> strtn toString()
+endfunc
+autocmd FileType javascript call AbbrevJSSnippets()
+
+" Define abbreviations for TeX snippets.
+func! AbbrevTeXSnippets()
 	iab <buffer> beq \begin{equation}
 	iab <buffer> deq \end{equation}
 	iab <buffer> ber \begin{verbatim}
@@ -240,34 +248,43 @@ func! AbbrevTeX()
 	iab <buffer> infty \infty
 	iab <buffer> ninfty -\infty
 endfunc
-autocmd FileType tex call AbbrevTeX()
+autocmd FileType tex call AbbrevTeXSnippets()
 
 " Define abbreviations for HTML and XML. Many of the HTML abbreviations are for
 " working with Go templates.
-func! AbbrevHTML()
+func! AbbrevHTMLSnippets()
 	iab <buffer> tdotn {{.}}
+	iab <buffer> tdotx {{.}}<left><left>
 	iab <buffer> teln {{else}}
 	iab <buffer> tendn {{end}}
 	iab <buffer> tifn {{if}}<left><left>
 	iab <buffer> trn {{range}}<left><left>
 endfunc
-autocmd FileType html call AbbrevHTML()
+autocmd FileType html call AbbrevHTMLSnippets()
 
 " Define abbreviations for comments in various languages.
 autocmd FileType css iab <buffer> // /* */<left><left><left>
 autocmd FileType html,xml iab <buffer> // <!-- --><left><left><left><left>
 autocmd FileType sql iab <buffer> // --
 
-" Define miscellaneous abbreviations. For TODO, three works better than two
-" since two will always end up on the same line, making it easier to grep.
+" Use tt instead of == to save two keystrokes on my ErgoBlue. In JavaScript, use
+" === to ensure that the types also match. Do the same in HTML as equality
+" comparison will be limited to <script> and Vue.js templates, where we want the
+" same behavior.
+autocmd FileType * iab <buffer> tt ==
+autocmd FileType html,javascript iab <buffer> tt ===
+
+" Define abbreviations for TODO. Three TODO is better than two since two will
+" always end up on the same line, making it easier to grep.
+iab trt TODO TODO TODO
+iab tst TODO
+
+" Define miscellaneous abbreviations.
 autocmd FileType c,cpp iab <buffer> maintn int main() {<cr><cr>}<up><bs>
-autocmd FileType javascript iab <buffer> tt ===
 autocmd FileType go,sh iab <buffer> countk COUNT(*)
 iab dq ""
 iab mtrm <esc>3a-<esc>a
 iab sq ''
-iab trt TODO TODO TODO
-iab tst TODO
 
 " Use <leader>s in normal mode to automatically format Go source code.
 autocmd FileType go nnoremap <buffer> <leader>s :! gofmt -w=true -s %<cr>:e<cr>
@@ -356,17 +373,17 @@ autocmd FileType gitcommit nnoremap <buffer> <leader>h G{kkdgg
 autocmd FileType * setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=0
 autocmd FileType yaml setlocal expandtab softtabstop=2
 
-" Wrap long line even if the initial line is longer than textwidth.
-autocmd FileType * setlocal formatoptions-=l
+" Wrap long line even if the initial line is longer than textwidth. Per
+" https://goo.gl/3pws7z, we should not combine flags when removing.
+autocmd FileType * setlocal formatoptions-=b formatoptions-=l
 
 " Do not automatically wrap code except in text files, where text is treated as
 " code. Automatic wrapping will still occur in comments.
 autocmd FileType * setlocal formatoptions-=t
 autocmd FileType markdown,tex,text setlocal formatoptions+=t
 
-" Hitting enter on a commented line should not create another comment line. Per
-" https://goo.gl/3pws7z, we should not combine flags when removing. Make an
-" exception for CSS since the standard is block comments as opposed to line
+" Hitting enter on a commented line should not create another comment line. Make
+" an exception for CSS since the standard is block comments as opposed to line
 " comments in most other languages.
 autocmd FileType * setlocal formatoptions-=r formatoptions-=o
 autocmd FileType css setlocal formatoptions+=ro
@@ -635,6 +652,11 @@ noremap <leader>8 :retab! 8<cr>:setlocal tabstop=4<cr>
 
 " Use <leader>$ to go to the last tab.
 nnoremap <leader>$ :tablast<cr>
+
+" Use <leader><space> to go to the first whitespace character at the end of the
+" current line. This is useful if one wants to delete unnecessary trailing
+" whitespace characters.
+nnoremap <leader><space> g_l
 
 " Use \ to go to next tab and <tab> to go to previous tab.
 nnoremap \ :tabn<cr>
