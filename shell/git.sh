@@ -71,7 +71,7 @@ alias gxul='git config user.email $(git log -1 --pretty=format:%ae)'
 
 # Define function to show commit diff relative to HEAD.
 function ghh {
-	if [ "$1" == "" ]; then
+	if [[ $1 == "" ]]; then
 		gh HEAD
 	else
 		gh HEAD~$1
@@ -83,7 +83,7 @@ function ghh {
 # HEAD as the second argument to process all branch commits.
 function gfb {
 	list="$2"
-	if [ "$2" == "" ]; then
+	if [[ $2 == "" ]]; then
 		list="HEAD~20...HEAD"
 	fi
 	git filter-branch --env-filter "$1" -f "$list"

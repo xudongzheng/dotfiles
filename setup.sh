@@ -15,11 +15,8 @@ if hash gpg 2>/dev/null; then
 	fi
 fi
 
-# On CoreOS, use .bash_profile for Bash configuration. Otherwise use .bashrc for
-# Bash and .zshrc for Zsh.
-if [ -d /etc/coreos ]; then
-	bashrcSrc=~/.bash_profile
-elif [ "$SHELL" == "/bin/zsh" ]; then
+# Use .bashrc for Bash and .zshrc for Zsh.
+if [[ $SHELL == "/bin/zsh" ]]; then
 	bashrcSrc=~/.zshrc
 else
 	bashrcSrc=~/.bashrc
@@ -45,7 +42,7 @@ if hash tmux 2>/dev/null; then
 	files+=(.tmux.conf)
 fi
 for file in "${files[@]}"; do
-	if [ ! -f "~/$file" ]; then
+	if [[ ! -f "~/$file" ]]; then
 		ln -fs "$base/$file" ~
 	fi
 done

@@ -37,3 +37,5 @@ function editCommandLine {
 }
 zle -N editCommandLine
 bindkey '^x^e' editCommandLine
+
+alias history="history -i 0"

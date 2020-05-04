@@ -7,7 +7,7 @@ function dexb {
 
 function dsrm {
 	docker stop "$@" && docker rm -v "$@"
-	if [ -f "about/$@" ]; then
+	if [[ -f "about/$@" ]]; then
 		rm "about/$@"
 	fi
 }
