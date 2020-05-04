@@ -1,4 +1,4 @@
-" Map Colemak keys to QWERTY keys (in alphabetical order).
+" Map Colemak keys in alphabetical order.
 noremap d g
 noremap e k
 noremap f e
