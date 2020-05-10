@@ -80,7 +80,9 @@ alias vi="vim"
 alias vie="vi -c Explore"
 alias vrc="vi .vimrc"
 alias wl="wc -l"
-alias ws="git ls-files | xargs cat | wc -l"
+
+# Define alias for xargs to correctly handle lines containing spaces.
+alias xargs="tr '\n' '\0' | xargs -0"
 
 # Use dfmt to format Go code using gofmt. Use wfmt to format it in the working
 # directory. Use gfmt to do it across the entire Git repository.

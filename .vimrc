@@ -104,6 +104,25 @@ set backspace=2
 " not treat numbers that begin with 0 as octal.
 set nrformats+=alpha nrformats-=octal
 
+" By default, set the spell checker language to English. Use <leader>l and
+" <leader>L to change to Spanish and English respectively. For both, ignore
+" Chinese characters.
+set spelllang=en,cjk
+nnoremap <leader>l :setlocal spelllang=es,cjk<cr>
+nnoremap <leader>L :setlocal spelllang=en,cjk<cr>
+
+" Enable spell checker for Git commits, TeX, and text files. Since 'spell' is
+" 'local to window' rather than 'local to buffer', this uses BufEnter instead of
+" FileType. The latter will not run when an opened file is opened in a separate
+" window. When doing so, the new window will use the default spell checker
+" setting as defined here regardless of the setting in the other windows.
+func! EnableSpell()
+	if index(["gitcommit", "markdown", "tex", "text"], &filetype) >= 0
+		setlocal spell
+	endif
+endfunc
+autocmd BufEnter * call EnableSpell()
+
 " Define abbreviation for Go import paths.
 func! AbbrevGoImport()
 	iab <buffer> tbion "bufio"
@@ -201,6 +220,7 @@ func! AbbrevGoSnippets()
 	iab <buffer> netip net.IP
 	iab <buffer> nfoid fusion.NewObjectID()
 	iab <buffer> pkgm package main
+	iab <buffer> rnil return nil
 	iab <buffer> rntn rows.Next()
 	iab <buffer> senr err == sql.ErrNoRows
 	iab <buffer> strtn String()
@@ -391,18 +411,8 @@ autocmd FileType css setlocal formatoptions+=ro
 " Use the same word boundary for all file types.
 autocmd FileType * set iskeyword=@,48-57,_
 
-" Enable spell checker for git commits, TeX, and text files. Note that spell is
-" 'local to window' rather than 'local to buffer'. This means using 'autocmd
-" FileType' will work when opening a file but the spell checker will not be
-" enabled when opening the file again in a separate window. Note that this will
-" also enable the spell checker again even if it was manually disabled in the
-" same buffer previously. Default to English and ignore Chinese characters.
-func! EnableSpell()
-	if index(["gitcommit", "markdown", "tex", "text"], &filetype) >= 0
-		setlocal spell spelllang=en,cjk
-	endif
-endfunc
-autocmd BufEnter * call EnableSpell()
+" Treat all unrecognized files as text files.
+autocmd BufRead,BufNewFile * if &filetype == "" | setlocal filetype=text | endif
 
 " Sometimes the spell checker does not work correctly in large TeX files. This
 " seems to resolve most of the issue per https://goo.gl/dtuJSk. See
@@ -415,15 +425,15 @@ autocmd FileType tex syntax spell toplevel
 " braces well.
 autocmd BufRead,BufNewFile *.fs,*.kt,*.swift setlocal filetype=scala
 
+" Treat .scad files (for OpenSCAD) as JavaScript files.
+autocmd BufRead,BufNewFile *.scad setlocal filetype=javascript
+
 " Treat .vue files (for Vue.js) as HTML files.
 autocmd BufRead,BufNewFile *.vue setlocal filetype=html
 
 " We often use fc to edit bash commands in vim. Treat them as shell scripts.
 " Some versions of bash use a hyphen whereas other versions use a dot.
 autocmd BufRead bash-fc-*,bash-fc.* setlocal filetype=sh
-
-" Treat all unrecognized files as text files.
-autocmd BufEnter * if &filetype == "" | setlocal filetype=text | endif
 
 " Set smartindent, except for text files. Otherwise in text files, lines that
 " start with keywords such as 'do' are indented incorrectly.
@@ -633,11 +643,6 @@ nnoremap <leader>i :s/id\>/ID/g<cr>
 
 " Use <leader>m to open netrw in new tab.
 nnoremap <leader>m :Te<cr>
-
-" Use <leader>l and <leader>L to set the spell language to English and Spanish
-" respectively. For both, ignore Chinese characters.
-nnoremap <leader>l :setlocal spelllang=en,cjk<cr>
-nnoremap <leader>L :setlocal spelllang=es,cjk<cr>
 
 " Use <leader>y and <leader>Y to yank respectively the relative and absolute
 " file/directory path. This comes from https://bit.ly/2TdYq0O.

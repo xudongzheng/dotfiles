@@ -53,12 +53,13 @@ alias gxn="gx --amend"
 alias gxr='gx -m "$(date -R)"'
 alias gxar="gaa && gxr"
 alias gy="gu && gxar && gp"
+alias gw="git ls-files | xargs cat | wc -l"
 
 # Define aliases for searching a Git repository. Replace \n with \x00 so xargs
 # correctly handles files with a space in their name. Per https://goo.gl/DLz58m,
 # this uses "git grep" instead of "git ls-files" since the latter includes
 # submodules that are directories, which grep will give an error for.
-alias lg="git grep --cached -l '' | tr '\n' '\0' | xargs -0 grep --color -n"
+alias lg="git grep --cached -l '' | xargs grep --color -n"
 alias lgi="lg -i"
 alias lgt="lg TODO"
 alias lgtt="lg 'TODO TODO'"
