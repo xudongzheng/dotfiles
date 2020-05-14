@@ -104,6 +104,10 @@ set backspace=2
 " not treat numbers that begin with 0 as octal.
 set nrformats+=alpha nrformats-=octal
 
+" Highlight trailing whitespace per https://bit.ly/35RTov2.
+highlight ExtraWhitespace ctermbg=red
+match ExtraWhitespace /\s\+$/
+
 " By default, set the spell checker language to English. Use <leader>l and
 " <leader>L to change to Spanish and English respectively. For both, ignore
 " Chinese characters.
@@ -243,8 +247,8 @@ func! MapGoSnippets()
 	xnoremap <leader>s cstring()<esc>P
 
 	" When an exec.Command variable from os/exec is visually selected, use
-	" <leader>e to pipe the command standard output and standard error.
-	xnoremap <leader>w yo..Stdout = os.Stdout<cr>..Stderr = os.Stderr<esc>^<c-v>kP
+	" <leader>S to pipe the command 'standard' output and 'standard' error.
+	xnoremap <leader>S yo..Stdout = os.Stdout<cr>..Stderr = os.Stderr<esc>^<c-v>kP
 endfunc
 autocmd FileType go call MapGoSnippets()
 
@@ -253,6 +257,12 @@ func! AbbrevJSSnippets()
 	iab <buffer> strtn toString()
 endfunc
 autocmd FileType javascript call AbbrevJSSnippets()
+
+" Define abbreviations for PHP snippets.
+func! AbbrevPHPSnippets()
+	iab <buffer> dietn die();
+endfunc
+autocmd FileType php call AbbrevPHPSnippets()
 
 " Define abbreviations for TeX snippets.
 func! AbbrevTeXSnippets()
@@ -616,6 +626,9 @@ nnoremap <leader>u :s/+/-/g<cr>:s/\//_/g<cr>
 " Use <leader>w to close tab, similar to Ctrl-W in GUI programs.
 nnoremap <leader>w :tabclose<cr>
 
+" Use <leader>W to search for trailing whitespace characters.
+nnoremap <leader>W /\s\+$<cr>
+
 " Use <leader>f to change case until end of the word.
 nnoremap <leader>f ve~
 
@@ -657,11 +670,6 @@ noremap <leader>8 :retab! 8<cr>:setlocal tabstop=4<cr>
 
 " Use <leader>$ to go to the last tab.
 nnoremap <leader>$ :tablast<cr>
-
-" Use <leader><space> to go to the first whitespace character at the end of the
-" current line. This is useful if one wants to delete unnecessary trailing
-" whitespace characters.
-nnoremap <leader><space> g_l
 
 " Use \ to go to next tab and <tab> to go to previous tab.
 nnoremap \ :tabn<cr>
