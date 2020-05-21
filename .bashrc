@@ -214,11 +214,14 @@ function mkc {
 	mkdir -p "$1" && cd "$1"
 }
 
-# Use jfmt to format JSON using Python if Python available.
+# If Python available, use jfmt to format JSON and phttp to start a HTTP server
+# for static files.
 if hash python3 2>/dev/null; then
 	alias jfmt="python3 -m json.tool"
+	alias phttp="python3 -m http.server"
 elif hash python 2>/dev/null; then
 	alias jfmt="python -m json.tool"
+	alias phttp="python -m http.server"
 fi
 
 # If wget is not available but cURL is available (such as on macOS), allow cURL

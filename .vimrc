@@ -223,6 +223,7 @@ func! AbbrevGoSnippets()
 	iab <buffer> netcn net.Conn
 	iab <buffer> netip net.IP
 	iab <buffer> nfoid fusion.NewObjectID()
+	iab <buffer> osf *os.File
 	iab <buffer> pkgm package main
 	iab <buffer> rnil return nil
 	iab <buffer> rntn rows.Next()
@@ -444,11 +445,6 @@ autocmd BufRead,BufNewFile *.vue setlocal filetype=html
 " We often use fc to edit bash commands in vim. Treat them as shell scripts.
 " Some versions of bash use a hyphen whereas other versions use a dot.
 autocmd BufRead bash-fc-*,bash-fc.* setlocal filetype=sh
-
-" Set smartindent, except for text files. Otherwise in text files, lines that
-" start with keywords such as 'do' are indented incorrectly.
-autocmd FileType * setlocal smartindent
-autocmd FileType markdown,text setlocal nosmartindent autoindent
 
 " Use the enter key to trigger commands in normal mode. Since <cr> is typically
 " used to execute a command in the command-line window (accessible via Ctrl-F),

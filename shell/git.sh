@@ -17,8 +17,6 @@ alias gds="gd --stat"
 alias ge="git blame"
 alias gf="git fetch"
 alias gg="git fetch && git reset --hard @{u}"
-alias gh="git show"
-alias ghns="gh --name-status"
 alias gian="git update-index --no-assume-unchanged"
 alias giau="git update-index --assume-unchanged"
 alias gl="git log --graph --decorate --stat --find-renames --date-order --show-signature"
@@ -70,12 +68,14 @@ alias lgtt="lg 'TODO TODO'"
 alias gxua="git config user.email 7pkvm5aw@slicealias.com"
 alias gxul='git config user.email $(git log -1 --pretty=format:%ae)'
 
-# Define function to show commit diff relative to HEAD.
-function ghh {
-	if [[ $1 == "" ]]; then
-		gh HEAD
-	else
+# Define function to show commit diff.
+function gh {
+	if [[ "$1" == "" ]]; then
+		git show
+	elif [[ "$1" =~ ^[0-9]+$ ]]; then
 		gh HEAD~$1
+	else
+		git show "$1"
 	fi
 }
 
