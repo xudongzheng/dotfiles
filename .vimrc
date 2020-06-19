@@ -142,6 +142,7 @@ func! AbbrevGoImport()
 	iab <buffer> tehn "encoding/hex"
 	iab <buffer> tejn "encoding/json"
 	iab <buffer> tepn "encoding/pem"
+	iab <buffer> tern "errors""
 	iab <buffer> tfcn "fusion/context"
 	iab <buffer> tfcrn "fusion/crypto/rand"
 	iab <buffer> tfen "fusion/errors"
@@ -253,17 +254,14 @@ func! MapGoSnippets()
 endfunc
 autocmd FileType go call MapGoSnippets()
 
-" Define abbreviations for JavaScript snippets.
-func! AbbrevJSSnippets()
-	iab <buffer> strtn toString()
-endfunc
-autocmd FileType javascript call AbbrevJSSnippets()
-
 " Define abbreviations for PHP snippets.
 func! AbbrevPHPSnippets()
 	iab <buffer> dietn die();
 endfunc
 autocmd FileType php call AbbrevPHPSnippets()
+
+" Many languages use toString() to convert to string.
+autocmd FileType java,javascript,scala iab <buffer> strtn toString()
 
 " Define abbreviations for TeX snippets.
 func! AbbrevTeXSnippets()
@@ -336,9 +334,10 @@ autocmd FileType markdown,text call MapText()
 " Use <leader>c to comment code. This should work in normal mode (for the active
 " line) and in visual line mode. We use U instead of I since the :normal command
 " accounts for the Colemak mapping. There are obviously many missing filetypes
-" and they will be added as needed.
-autocmd FileType conf,crontab,perl,python,readline,ruby,sh,sshconfig,tmux,yaml noremap <buffer> <leader>c :normal U# <esc>
-autocmd FileType arduino,c,cpp,cs,go,java,javascript,objc,php,scala noremap <buffer> <leader>c :normal U// <esc>
+" and they will be added as needed. While we don't use Groovy directly, we use
+" it through Gradle. We have xdefaults for the .Xresources file.
+autocmd FileType conf,crontab,dockerfile,perl,python,readline,ruby,sh,sshconfig,tmux,yaml,zsh noremap <buffer> <leader>c :normal U# <esc>
+autocmd FileType arduino,c,cpp,cs,go,groovy,java,javascript,objc,php,scala,swift noremap <buffer> <leader>c :normal U// <esc>
 autocmd FileType sql noremap <buffer> <leader>c :normal U-- <esc>
 autocmd FileType matlab,tex noremap <buffer> <leader>c :normal U% <esc>
 autocmd FileType vim noremap <buffer> <leader>c :normal U" <esc>
@@ -361,7 +360,7 @@ autocmd FileType go xnoremap <buffer> <leader>p y:r! echo "println($RANDOM, )"<c
 autocmd FileType go xnoremap <buffer> <leader>P y:r! echo "fmt.Println($RANDOM, )"<cr>==$P
 autocmd FileType javascript xnoremap <buffer> <leader>p y:r! echo "console.log($RANDOM, )"<cr>==$P
 autocmd FileType php xnoremap <buffer> <leader>p y:r! echo "var_dump($RANDOM, );"<cr>==$<left>P
-autocmd FileType python xnoremap <buffer> <leader>p y:r! echo "print($RANDOM, )"<cr>==$P
+autocmd FileType python,swift xnoremap <buffer> <leader>p y:r! echo "print($RANDOM, )"<cr>==$P
 autocmd FileType sh xnoremap <buffer> <leader>p y:r! echo "echo $RANDOM $"<cr>==$p
 
 " When editing a diff file using 'git add -p', use <leader>p to exclude the
@@ -443,8 +442,7 @@ autocmd BufRead,BufNewFile *.scad setlocal filetype=javascript
 autocmd BufRead,BufNewFile *.vue setlocal filetype=html
 
 " We often use fc to edit bash commands in vim. Treat them as shell scripts.
-" Some versions of bash use a hyphen whereas other versions use a dot.
-autocmd BufRead bash-fc-*,bash-fc.* setlocal filetype=sh
+autocmd BufRead bash-fc.* setlocal filetype=sh
 
 " Use the enter key to trigger commands in normal mode. Since <cr> is typically
 " used to execute a command in the command-line window (accessible via Ctrl-F),
@@ -540,7 +538,7 @@ endfunc
 autocmd FileType netrw nnoremap <buffer> s :call NetrwBrowse("..")<cr>
 autocmd FileType netrw nnoremap <buffer> t :call NetrwReturn()<cr>
 
-" Vim has a hard time when d above is preceded by a number. In Netrw, it only
+" Vim has a hard time when s above is preceded by a number. In Netrw, it only
 " works when the preceding number is less than or equal to the number of lines
 " between the current line and the end of the Netrw listing (inclusive). Use o
 " for going up multiple directories. Typically the number of levels is small and

@@ -53,7 +53,6 @@ else
 fi
 
 alias autk="vi ~/.ssh/authorized_keys"
-alias bhi="vi ~/.bash_history"
 alias c="cd"
 alias crt="crontab -e"
 alias dfh="df -h"

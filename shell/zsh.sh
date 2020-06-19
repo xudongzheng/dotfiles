@@ -39,3 +39,4 @@ zle -N editCommandLine
 bindkey '^x^e' editCommandLine
 
 alias history="history -i 0"
+alias vhi="vi ~/.zsh_history"
