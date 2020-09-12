@@ -247,6 +247,7 @@ func! MapGoSnippets()
 	xnoremap <leader>b c[]byte()<esc>P
 	xnoremap <leader>l clen()<esc>P
 	xnoremap <leader>s cstring()<esc>P
+	xnoremap <leader>f cfloat64()<esc>P
 
 	" When an exec.Command variable from os/exec is visually selected, use
 	" <leader>S to pipe the command 'standard' output and 'standard' error.
@@ -262,6 +263,10 @@ autocmd FileType php call AbbrevPHPSnippets()
 
 " Many languages use toString() to convert to string.
 autocmd FileType java,javascript,scala iab <buffer> strtn toString()
+
+" Swift uses String() to convert integer to string. For now Swift files are
+" treated as Scala file.
+autocmd FileType scala xnoremap <leader>s cString()<esc>P
 
 " Define abbreviations for TeX snippets.
 func! AbbrevTeXSnippets()
@@ -293,7 +298,7 @@ autocmd FileType html call AbbrevHTMLSnippets()
 
 " Define abbreviations for comments in various languages.
 autocmd FileType css iab <buffer> // /* */<left><left><left>
-autocmd FileType html,xml iab <buffer> // <!-- --><left><left><left><left>
+autocmd FileType html,svg,xml iab <buffer> // <!-- --><left><left><left><left>
 autocmd FileType sql iab <buffer> // --
 
 " Use tt instead of == to save two keystrokes on my ErgoBlue. In JavaScript, use
@@ -336,7 +341,7 @@ autocmd FileType markdown,text call MapText()
 " accounts for the Colemak mapping. There are obviously many missing filetypes
 " and they will be added as needed. While we don't use Groovy directly, we use
 " it through Gradle. We have xdefaults for the .Xresources file.
-autocmd FileType conf,crontab,dockerfile,perl,python,readline,ruby,sh,sshconfig,tmux,yaml,zsh noremap <buffer> <leader>c :normal U# <esc>
+autocmd FileType conf,crontab,dockerfile,make,perl,python,readline,ruby,sh,sshconfig,tmux,yaml,zsh noremap <buffer> <leader>c :normal U# <esc>
 autocmd FileType arduino,c,cpp,cs,go,groovy,java,javascript,objc,php,scala,swift noremap <buffer> <leader>c :normal U// <esc>
 autocmd FileType sql noremap <buffer> <leader>c :normal U-- <esc>
 autocmd FileType matlab,tex noremap <buffer> <leader>c :normal U% <esc>
@@ -346,13 +351,13 @@ autocmd FileType xdefaults noremap <buffer> <leader>c :normal U! <esc>
 " Use <leader>c to comment .ssh/known_hosts.
 autocmd BufRead known_hosts noremap <buffer> <leader>c :normal U#<esc>
 
-" Define <leader>c for HTML and XML. For normal mode, append first since
+" Define <leader>c for HTML, SVG, and XML. For normal mode, append first since
 " prepending first may cause the line to be wrapped into multiple lines. Since
 " we handle normal and visual mode separately, we do not need to use the :normal
 " command and should use the underlying QWERTY mapping. TODO look into multiline
 " comments for other languages as well.
-autocmd FileType html,xml nnoremap <buffer> <leader>c A --><esc>I<!-- <esc>
-autocmd FileType html,xml xnoremap <buffer> <leader>c c<!--<cr>--><esc>P
+autocmd FileType html,svg,xml nnoremap <buffer> <leader>c A --><esc>I<!-- <esc>
+autocmd FileType html,svg,xml xnoremap <buffer> <leader>c c<!--<cr>--><esc>P
 
 " In a code file, use  <leader>p and <leader>P to print the visually-selected
 " variables.
@@ -411,6 +416,11 @@ autocmd FileType * setlocal formatoptions-=b formatoptions-=l
 " code. Automatic wrapping will still occur in comments.
 autocmd FileType * setlocal formatoptions-=t
 autocmd FileType markdown,tex,text setlocal formatoptions+=t
+
+" Enable autoindent for Markdown and text files. Without this a lot of
+" formatting doesn't work correctly such as when using dqap to format a bullet
+" list where a bullet item has 3 or more lines.
+autocmd FileType markdown,text setlocal autoindent
 
 " Hitting enter on a commented line should not create another comment line. Make
 " an exception for CSS since the standard is block comments as opposed to line
@@ -598,8 +608,8 @@ let g:is_bash = 1
 " Treat all .tex files as LaTeX.
 let g:tex_flavor = "latex"
 
-" Use <leader>q to save Vim session to file and use <leader>Q to load Vim
-" session from file.
+" In normal mode, use <leader>q to save Vim session to file and use <leader>Q to
+" load Vim session from file.
 set sessionoptions=tabpages
 func! SaveSession()
 	try
@@ -613,6 +623,11 @@ func! LoadSession()
 	call delete(expand("~/vim-session"))
 endfunc
 nnoremap <leader>Q :call LoadSession()<cr>
+
+" In visual mode, use <leader>q and <leader>Q to place the selected text in
+" double and single quotes respectively.
+xnoremap <leader>q c""<esc>P
+xnoremap <leader>Q c''<esc>P
 
 " Use <leader>u to convert from standard base64 encoding to URL base64 encoding.
 nnoremap <leader>u :s/+/-/g<cr>:s/\//_/g<cr>
@@ -634,7 +649,7 @@ nnoremap <leader>g /=======<cr>
 xnoremap <leader>a ! LC_ALL=C sort<cr>
 
 " Use <leader>A to highlight non-ASCII characters.
-nnoremap <leader>A /[^\x00-\x7F]<cr>
+nnoremap <leader>A /[^ -~]<cr>
 
 " Use <leader>t to search for triple TODO.
 nnoremap <leader>t /TODO TODO<cr>
