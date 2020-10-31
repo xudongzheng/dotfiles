@@ -341,7 +341,7 @@ autocmd FileType markdown,text call MapText()
 " accounts for the Colemak mapping. There are obviously many missing filetypes
 " and they will be added as needed. While we don't use Groovy directly, we use
 " it through Gradle. We have xdefaults for the .Xresources file.
-autocmd FileType conf,crontab,dockerfile,make,perl,python,readline,ruby,sh,sshconfig,tmux,yaml,zsh noremap <buffer> <leader>c :normal U# <esc>
+autocmd FileType conf,config,crontab,dockerfile,make,perl,python,readline,ruby,sh,sshconfig,tmux,yaml,zsh noremap <buffer> <leader>c :normal U# <esc>
 autocmd FileType arduino,c,cpp,cs,go,groovy,java,javascript,objc,php,scala,swift noremap <buffer> <leader>c :normal U// <esc>
 autocmd FileType sql noremap <buffer> <leader>c :normal U-- <esc>
 autocmd FileType matlab,tex noremap <buffer> <leader>c :normal U% <esc>
@@ -444,6 +444,9 @@ autocmd FileType tex syntax spell toplevel
 " indentation to work. OCaml is another candidate for F# but it doesn't handle
 " braces well.
 autocmd BufRead,BufNewFile *.fs,*.kt,*.swift setlocal filetype=scala
+
+" Treat Device Tree overlay files as Device Tree files.
+autocmd BufRead,BufNewFile *.overlay setlocal filetype=dts
 
 " Treat .scad files (for OpenSCAD) as JavaScript files.
 autocmd BufRead,BufNewFile *.scad setlocal filetype=javascript
