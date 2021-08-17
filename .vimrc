@@ -218,7 +218,6 @@ func! AbbrevGoSnippets()
 	iab <buffer> ioe io.EOF
 	iab <buffer> ior io.Reader
 	iab <buffer> iow io.Writer
-	iab <buffer> iss i++
 	iab <buffer> maintn func main() {<cr><cr>}<up><bs>
 	iab <buffer> nametn Name()
 	iab <buffer> netcn net.Conn
@@ -301,12 +300,18 @@ autocmd FileType css iab <buffer> // /* */<left><left><left>
 autocmd FileType html,svg,xml iab <buffer> // <!-- --><left><left><left><left>
 autocmd FileType sql iab <buffer> // --
 
-" Use tt instead of == to save two keystrokes on my ErgoBlue. In JavaScript, use
-" === to ensure that the types also match. Do the same in HTML as equality
-" comparison will be limited to <script> and Vue.js templates, where we want the
-" same behavior.
+" Use tt instead of ==, which saves two keystrokes on my keyboard. In
+" JavaScript, use === to ensure that the types also match. Do the same in HTML
+" as equality comparison can appear in <script> and Vue.js templates, where we
+" want the same behavior.
 autocmd FileType * iab <buffer> tt ==
 autocmd FileType html,javascript iab <buffer> tt ===
+
+" Define abbreviations for integer incrementation, which is the same in most
+" languages.
+autocmd FileType * iab <buffer> iss i++
+autocmd FileType * iab <buffer> jss j++
+autocmd FileType * iab <buffer> kss k++
 
 " Define abbreviations for TODO. Three TODO is better than two since two will
 " always end up on the same line, making it easier to grep.
@@ -341,8 +346,8 @@ autocmd FileType markdown,text call MapText()
 " accounts for the Colemak mapping. There are obviously many missing filetypes
 " and they will be added as needed. While we don't use Groovy directly, we use
 " it through Gradle. We have xdefaults for the .Xresources file.
-autocmd FileType conf,config,crontab,dockerfile,make,perl,python,readline,ruby,sh,sshconfig,tmux,yaml,zsh noremap <buffer> <leader>c :normal U# <esc>
-autocmd FileType arduino,c,cpp,cs,go,groovy,java,javascript,objc,php,scala,swift noremap <buffer> <leader>c :normal U// <esc>
+autocmd FileType cmake,conf,config,crontab,debsources,dockerfile,make,perl,python,readline,ruby,sh,sshconfig,tmux,yaml,zsh noremap <buffer> <leader>c :normal U# <esc>
+autocmd FileType arduino,c,cpp,cs,dts,go,groovy,java,javascript,objc,php,scala,swift noremap <buffer> <leader>c :normal U// <esc>
 autocmd FileType sql noremap <buffer> <leader>c :normal U-- <esc>
 autocmd FileType matlab,tex noremap <buffer> <leader>c :normal U% <esc>
 autocmd FileType vim noremap <buffer> <leader>c :normal U" <esc>
@@ -591,14 +596,15 @@ autocmd FileType netrw nnoremap <buffer> M :call NetrwMkdir()<cr>
 autocmd FileType netrw nnoremap <buffer> r :call NetrwRename()<cr>
 autocmd FileType netrw nnoremap <buffer> x :call NetrwRemove()<cr>
 
-" Display file modification time in netrw browser.
+" Have netrw display include file size and modification time as there's no
+" drawback to including them.
 let g:netrw_liststyle = 1
 
 " Netrw hides line numbers by default. Show relative line numbers in netrw.
 let g:netrw_bufsettings = "noma nomod nu nobl nowrap ro rnu"
 
 " Display directories above files but otherwise sort alphabetically.
-let g:netrw_sort_sequence="[\/]$"
+let g:netrw_sort_sequence="[\/]"
 
 " Hide the .DS_Store file, .git directory, the current directory, and the parent
 " directory. We do not have to exclude .swp files since those are stored in a
