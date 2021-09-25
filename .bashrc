@@ -130,6 +130,7 @@ function aliasDir {
 aliasDir cde ~/Desktop
 aliasDir cdl ~/Downloads
 aliasDir cdoc ~/Documents
+aliasDir css ~/Documents/screenshot
 aliasDir cgo "$GOROOT"
 aliasDir csh ~/.ssh
 
@@ -243,7 +244,7 @@ if hash apt-get 2>/dev/null; then
 	if [[ $USER == "root" ]]; then
 		alias agar="ag autoremove"
 		alias agd="ag update"
-		alias agg="ag upgrade"
+		alias agg="ag upgrade --with-new-pkgs"
 		alias agi="ag install"
 		alias agr="ag remove"
 		alias agu="agd && agg"
@@ -257,10 +258,12 @@ if hash apt-get 2>/dev/null; then
 fi
 
 # Define aliases for Go.
-alias gob="go build"
-alias gog="go generate"
-alias got="go test -c"
-alias gotn="got -o /dev/null"
+if hash go 2>/dev/null; then
+	alias gob="go build"
+	alias gog="go generate"
+	alias got="go test -c"
+	alias gotn="got -o /dev/null"
+fi
 
 if hash docker 2>/dev/null; then
 	source "$(dirname $bashSource)/shell/docker.sh"
