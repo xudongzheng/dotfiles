@@ -232,22 +232,19 @@ if ! hash wget 2>/dev/null; then
 	fi
 fi
 
-# If apt-get is available, define related aliases. Some are only necessary of
-# the user is root.
-if hash apt-get 2>/dev/null; then
-	alias ag="apt-get"
-
-	# Use ags instead of acs for "apt-cache search" since c and s use the same
-	# finger.
-	alias ags="apt-cache search"
+# If apt is available, define related aliases. Some are only necessary of the
+# user is root.
+if hash apt 2>/dev/null; then
+	# Use aps instead of acs for alias since c and s use the same finger.
+	alias aps="apt-cache search"
 
 	if [[ $USER == "root" ]]; then
-		alias agar="ag autoremove"
-		alias agd="ag update"
-		alias agg="ag upgrade --with-new-pkgs"
-		alias agi="ag install"
-		alias agr="ag remove"
-		alias agu="agd && agg"
+		alias apar="apt autoremove"
+		alias apd="apt update"
+		alias apg="apt upgrade --with-new-pkgs"
+		alias api="apt install"
+		alias apr="apt remove"
+		alias apu="apd && apg"
 	fi
 
 	# Use ali to list all installed packages. This writes standard error of "apt
