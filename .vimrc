@@ -450,8 +450,11 @@ autocmd FileType tex syntax spell toplevel
 " braces well.
 autocmd BufRead,BufNewFile *.fs,*.kt,*.swift setlocal filetype=scala
 
-" Treat Device Tree overlay files as Device Tree files.
+" Treat Device Tree overlay files (for Zephyr) as Device Tree files.
 autocmd BufRead,BufNewFile *.overlay setlocal filetype=dts
+
+" Treat defconfig (for Zephyr) files as regular configuration files.
+autocmd BufRead,BufNewFile *_defconfig setlocal filetype=conf
 
 " Treat .scad files (for OpenSCAD) as JavaScript files.
 autocmd BufRead,BufNewFile *.scad setlocal filetype=javascript
