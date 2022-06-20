@@ -206,10 +206,7 @@ func! AbbrevGoSnippets()
 	iab <buffer> errtn err.Error()
 	iab <buffer> ertn Error()
 	iab <buffer> ertw errors.New("TODO TODO TODO wip")
-	iab <buffer> fkr for key := range
-	iab <buffer> fkvr for key, value := range
 	iab <buffer> foid fusion.ObjectID
-	iab <buffer> fvr for _, value := range
 	iab <buffer> gftn go func() {<cr><cr>}()<up><bs>
 	iab <buffer> ifce interface{}
 	iab <buffer> imc import "C"
@@ -238,6 +235,20 @@ func! AbbrevGoSnippets()
 	iab <buffer> txerr tx, err :=
 	iab <buffer> utctn UTC()
 	iab <buffer> x5c *x509.Certificate
+
+	" Define abbreviations for looping through slices.
+	iab <buffer> fkr for key := range
+	iab <buffer> fkr1 for k1 := range
+	iab <buffer> fkr2 for k2 := range
+	iab <buffer> fkr3 for k3 := range
+	iab <buffer> fkvr for key, value := range
+	iab <buffer> fkvr1 for k1, v1 := range
+	iab <buffer> fkvr2 for k2, v2 := range
+	iab <buffer> fkvr3 for k3, v3 := range
+	iab <buffer> fvr for _, value := range
+	iab <buffer> fvr1 for _, v1 := range
+	iab <buffer> fvr2 for _, v2 := range
+	iab <buffer> fvr3 for _, v3 := range
 endfunc
 autocmd FileType go call AbbrevGoSnippets()
 
@@ -346,7 +357,7 @@ autocmd FileType markdown,text call MapText()
 " accounts for the Colemak mapping. There are obviously many missing filetypes
 " and they will be added as needed. While we don't use Groovy directly, we use
 " it through Gradle. We have xdefaults for the .Xresources file.
-autocmd FileType cmake,conf,config,crontab,debsources,dockerfile,make,perl,python,readline,ruby,sh,sshconfig,tmux,yaml,zsh noremap <buffer> <leader>c :normal U# <esc>
+autocmd FileType cmake,conf,config,crontab,debsources,dockerfile,kconfig,make,perl,python,readline,ruby,sh,sshconfig,tmux,yaml,zsh noremap <buffer> <leader>c :normal U# <esc>
 autocmd FileType arduino,c,cpp,cs,dts,go,groovy,java,javascript,objc,php,scala,swift noremap <buffer> <leader>c :normal U// <esc>
 autocmd FileType sql noremap <buffer> <leader>c :normal U-- <esc>
 autocmd FileType matlab,tex noremap <buffer> <leader>c :normal U% <esc>
