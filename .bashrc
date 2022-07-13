@@ -66,7 +66,6 @@ alias fep="find . | ep"
 alias fm="free -m"
 alias fms="fm -s 5"
 alias hig="history | ep"
-alias lgr="git ls-files | ep"
 alias ll="l -hla"
 alias n="netstat -nlp"
 alias ng="n | ep"
@@ -82,6 +81,9 @@ alias wl="wc -l"
 
 # Define alias for xargs to correctly handle lines containing spaces.
 alias xargs="tr '\n' '\0' | xargs -0"
+
+# Define alias to sort current directory from smallest to largest.
+alias lsort="find . -mindepth 1 -maxdepth 1 | xargs du -sh | sort -h"
 
 # Use dfmt to format Go code using gofmt. Use wfmt to format it in the working
 # directory. Use gfmt to do it across the entire Git repository.
