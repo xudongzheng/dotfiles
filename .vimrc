@@ -581,9 +581,9 @@ for i in range(1,9)
 	exec cmd
 endfor
 
-" Define additional o keys for navigating to the root directory and the home
-" directory.
-autocmd FileType netrw nnoremap <buffer> os :call NetrwBrowse("/")<cr>
+" Define additional keys for navigating to the (r) root directory and the (h)
+" home directory.
+autocmd FileType netrw nnoremap <buffer> or :call NetrwBrowse("/")<cr>
 autocmd FileType netrw nnoremap <buffer> oh :call NetrwBrowse($HOME)<cr>
 
 " Map additional functions for creating, renaming, and deleting. This uses M
