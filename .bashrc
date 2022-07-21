@@ -128,16 +128,11 @@ aliasDir cde ~/Desktop
 aliasDir cdl ~/Downloads
 aliasDir cdoc ~/Documents
 aliasDir css ~/Documents/screenshot
-aliasDir cgo "$GOROOT"
 aliasDir csh ~/.ssh
 
 # Define alias for changing to the dotfiles directory.
 dotDir=$(dirname "$bashSource")
 aliasDir cdot "$dotDir"
-
-# In some environments, there will be a src directory in the same directory as
-# the dotfiles directory. Use csr to change to it if it exists.
-aliasDir csr "$dotDir/../src"
 
 # Define function to edit shell configuration file in the working directory.
 function src {
@@ -170,6 +165,17 @@ function cu {
 	for i in $(seq 1 $1); do
 		c ..
 	done
+}
+
+# Define xe function for editing and executing the previous command. The name
+# was chosen since Ctrl-X Ctrl-E is used for editing the current command. This
+# is preferred over fc as that requires two consecutive presses with the same
+# finger.
+function xe {
+	builtin fc
+}
+function fc {
+	echo "use xe to edit last command"
 }
 
 # Use cdn to go to the directory containing a given file. This is helpful when
