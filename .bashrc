@@ -167,15 +167,11 @@ function cu {
 	done
 }
 
-# Define xe function for editing and executing the previous command. The name
-# was chosen since Ctrl-X Ctrl-E is used for editing the current command. This
-# is preferred over fc as that requires two consecutive presses with the same
-# finger.
+# Define xe as an alternative for fc. The name was chosen since Ctrl-X Ctrl-E is
+# used for editing the current command. This is preferred over fc as that
+# requires two consecutive presses with the same finger.
 function xe {
-	builtin fc
-}
-function fc {
-	echo "use xe to edit last command"
+	fc
 }
 
 # Use cdn to go to the directory containing a given file. This is helpful when
