@@ -461,8 +461,9 @@ autocmd FileType tex syntax spell toplevel
 " braces well.
 autocmd BufRead,BufNewFile *.fs,*.kt,*.swift setlocal filetype=scala
 
-" Treat Device Tree overlay files (for Zephyr) as Device Tree files.
-autocmd BufRead,BufNewFile *.overlay setlocal filetype=dts
+" Treat Device Tree overlay files (for Zephyr) and ZMK keymap files as Device
+" Tree files.
+autocmd BufRead,BufNewFile *.keymap,*.overlay setlocal filetype=dts
 
 " Treat defconfig (for Zephyr) files as regular configuration files.
 autocmd BufRead,BufNewFile *_defconfig setlocal filetype=conf
@@ -685,6 +686,23 @@ nnoremap <leader>b :echo bufnr('%')<cr>
 
 " Use <leader>i to make id uppercase.
 nnoremap <leader>i :s/id\>/ID/g<cr>
+
+" Use <leader>j to copy to system clipboard. In normal mode, it triggers an
+" operator that takes a motion. In visual mode, it handles the selected text.
+function! XclipOperator(type)
+	" Copy to default register. The command depends on whether it's a motion in
+	" normal mode or if text is already selected in visual mode.
+	if a:type ==# 'char'
+		execute "normal! `[v`]y"
+	else
+		execute "normal! `<v`>y"
+	endif
+
+	" Copy to system clipboard with xclip.
+	call system("xclip -sel clip", getreg('"'))
+endfunction
+nnoremap <leader>j :set operatorfunc=XclipOperator<cr>g@
+xnoremap <leader>j :<c-u>call XclipOperator(visualmode())<cr>
 
 " Use <leader>m to open netrw in new tab.
 nnoremap <leader>m :Te<cr>

@@ -13,8 +13,6 @@ case "$TERM" in
 	xterm*|rxvt*)
 		PS1="\[\e]0;\u@\h:\w\a\]$PS1"
 		;;
-	*)
-		;;
 esac
 
 alias vhi="vi ~/.bash_history"

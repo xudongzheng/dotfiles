@@ -56,7 +56,7 @@ alias autk="vi ~/.ssh/authorized_keys"
 alias c="cd"
 alias crt="crontab -e"
 alias dfh="df -h"
-alias dr="date -R"
+alias dr="date --rfc-3339=seconds"
 alias ep="grep --color"
 alias epi="ep -i"
 alias epr="ep -Rn"
@@ -211,6 +211,29 @@ function sri {
 # necessary.
 function mkc {
 	mkdir -p "$1" && cd "$1"
+}
+
+# Use s to run script to avoid accidentally using the incorrect interpreter or
+# compiler.
+function s {
+	ext="${1##*.}"
+	case $ext in
+		go)
+			go build $1
+			;;
+		pl)
+			perl $1
+			;;
+		py)
+			python3 $1
+			;;
+		sh)
+			bash $1
+			;;
+		*)
+			echo unrecognized script extension
+			;;
+	esac
 }
 
 # If Python available, use jfmt to format JSON and phttp to start a HTTP server
