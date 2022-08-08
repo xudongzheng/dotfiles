@@ -24,7 +24,6 @@ alias gl="git log --graph --decorate --stat --find-renames --date-order --show-s
 alias glb="gl --branches --remotes --tags"
 alias glf="gl --pretty=fuller"
 alias glo="git log --pretty=oneline --abbrev-commit"
-alias glom="gl origin/master"
 alias gm="git merge"
 alias gma="gm --abort"
 alias gn="git clone"
@@ -53,6 +52,20 @@ alias gxm="gx -m"
 alias gxn="gx --amend"
 alias gxr='gx -m "$(date -R)"'
 alias gy="gu && gxar && gp"
+
+# Define functions for working with main/master depending on what is used by the
+# project.
+function gitma {
+	if git show-ref -q --heads main; then
+		echo "main"
+	else
+		echo "master"
+	fi
+}
+function gcm { git checkout $(gitma); }
+function gmm { git merge $(gitma); }
+function grm { git rebase $(gitma); }
+function grim { git rebase -i $(gitma); }
 
 # Define aliases for searching a Git repository. Replace \n with \x00 so xargs
 # correctly handles files with a space in their name. Per https://goo.gl/DLz58m,

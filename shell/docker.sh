@@ -1,5 +1,6 @@
+alias dim="docker images"
+alias din="docker inspect"
 alias dpsa="docker ps -a"
-alias di="docker inspect"
 
 function dexb {
 	docker exec -it $1 su -
