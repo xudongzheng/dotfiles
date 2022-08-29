@@ -388,7 +388,7 @@ autocmd FileType sh xnoremap <buffer> <leader>p y:r! echo "echo $RANDOM $"<cr>==
 " visual selection.
 autocmd BufRead addp-hunk-edit.diff xnoremap <buffer> <leader>p :s/^-/ /e<cr>gv:g/^+/d<cr>
 
-func! HeadingMarkdown()
+func! MapMarkdownSnippets()
 	" In Markdown, use <leader><cr>1 through <leader><cr>6 for making a line
 	" into a heading.
 	nnoremap <buffer> <leader><cr>1 I# <esc>
@@ -402,8 +402,11 @@ func! HeadingMarkdown()
 	" italics.
 	xnoremap <buffer> <leader><cr>b c****<esc><left>P
 	xnoremap <buffer> <leader><cr>i c**<esc>P
+
+	" Use <leader><cr>l to make the selected text a link.
+	xnoremap <buffer> <leader><cr>l c[]<esc>P<right>a()<esc>
 endfunc
-autocmd FileType markdown call HeadingMarkdown()
+autocmd FileType markdown call MapMarkdownSnippets()
 
 " When modifying crontab, use <leader>* as a shortcut for defining a cron that
 " runs every minute.
@@ -695,7 +698,7 @@ function! XclipOperator(type)
 	if a:type ==# 'char'
 		execute "normal! `[v`]y"
 	else
-		execute "normal! `<v`>y"
+		execute "normal! gvy"
 	endif
 
 	" Copy to system clipboard with xclip.
@@ -703,6 +706,18 @@ function! XclipOperator(type)
 endfunction
 nnoremap <leader>j :set operatorfunc=XclipOperator<cr>g@
 xnoremap <leader>j :<c-u>call XclipOperator(visualmode())<cr>
+
+" Use <leader>J to reformat selection with arbitrary width and copy to
+" clipboard. This is useful for writing messages in Vim before sending with an
+" external application.
+function! XclipReformat()
+	setlocal textwidth=1000
+	execute "normal! gvgqgv"
+	call XclipOperator(visualmode())
+	setlocal textwidth=80
+	execute "normal! gvgq"
+endfunction
+xnoremap <leader>J :<c-u>call XclipReformat()<cr>
 
 " Use <leader>m to open netrw in new tab.
 nnoremap <leader>m :Te<cr>

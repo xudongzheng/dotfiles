@@ -75,6 +75,7 @@ alias t="tmux new-session -t 0 || tmux"
 alias tm="touch -m"
 alias usm="useradd -s /bin/bash -m"
 alias vi="vim"
+alias vid="vi -"
 alias vie="vi -c Explore"
 alias vrc="vi .vimrc"
 alias wl="wc -l"
@@ -118,17 +119,22 @@ alias duh="du -sh"
 # Create alias for parsing x509 certificate.
 alias osx509="openssl x509 -text -noout -in"
 
-# Create aliases for changing to common directories for directories that exists.
 function aliasDir {
-	if [[ -d "$2" ]]; then
-		alias $1="c '$2'"
-	fi
+	for dir in "${@:2}"; do
+		if [[ -d "$dir" ]]; then
+			alias $1="c '$dir'"
+			return
+		fi
+	done
 }
+
+# Create aliases for changing to common directories for directories that exists.
 aliasDir cde ~/Desktop
 aliasDir cdl ~/Downloads
 aliasDir cdoc ~/Documents
-aliasDir css ~/Documents/screenshot
 aliasDir csh ~/.ssh
+aliasDir csr ~/src
+aliasDir css ~/Documents/screenshot
 
 # Define alias for changing to the dotfiles directory.
 dotDir=$(dirname "$bashSource")
@@ -171,7 +177,7 @@ function cu {
 # used for editing the current command. This is preferred over fc as that
 # requires two consecutive presses with the same finger.
 function xe {
-	fc
+	builtin fc
 }
 
 # Use cdn to go to the directory containing a given file. This is helpful when
