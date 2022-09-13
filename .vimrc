@@ -105,8 +105,11 @@ set backspace=2
 set nrformats+=alpha nrformats-=octal
 
 " Highlight trailing whitespace per https://bit.ly/35RTov2.
-highlight ExtraWhitespace ctermbg=red
-match ExtraWhitespace /\s\+$/
+func! HighlightTrailingWS()
+	highlight ExtraWhitespace ctermbg=red
+	match ExtraWhitespace /\s\+$/
+endfunc
+autocmd BufEnter * call HighlightTrailingWS()
 
 " By default, set the spell checker language to English. Use <leader>l and
 " <leader>L to change to Spanish and English respectively. For both, ignore
@@ -115,11 +118,11 @@ set spelllang=en,cjk
 nnoremap <leader>l :setlocal spelllang=es,cjk<cr>
 nnoremap <leader>L :setlocal spelllang=en,cjk<cr>
 
-" Enable spell checker for Git commits, TeX, and text files. Since 'spell' is
-" 'local to window' rather than 'local to buffer', this uses BufEnter instead of
-" FileType. The latter will not run when an opened file is opened in a separate
-" window. When doing so, the new window will use the default spell checker
-" setting as defined here regardless of the setting in the other windows.
+" Enable spell checker automatically for text files. Since 'spell' is 'local to
+" window' rather than 'local to buffer', this uses BufEnter instead of FileType.
+" The latter will not run when an opened file is opened in a separate window.
+" When doing so, the new window will use the default spell checker setting as
+" defined here regardless of the setting in the other windows.
 func! EnableSpell()
 	if index(["gitcommit", "markdown", "tex", "text"], &filetype) >= 0
 		setlocal spell
@@ -743,5 +746,5 @@ nnoremap <tab> :tabp<cr>
 " Use <leader>' to convert the surrounding double quotes to single quotes.
 " Simiarly use <leader>" to convert from single quotes to double quotes. Both
 " use `` to return to the previous cursor location after replacing a quote.
-nnoremap <leader>' ?"<cr>r'``/"<cr>r'``
-nnoremap <leader>" ?'<cr>r"``/'<cr>r"``
+nnoremap <leader>' di"v<left>r'p
+nnoremap <leader>" di'v<left>r"p
