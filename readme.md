@@ -16,7 +16,7 @@ includes:
 I run the following command to setup my dotfiles on a new system.
 
 ```
-git clone git://github.com/xudongzheng/dotfiles.git dot && bash dot/setup.sh && exit
+git clone https://github.com/xudongzheng/dotfiles.git dot && bash dot/setup.sh && exit
 ```
 
 The `setup.sh` script will untrack the master branch from remote. Rather than
