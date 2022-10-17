@@ -225,16 +225,16 @@ function s {
 	ext="${1##*.}"
 	case $ext in
 		go)
-			go build $1
+			go run "$@"
 			;;
 		pl)
-			perl $1
+			perl "$@"
 			;;
 		py)
-			python3 $1
+			python3 "$@"
 			;;
 		sh)
-			bash $1
+			bash "$@"
 			;;
 		*)
 			echo unrecognized script extension
