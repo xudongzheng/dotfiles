@@ -83,9 +83,6 @@ alias wl="wc -l"
 # Define alias for xargs to correctly handle lines containing spaces.
 alias xargs="tr '\n' '\0' | xargs -0"
 
-# Define alias to sort current directory from smallest to largest.
-alias lsort="find . -mindepth 1 -maxdepth 1 | xargs du -sh | sort -h"
-
 # Use dfmt to format Go code using gofmt. Use wfmt to format it in the working
 # directory. Use gfmt to do it across the entire Git repository.
 alias dfmt="gofmt -w=true -s"
@@ -217,6 +214,16 @@ function sri {
 # necessary.
 function mkc {
 	mkdir -p "$1" && cd "$1"
+}
+
+# Define function to sort directory from smallest to largest.
+function lsort {
+	if [ "$1" == "" ]; then
+		dir="."
+	else
+		dir="$1"
+	fi
+	find "$dir" -mindepth 1 -maxdepth 1 | xargs du -sh | sort -h
 }
 
 # Use s to run script to avoid accidentally using the incorrect interpreter or
