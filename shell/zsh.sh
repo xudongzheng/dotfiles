@@ -1,8 +1,11 @@
 # Use the same prompt format as Bash on Linux.
 PROMPT="%n@%m:%~$ "
 
-# Increase Zsh history size.
+# Increase Zsh history size. $SAVEHIST increases the number of entries written
+# to the history file. $HISTSIZE increases the number of entries loaded from the
+# history file and available for searching with Ctrl-R.
 SAVEHIST=100000
+HISTSIZE=100000
 
 # Store history with timestamp.
 setopt EXTENDED_HISTORY
