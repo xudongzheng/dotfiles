@@ -24,22 +24,15 @@ elif [[ $SHELL == "/bin/zsh" ]]; then
 	source "$(dirname $bashSource)/shell/zsh.sh"
 fi
 
-# Load platform specific code.
+# Define aliases for checksums on macOS to match the commands on Linux.
 uname=$(uname)
 if [[ $uname == "Darwin" ]]; then
-	source "$(dirname $bashSource)/shell/macos.sh"
-elif [[ $uname == "CYGWIN_NT-10.0" ]]; then
-	alias cu="cd /cygdrive/c/Users/$USER"
-
-	# Set $CC to use the MinGW GCC.
-	export CC="$(uname -m)-w64-mingw32-gcc"
-
-	# Set $LOCALAPPDATA so Go 1.10 can correctly determine the cache directory
-	# (though there are other applications as well).
-	export LOCALAPPDATA='C:\Users\'$USER'\AppData\Local'
-
-	# Per https://goo.gl/bSedxZ, create native symlinks.
-	export CYGWIN="winsymlinks:nativestrict"
+	alias md5sum="md5"
+	alias sha1sum="shasum"
+	alias sha224sum="shasum -a 224"
+	alias sha256sum="shasum -a 256"
+	alias sha384sum="shasum -a 384"
+	alias sha512sum="shasum -a 512"
 fi
 
 # The ls command is different on Linux and macOS. Set color scheme for macOS
@@ -50,6 +43,15 @@ if [[ $uname == "Darwin" ]]; then
 	alias l="ls"
 else
 	alias l="ls --group-directories-first --color=auto"
+fi
+
+# Define aliases for top.
+if [[ $uname == "Darwin" ]]; then
+	alias tom="top -o mem"
+	echo lol
+else
+	alias top="top -E m -e m -o %CPU"
+	alias tom="top -E m -e m -o %MEM"
 fi
 
 alias autk="vi ~/.ssh/authorized_keys"
