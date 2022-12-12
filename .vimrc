@@ -483,12 +483,9 @@ autocmd BufRead,BufNewFile *.vue setlocal filetype=html
 " We often use fc to edit bash commands in vim. Treat them as shell scripts.
 autocmd BufRead bash-fc.* setlocal filetype=sh
 
-" Use the enter key to trigger commands in normal mode. Since <cr> is typically
-" used to execute a command in the command-line window (accessible via Ctrl-F),
-" we will use :x instead.
-nnoremap <cr> :
-xnoremap <cr> :
-autocmd CmdwinEnter * cabbrev <buffer> x <cr>
+" Use m to trigger commands in normal mode.
+nnoremap m :
+xnoremap m :
 
 " Automatically resize splits in the active tab when the window is resized.
 " Resize splits when switching to a tab to account for splits in background tabs
