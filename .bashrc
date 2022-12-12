@@ -48,7 +48,6 @@ fi
 # Define aliases for top.
 if [[ $uname == "Darwin" ]]; then
 	alias tom="top -o mem"
-	echo lol
 else
 	alias top="top -E m -e m -o %CPU"
 	alias tom="top -E m -e m -o %MEM"
