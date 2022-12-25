@@ -38,6 +38,9 @@ fi
 
 # Create symlinks for other configuration files.
 files=(.gitconfig .inputrc)
+if hash screen 2>/dev/null; then
+	files+=(.screenrc)
+fi
 if hash tmux 2>/dev/null; then
 	files+=(.tmux.conf)
 fi

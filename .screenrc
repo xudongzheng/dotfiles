@@ -1,0 +1,15 @@
+# Use Ctrl-B instead of Ctrl-A to be consistent with tmux.
+escape ^Bb
+
+# Use . to renumber the current window and ' to navigate to a window to be
+# consistent with tmux.
+bind . colon "number "
+bind "'" colon "select "
+
+# Disable startup copyright message.
+startup_message off
+
+# Show list of windows at bottom.
+hardstatus on
+hardstatus alwayslastline
+hardstatus string "%w"
