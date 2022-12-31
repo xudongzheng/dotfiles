@@ -53,6 +53,13 @@ else
 	alias tom="top -E m -e m -o %MEM"
 fi
 
+# Define realpath function for resolving absolute path.
+if [[ $uname == "Darwin" ]]; then
+	function realpath {
+		echo $(cd $(dirname "$1") && pwd)/$(basename "$1")
+	}
+fi
+
 alias autk="vi ~/.ssh/authorized_keys"
 alias c="cd"
 alias crt="crontab -e"
