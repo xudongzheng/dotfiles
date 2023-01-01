@@ -225,7 +225,7 @@ function mkc {
 
 # Define function to sort directory from smallest to largest.
 function lsort {
-	if [ "$1" == "" ]; then
+	if [[ "$1" == "" ]]; then
 		dir="."
 	else
 		dir="$1"
