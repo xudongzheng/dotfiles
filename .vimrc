@@ -360,7 +360,7 @@ autocmd FileType markdown,text call MapText()
 " accounts for the Colemak mapping. There are obviously many missing filetypes
 " and they will be added as needed. While we don't use Groovy directly, we use
 " it through Gradle. We have xdefaults for the .Xresources file.
-autocmd FileType cfg,cmake,conf,config,crontab,debsources,dockerfile,kconfig,make,perl,python,readline,ruby,sh,sshconfig,sshdconfig,tmux,yaml,zsh noremap <buffer> <leader>c :normal U# <esc>
+autocmd FileType cfg,cmake,conf,config,crontab,debsources,dockerfile,kconfig,make,pamconf,perl,python,readline,ruby,sh,sshconfig,sshdconfig,tmux,yaml,zsh noremap <buffer> <leader>c :normal U# <esc>
 autocmd FileType arduino,c,cpp,cs,dts,go,groovy,java,javascript,objc,php,scala,swift noremap <buffer> <leader>c :normal U// <esc>
 autocmd FileType sql noremap <buffer> <leader>c :normal U-- <esc>
 autocmd FileType matlab,tex noremap <buffer> <leader>c :normal U% <esc>
@@ -461,11 +461,11 @@ autocmd BufRead,BufNewFile * if &filetype == "" | setlocal filetype=text | endif
 " https://goo.gl/YbxTHp for more information on spell checking in TeX files.
 autocmd FileType tex syntax spell toplevel
 
-" Treat .fs (F#), .kt (Kotlin), and .swift files as Scala files. They are
-" obviously different but are similar enough for most of syntax highlighting and
+" Treat .fs (F#) and .kt (Kotlin) files as Scala files. They are obviously
+" different but are similar enough for most of syntax highlighting and
 " indentation to work. OCaml is another candidate for F# but it doesn't handle
 " braces well.
-autocmd BufRead,BufNewFile *.fs,*.kt,*.swift setlocal filetype=scala
+autocmd BufRead,BufNewFile *.fs,*.kt setlocal filetype=scala
 
 " Treat Device Tree overlay files (for Zephyr) and ZMK keymap files as Device
 " Tree files.
@@ -473,12 +473,6 @@ autocmd BufRead,BufNewFile *.keymap,*.overlay setlocal filetype=dts
 
 " Treat defconfig (for Zephyr) files as regular configuration files.
 autocmd BufRead,BufNewFile *_defconfig setlocal filetype=conf
-
-" Treat .scad files (for OpenSCAD) as JavaScript files.
-autocmd BufRead,BufNewFile *.scad setlocal filetype=javascript
-
-" Treat .vue files (for Vue.js) as HTML files.
-autocmd BufRead,BufNewFile *.vue setlocal filetype=html
 
 " We often use fc to edit bash commands in vim. Treat them as shell scripts.
 autocmd BufRead bash-fc.* setlocal filetype=sh
