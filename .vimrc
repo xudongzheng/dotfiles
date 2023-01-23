@@ -119,16 +119,16 @@ nnoremap <leader>l :setlocal spelllang=es,cjk<cr>
 nnoremap <leader>L :setlocal spelllang=en,cjk<cr>
 
 " Enable spell checker automatically for text files. Since 'spell' is 'local to
-" window' rather than 'local to buffer', this uses BufEnter instead of FileType.
-" The latter will not run when an opened file is opened in a separate window.
-" When doing so, the new window will use the default spell checker setting as
-" defined here regardless of the setting in the other windows.
+" window' rather than 'local to buffer', it is necessary to use BufRead and
+" BufNewFile instead of FileType. This combination ensures that the setting
+" takes effect in every window that opens the buffer. With FileType, it would
+" only take effect in the first window that opens the buffer.
 func! EnableSpell()
 	if index(["gitcommit", "markdown", "tex", "text"], &filetype) >= 0
 		setlocal spell
 	endif
 endfunc
-autocmd BufEnter * call EnableSpell()
+autocmd BufRead,BufNewFile * call EnableSpell()
 
 " Define abbreviation for Go import paths.
 func! AbbrevGoImport()
@@ -455,6 +455,18 @@ autocmd FileType * set iskeyword=@,48-57,_
 
 " Treat all unrecognized files as text files.
 autocmd BufRead,BufNewFile * if &filetype == "" | setlocal filetype=text | endif
+
+" Enable spell checker automatically for text files. Since 'spell' is 'local to
+" window' rather than 'local to buffer', it is necessary to use BufRead and
+" BufNewFile instead of FileType. This combination ensures that the setting
+" takes effect in every window that opens the buffer. With FileType, it would
+" only take effect in the first window that opens the buffer.
+func! EnableSpell()
+	if index(["gitcommit", "markdown", "tex", "text"], &filetype) >= 0
+		setlocal spell
+	endif
+endfunc
+autocmd BufRead,BufNewFile * call EnableSpell()
 
 " Sometimes the spell checker does not work correctly in large TeX files. This
 " seems to resolve most of the issue per https://goo.gl/dtuJSk. See
