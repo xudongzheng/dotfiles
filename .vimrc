@@ -360,7 +360,7 @@ autocmd FileType markdown,text call MapText()
 " accounts for the Colemak mapping. There are obviously many missing filetypes
 " and they will be added as needed. While we don't use Groovy directly, we use
 " it through Gradle. We have xdefaults for the .Xresources file.
-autocmd FileType cfg,cmake,conf,config,crontab,debsources,dockerfile,kconfig,make,pamconf,perl,python,readline,ruby,sh,sshconfig,sshdconfig,tmux,yaml,zsh noremap <buffer> <leader>c :normal U# <esc>
+autocmd FileType cfg,cmake,conf,config,crontab,debsources,dockerfile,gdb,kconfig,make,pamconf,perl,python,readline,ruby,sh,sshconfig,sshdconfig,tmux,yaml,zsh noremap <buffer> <leader>c :normal U# <esc>
 autocmd FileType arduino,c,cpp,cs,dts,go,groovy,java,javascript,objc,php,scala,swift noremap <buffer> <leader>c :normal U// <esc>
 autocmd FileType sql noremap <buffer> <leader>c :normal U-- <esc>
 autocmd FileType matlab,tex noremap <buffer> <leader>c :normal U% <esc>
