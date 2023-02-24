@@ -1,17 +1,25 @@
+set -e
+
 cd "$(dirname "$0")"
 base=$(pwd)
 
-# Unset branch upstream so running "git pull" directly has no effect.
-git branch --unset-upstream
+# If user has write access to dotfiles directory, make necessary changes to Git
+# repository. Depending on the setup, the dotfiles repository may be shared
+# between multiple users or multiple containers.
+if [ -w "$base" ]; then
+	# Unset branch upstream so running "git pull" directly has no effect.
+	# Updates should be pulled using pull.sh.
+	git branch --unset-upstream
 
-# If GPG is installed, import the signing public key. If the user has the
-# corresponding secret key, sign commits in repository.
-if hash gpg 2>/dev/null; then
-	gpg --import public.pgp
-	pubkey="3482E963C87B750D0D65E71BBBF920F2DB00633A"
-	if gpg --list-secret-keys $pubkey &>/dev/null; then
-		git config user.signingkey $pubkey
-		git config commit.gpgsign true
+	# If GPG is installed, import the signing public key. If the user has the
+	# corresponding secret key, sign commits in repository.
+	if hash gpg 2>/dev/null; then
+		gpg --import public.pgp
+		pubkey="3482E963C87B750D0D65E71BBBF920F2DB00633A"
+		if gpg --list-secret-keys $pubkey &>/dev/null; then
+			git config user.signingkey $pubkey
+			git config commit.gpgsign true
+		fi
 	fi
 fi
 
