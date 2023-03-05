@@ -46,6 +46,9 @@ fi
 
 # Create symlinks for other configuration files.
 files=(.gitconfig .inputrc)
+if hash gdb 2>/dev/null; then
+	files+=(.gdbinit)
+fi
 if hash screen 2>/dev/null; then
 	files+=(.screenrc)
 fi
