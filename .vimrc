@@ -725,8 +725,10 @@ function! XclipReformat()
 endfunction
 xnoremap <leader>J :<c-u>call XclipReformat()<cr>
 
-" Use <leader>m to open netrw in new tab.
-nnoremap <leader>m :Te<cr>
+" Use <leader>e to open Netrw in the current window. Use <leader>E to open Netrw
+" in a new tab.
+nnoremap <leader>e :Explore<cr>
+nnoremap <leader>E :Texplore<cr>
 
 " Use <leader>y and <leader>Y to yank respectively the relative and absolute
 " file/directory path. This comes from https://bit.ly/2TdYq0O.

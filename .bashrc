@@ -53,7 +53,8 @@ else
 	alias tom="top -E m -e m -o %MEM"
 fi
 
-# Define realpath function for resolving absolute path.
+# Define realpath function for converting relative path to absolute path. The
+# command exists natively in Linux but not macOS.
 if [[ $uname == "Darwin" ]]; then
 	function realpath {
 		echo $(cd $(dirname "$1") && pwd)/$(basename "$1")
@@ -79,6 +80,7 @@ alias n="netstat -nlp"
 alias ng="n | ep"
 alias p="ps aux"
 alias pg="p | ep"
+alias rp="realpath"
 alias tm="touch -m"
 alias usm="useradd -s /bin/bash -m"
 alias vi="vim"
