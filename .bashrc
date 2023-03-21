@@ -313,10 +313,6 @@ if hash go 2>/dev/null; then
 	alias gotn="got -o /dev/null"
 fi
 
-if hash docker 2>/dev/null; then
-	source "$(dirname $bashSource)/shell/docker.sh"
-fi
-
 if hash git 2>/dev/null; then
 	source "$(dirname $bashSource)/shell/git.sh"
 fi
