@@ -82,14 +82,13 @@ alias lgtt="lg 'TODO TODO'"
 alias gxua="git config user.email 7pkvm5aw@slicealias.com"
 alias gxul='git config user.email $(git log -1 --pretty=format:%ae)'
 
-# Define function to show commit diff.
+# Define function to show commit diff. If number given as argument, show diff
+# for commit n before HEAD.
 function gh {
-	if [[ "$1" == "" ]]; then
-		git show
-	elif [[ "$1" =~ ^[0-9]+$ ]]; then
-		gh HEAD~$1
+	if [[ "$1" =~ ^[0-9]+$ ]]; then
+		git show HEAD~$1
 	else
-		git show "$1"
+		git show "$@"
 	fi
 }
 
