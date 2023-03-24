@@ -41,11 +41,11 @@ syntax on
 " Enable plugins and indentation for specific file types.
 filetype plugin indent on
 
-" Use space as the leader key. Some articles such as https://bit.ly/2on9Qlu
-" advocate for setting a local leader rather than limiting a map to a buffer.
-" I've decided against doing that since I don't run any plugins and don't need
-" the additional complexity.
+" Use space as the leader key.
 let mapleader = " "
+
+" Disable timeout for leader key and other mappings.
+set notimeout
 
 " Store temporary files in .vim to keep the working directories clean.
 set directory=~/.vim/swap

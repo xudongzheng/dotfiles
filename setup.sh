@@ -7,9 +7,9 @@ base=$(pwd)
 # repository. Depending on the setup, the dotfiles repository may be shared
 # between multiple users or multiple containers.
 if [ -w "$base" ]; then
-	# Unset branch upstream so running "git pull" directly has no effect.
+	# Unset master branch upstream so running "git pull" directly has no effect.
 	# Updates should be pulled using pull.sh.
-	git branch --unset-upstream
+	git branch --unset-upstream master
 
 	# If GPG is installed, import the signing public key. If the user has the
 	# corresponding secret key, sign commits in repository.
