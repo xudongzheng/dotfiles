@@ -42,7 +42,7 @@ if [[ $uname == "Darwin" ]]; then
 	export LSCOLORS=ExGxBxDxCxEgEdxbxgxcxd
 	alias l="ls"
 else
-	alias l="ls --group-directories-first --color=auto"
+	alias l="LC_ALL=C.UTF-8 ls --group-directories-first --color=auto"
 fi
 
 # Define aliases for top.

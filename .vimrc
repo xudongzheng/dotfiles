@@ -67,6 +67,9 @@ set incsearch
 set ignorecase
 set smartcase
 
+" Reduce screen redraw so macros run more quickly.
+set lazyredraw
+
 " Show line numbers as relative so relative navigation is easier. Show actual
 " line number for active line.
 set relativenumber
@@ -349,11 +352,8 @@ func! MapText()
 	" This code comes from https://bit.ly/2UWmveA.
 	nnoremap <buffer> <leader>d "=strftime('%B %-d, %Y')<cr>p
 
-	" Use <leader>x for checking a checkbox and <leader>X for unchecking. The
-	" latter uses s instead of r so the line doesn't end with a space, which
-	" would trigger an error with 'git diff --check'.
-	nnoremap <buffer> <leader>x ^t]rx
-	nnoremap <buffer> <leader>X ^t]s <esc>
+	" Use <leader>x for checking and unchecking a checkbox.
+	nnoremap <leader>x :s/\[x\]/[_]/e<cr>:s/\[ \]/[x]/e<cr>:s/\[_\]/[ ]/e<cr>
 endfunc
 autocmd FileType markdown,text call MapText()
 
@@ -362,7 +362,7 @@ autocmd FileType markdown,text call MapText()
 " accounts for the Colemak mapping. There are obviously many missing filetypes
 " and they will be added as needed. While we don't use Groovy directly, we use
 " it through Gradle. We have xdefaults for the .Xresources file.
-autocmd FileType cfg,cmake,conf,config,crontab,debsources,dockerfile,gdb,kconfig,make,pamconf,perl,python,readline,ruby,sh,sshconfig,sshdconfig,tmux,yaml,zsh noremap <buffer> <leader>c :normal U# <esc>
+autocmd FileType cfg,cmake,conf,config,crontab,debsources,dockerfile,gdb,gitrebase,kconfig,make,pamconf,perl,python,readline,ruby,sh,sshconfig,sshdconfig,tmux,yaml,zsh noremap <buffer> <leader>c :normal U# <esc>
 autocmd FileType arduino,c,cpp,cs,dts,go,groovy,java,javascript,objc,php,scala,swift noremap <buffer> <leader>c :normal U// <esc>
 autocmd FileType sql noremap <buffer> <leader>c :normal U-- <esc>
 autocmd FileType matlab,tex noremap <buffer> <leader>c :normal U% <esc>
