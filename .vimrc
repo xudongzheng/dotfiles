@@ -516,13 +516,13 @@ nnoremap <c-c> <c-c>:w<cr>
 " When pasting over text with o, do not copy the deleted text. See
 " https://bit.ly/2Mc0Ac9 for more information. Use O for the default visual
 " pasting behavior.
-xnoremap o "0p
+xnoremap o pgvy
 xnoremap O p
 
 " Define <leader>o for pasting before the selected text. It works by inserting a
 " space before the visual selection, reselecting that, and pasting over the
 " temporary space.
-xnoremap <leader>o I <esc>1v"0p
+xnoremap <leader>o I <esc>1vpgvy
 
 " When selecting until the end of the line, do not include the newline
 " character. Otherwise pasting over the selected text would move up the next
