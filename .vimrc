@@ -32,8 +32,12 @@ noremap T F
 noremap U I
 noremap Y O
 
-" Use the elflord color scheme.
-colors elflord
+" Use the desert color scheme starting with Vim 9. Use elflord if older.
+if v:version >= 900
+	colors desert
+else
+	colors elflord
+endif
 
 " Enable syntax highlighting.
 syntax on
@@ -627,9 +631,13 @@ autocmd FileType netrw nnoremap <buffer> M :call NetrwMkdir()<cr>
 autocmd FileType netrw nnoremap <buffer> r :call NetrwRename()<cr>
 autocmd FileType netrw nnoremap <buffer> x :call NetrwRemove()<cr>
 
-" Have netrw display include file size and modification time as there's no
-" drawback to including them.
-let g:netrw_liststyle = 1
+" Display file size and modification time in netrw. For the time being, Vim 9 is
+" excluded due to a bug in how it handles long filenames https://bit.ly/45Q14gd.
+if v:version < 900
+	let g:netrw_liststyle = 1
+	let g:netrw_maxfilenamelen = 40
+	let g:netrw_timefmt = "%Y-%m-%d %H:%M:%S %Z"
+endif
 
 " Netrw hides line numbers by default. Show relative line numbers in netrw.
 let g:netrw_bufsettings = "noma nomod nu nobl nowrap ro rnu"
