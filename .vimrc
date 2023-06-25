@@ -286,9 +286,8 @@ autocmd FileType php call AbbrevPHPSnippets()
 " Many languages use toString() to convert to string.
 autocmd FileType java,javascript,scala iab <buffer> strtn toString()
 
-" Swift uses String() to convert integer to string. For now Swift files are
-" treated as Scala file.
-autocmd FileType scala xnoremap <leader>s cString()<esc>P
+" Swift uses String() to convert integer to string.
+autocmd FileType swift xnoremap <leader>s cString()<esc>P
 
 " Define abbreviations for TeX snippets.
 func! AbbrevTeXSnippets()
@@ -643,7 +642,7 @@ endif
 let g:netrw_bufsettings = "noma nomod nu nobl nowrap ro rnu"
 
 " Display directories above files but otherwise sort alphabetically.
-let g:netrw_sort_sequence="[\/]"
+let g:netrw_sort_sequence = "[\/]"
 
 " Hide the .DS_Store file, .git directory, the current directory, and the parent
 " directory. We do not have to exclude .swp files since those are stored in a

@@ -11,3 +11,7 @@ XTerm.vt100.selectToClipboard: true
 
 ! Configure double click selection behavior per https://goo.gl/pBSEHp.
 XTerm.vt100.charClass: 33:48,35:48,37-38:48,43-47:48,58:48,61:48,63-64:48,95:48,126:48
+
+! Enable Alt-B and Alt-F for navigating back/forward a word per
+! https://bit.ly/3X8BuPt.
+XTerm.vt100.metaSendsEscape: true
