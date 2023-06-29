@@ -67,11 +67,12 @@ function gmm { git merge $(gitma); }
 function grm { git rebase $(gitma); }
 function grim { git rebase -i $(gitma); }
 
-# Define aliases for searching a Git repository. Replace \n with \x00 so xargs
-# correctly handles files with a space in their name. Per https://goo.gl/DLz58m,
-# this uses "git grep" instead of "git ls-files" since the latter includes
-# submodules that are directories, which grep will give an error for.
-alias lg="git grep --cached -l '' | xargs grep --color -n"
+# Define aliases for searching a Git repository. Use -z so Unicode names are not
+# escaped. It will also use \x00 as the separator, which is fine since xargs is
+# an alias that expects it. This uses "git grep" instead of "git ls-files" since
+# the latter includes submodules, which grep will give an error for since they
+# are directories. See https://goo.gl/DLz58m for details.
+alias lg="git grep -z --cached -l '' | xargs grep --color -n"
 alias lgi="lg -i"
 alias lgt="lg TODO"
 alias lgtt="lg 'TODO TODO'"

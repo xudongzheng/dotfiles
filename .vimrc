@@ -615,12 +615,15 @@ autocmd FileType netrw nnoremap <buffer> M :call NetrwMkdir()<cr>
 autocmd FileType netrw nnoremap <buffer> r :call NetrwRename()<cr>
 autocmd FileType netrw nnoremap <buffer> x :call NetrwRemove()<cr>
 
-" Display file size and modification time in netrw. For the time being, Vim 9 is
-" excluded due to a bug in how it handles long filenames https://bit.ly/45Q14gd.
+" Display file size and modification time in Netrw. Dot is used for the date
+" separator (and not hyphen) since hyphen is often used in file names. Having
+" the same separator would make file names harder to search. For the time being,
+" Vim 9 is excluded due to a bug in how it handles long filenames
+" https://bit.ly/45Q14gd.
 if v:version < 900
 	let g:netrw_liststyle = 1
 	let g:netrw_maxfilenamelen = 40
-	let g:netrw_timefmt = "%Y-%m-%d %H:%M:%S %Z"
+	let g:netrw_timefmt = "%Y.%m.%d %H:%M:%S %Z"
 endif
 
 " Netrw hides line numbers by default. Show relative line numbers in netrw.
