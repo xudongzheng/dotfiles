@@ -446,14 +446,30 @@ autocmd FileType css setlocal formatoptions+=ro
 " Use the same word boundary for all file types.
 autocmd FileType * set iskeyword=@,48-57,_
 
+" Treat .fs (F#) and .kt (Kotlin) files as Scala files. They are obviously
+" different but are similar enough for most of syntax highlighting and
+" indentation to work. OCaml is another candidate for F# but it doesn't handle
+" braces well.
+autocmd BufRead,BufNewFile *.fs,*.kt setlocal filetype=scala
+
+" Treat overlay files for Zephyr/ZMK and ZMK keymap files as DeviceTree.
+autocmd BufRead,BufNewFile *.keymap,*.overlay setlocal filetype=dts
+
+" Treat Zephyr defconfig files as regular configuration files.
+autocmd BufRead,BufNewFile *_defconfig setlocal filetype=conf
+
+" Set filetype for SSH configuration files that are included from the main file.
+autocmd BufRead,BufNewFile ~/.ssh/config-* setlocal filetype=sshconfig
+
 " Treat all unrecognized files as text files.
 autocmd BufRead,BufNewFile * if &filetype == "" | setlocal filetype=text | endif
 
-" Enable spell checker automatically for text files. Since 'spell' is 'local to
-" window' rather than 'local to buffer', it is necessary to use BufRead and
-" BufNewFile instead of FileType. This combination ensures that the setting
-" takes effect in every window that opens the buffer. With FileType, it would
-" only take effect in the first window that opens the buffer.
+" Enable spell checker automatically for text files. This is done after the
+" filetype detection above so they do not get the spell checker enabled. Since
+" 'spell' is 'local to window' rather than 'local to buffer', it is necessary to
+" use BufRead and BufNewFile instead of FileType. This combination ensures that
+" the setting takes effect in every window that opens the buffer. With FileType,
+" it would only take effect in the first window that opens the buffer.
 func! EnableSpell()
 	if index(["gitcommit", "markdown", "tex", "text"], &filetype) >= 0
 		setlocal spell
@@ -465,19 +481,6 @@ autocmd BufRead,BufNewFile * call EnableSpell()
 " seems to resolve most of the issue per https://goo.gl/dtuJSk. See
 " https://goo.gl/YbxTHp for more information on spell checking in TeX files.
 autocmd FileType tex syntax spell toplevel
-
-" Treat .fs (F#) and .kt (Kotlin) files as Scala files. They are obviously
-" different but are similar enough for most of syntax highlighting and
-" indentation to work. OCaml is another candidate for F# but it doesn't handle
-" braces well.
-autocmd BufRead,BufNewFile *.fs,*.kt setlocal filetype=scala
-
-" Treat Device Tree overlay files (for Zephyr) and ZMK keymap files as Device
-" Tree files.
-autocmd BufRead,BufNewFile *.keymap,*.overlay setlocal filetype=dts
-
-" Treat defconfig (for Zephyr) files as regular configuration files.
-autocmd BufRead,BufNewFile *_defconfig setlocal filetype=conf
 
 " Use m to trigger commands in normal mode.
 nnoremap m :
@@ -710,7 +713,11 @@ function! XclipOperator(type)
 	endif
 
 	" Copy to system clipboard with xclip.
-	call system("xclip -sel clip", getreg('"'))
+	if executable("xclip")
+		call system("xclip -sel clip", getreg('"'))
+	elseif executable("pbcopy")
+		call system("pbcopy", getreg('"'))
+	endif
 endfunction
 nnoremap <leader>j :set operatorfunc=XclipOperator<cr>g@
 xnoremap <leader>j :<c-u>call XclipOperator(visualmode())<cr>

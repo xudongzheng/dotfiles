@@ -63,9 +63,10 @@ function gitma {
 	fi
 }
 function gcm { git checkout $(gitma); }
+function glm { git log $(gitma); }
 function gmm { git merge $(gitma); }
-function grm { git rebase $(gitma); }
 function grim { git rebase -i $(gitma); }
+function grm { git rebase $(gitma); }
 
 # Define aliases for searching a Git repository. Use -z so Unicode names are not
 # escaped. It will also use \x00 as the separator, which is fine since xargs is
