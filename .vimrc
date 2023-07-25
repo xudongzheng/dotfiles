@@ -687,7 +687,7 @@ nnoremap <leader>g /=======<cr>
 xnoremap <leader>a ! LC_ALL=C sort<cr>
 
 " Use <leader>A to highlight non-ASCII characters.
-nnoremap <leader>A /[^ -~]<cr>
+nnoremap <leader>A /[^\t -~]<cr>
 
 " Use <leader>t to search for triple TODO.
 nnoremap <leader>t /TODO TODO<cr>

@@ -35,6 +35,13 @@ if [[ $uname == "Darwin" ]]; then
 	alias sha512sum="shasum -a 512"
 fi
 
+# Define alias for copying standard output to clipboard.
+if [[ $uname == "Darwin" ]]; then
+	alias xc="pbcopy"
+else
+	alias xc="xclip -sel clip"
+fi
+
 # The ls command is different on Linux and macOS. Set color scheme for macOS
 # per https://goo.gl/1ps44T.
 if [[ $uname == "Darwin" ]]; then
