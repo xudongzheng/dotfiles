@@ -589,10 +589,11 @@ for i in range(1,9)
 	exec cmd
 endfor
 
-" Define additional keys for navigating to the (r) root directory and the (h)
-" home directory.
+" Define additional keys for navigating to the (r) root directory, the (h) home
+" directory, and (w) the current working directory.
 autocmd FileType netrw nnoremap <buffer> or :call NetrwBrowse("/")<cr>
 autocmd FileType netrw nnoremap <buffer> oh :call NetrwBrowse($HOME)<cr>
+autocmd FileType netrw nnoremap <buffer> ow :call NetrwBrowse(getcwd())<cr>
 
 " Map additional functions for creating, renaming, and deleting. This uses M
 " instead of m for creating a new directory since Netrw's NetrwBrowseChgDir

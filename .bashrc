@@ -251,6 +251,9 @@ function s {
 		go)
 			go run "$@"
 			;;
+		php)
+			php "$@"
+			;;
 		pl)
 			perl "$@"
 			;;

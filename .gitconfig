@@ -14,3 +14,8 @@
 
 [user]
 	name = Xudong Zheng
+
+	# In a new repository, do not automatically generate the email address based
+	# on the username and hostname. The email must be manually configured before
+	# allowing the commit.
+	useConfigOnly = true
