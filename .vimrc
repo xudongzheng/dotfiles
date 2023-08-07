@@ -705,10 +705,13 @@ nnoremap <leader>i :s/id\>/ID/g<cr>
 " Use <leader>j to copy to system clipboard. In normal mode, it triggers an
 " operator that takes a motion. In visual mode, it handles the selected text.
 function! XclipOperator(type)
-	" Copy to default register. The command depends on whether it's a motion in
-	" normal mode or if text is already selected in visual mode.
+	" Copy to default register. The first case is for character motion (such as
+	" yanking some words), the second is for line motion (such as yanking some
+	" lines), and the last is for visual mode.
 	if a:type ==# 'char'
 		execute "normal! `[v`]y"
+	elseif a:type ==# 'line'
+		execute "normal! `[V`]y"
 	else
 		execute "normal! gvy"
 	endif

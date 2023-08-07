@@ -18,6 +18,7 @@ alias ge="git blame"
 alias gep="git ls-files | ep"
 alias gf="git fetch"
 alias gg="git fetch && git reset --hard @{u}"
+alias gh="git show"
 alias gian="git update-index --no-assume-unchanged"
 alias giau="git update-index --assume-unchanged"
 alias gl="git log --graph --decorate --stat --find-renames --date-order --show-signature"
@@ -84,14 +85,9 @@ alias lgtt="lg 'TODO TODO'"
 alias gxua="git config user.email 7pkvm5aw@slicealias.com"
 alias gxul='git config user.email $(git log -1 --pretty=format:%ae)'
 
-# Define function to show commit diff. If number given as argument, show diff
-# for commit n before HEAD.
-function gh {
-	if [[ "$1" =~ ^[0-9]+$ ]]; then
-		git show HEAD~$1
-	else
-		git show "$@"
-	fi
+# Define function to show diff for commit relative to HEAD.
+function ghh {
+	git show HEAD~$1
 }
 
 # Define function for synchronizing a repository's commit dates and author
