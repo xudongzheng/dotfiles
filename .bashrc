@@ -274,9 +274,6 @@ function s {
 if hash python3 2>/dev/null; then
 	alias jfmt="python3 -m json.tool"
 	alias phttp="python3 -m http.server"
-elif hash python 2>/dev/null; then
-	alias jfmt="python -m json.tool"
-	alias phttp="python -m http.server"
 fi
 
 # Define alias for tmux or GNU Screen.

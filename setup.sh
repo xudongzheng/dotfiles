@@ -8,8 +8,9 @@ base=$(pwd)
 # between multiple users or multiple containers.
 if [ -w "$base" ]; then
 	# Unset master branch upstream so running "git pull" directly has no effect.
-	# Updates should be pulled using pull.sh.
-	git branch --unset-upstream master
+	# Updates should be pulled using pull.sh. If branch upstream has already
+	# been unset, suppress error to allow script to continue running.
+	git branch --unset-upstream master || true
 
 	# If GPG is installed, import the signing public key. If the user has the
 	# corresponding secret key, sign commits in repository.
@@ -30,18 +31,21 @@ else
 	bashrcSrc=~/.bashrc
 fi
 
-# Update Bash and Vim to source the repository .bashrc and .vimrc. This is
-# preferred over a symlink since accounts may need custom configuration for Bash
-# and Vim. The repository .bashrc may be missing some platform-specific features
-# but overwriting the user .bashrc ensures that $HISTSIZE and similar variables
-# work correctly.
+# Configure Bash, Vim, and SSH to source the repository .bashrc, .vimrc, and
+# .ssh/config respectively. This is preferred over a symlink since individual
+# accounts may need additional configuration.
 bashrcDst="$base/.bashrc"
-if ! grep -qs "$bashrcDst" $bashrcSrc; then
+if [[ ! -f "$bashrcSrc" ]]; then
 	echo "source \"$bashrcDst\"" > $bashrcSrc
 fi
 vimrcDst="$base/.vimrc"
-if ! grep -qs "$vimrcDst" ~/.vimrc; then
+if [[ ! -f ~/.vimrc ]]; then
 	echo 'exec "source " . fnameescape("'"$vimrcDst"'")' > ~/.vimrc
+fi
+sshconfigDst="$base/.ssh/config"
+if [[ ! -f ~/.ssh/config ]]; then
+	mkdir -p ~/.ssh
+	echo "Include \"$sshconfigDst\"" > ~/.ssh/config
 fi
 
 # Create symlinks for other configuration files.
@@ -56,8 +60,8 @@ if hash tmux 2>/dev/null; then
 	files+=(.tmux.conf)
 fi
 for file in "${files[@]}"; do
-	if [[ ! -f "~/$file" ]]; then
-		ln -fs "$base/$file" ~
+	if [[ ! -e "$HOME/$file" ]]; then
+		ln -s "$base/$file" ~
 	fi
 done
 
