@@ -110,3 +110,41 @@ function gfcd {
 function grih {
 	gr -i "HEAD~$1"
 }
+
+# Define function to generate custom SSH keypair for a Git repository. This is
+# necessary since services like GitHub only allow each deploy key to be
+# associated with one repository. This makes it easier to manage multiple keys
+# for multiple repositories.
+function gitdk {
+	repo=$1
+	str=$(sed "s/[@:]/\//g" <<< $1 | sed "s/\.git//")
+	hostname=$(awk -F / '{print $2}' <<< $str)
+	user=$(awk -F / '{print $3}' <<< $str)
+	repo=$(awk -F / '{print $4}' <<< $str)
+
+	if [ "$hostname" == "github.com" ]; then
+		service=github
+	else
+		echo Git hostname is not recognized
+		return
+	fi
+
+	# If key already exists, stop. Otherwise generate SSH key.
+	key=~/.ssh/id_ed25519.$service.$user.$repo
+	if [ -f "$key" ]; then
+		echo key for $repo already exists
+		return
+	fi
+	ssh-keygen -t ed25519 -f $key -N "" > /dev/null
+
+	host=$repo.$user.$service.internal
+	if [ -f ~/.ssh/config-git ]; then
+		echo >> ~/.ssh/config-git
+	fi
+	echo "Host $host" >> ~/.ssh/config-git
+	echo -e "\tHostName $hostname" >> ~/.ssh/config-git
+	echo -e "\tIdentityFile $key" >> ~/.ssh/config-git
+
+	echo git@$host:$user/$repo.git
+	cat $key.pub
+}
