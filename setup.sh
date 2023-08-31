@@ -32,10 +32,12 @@ else
 fi
 
 # Configure Bash, Vim, and SSH to source the repository .bashrc, .vimrc, and
-# .ssh/config respectively. This is preferred over a symlink since individual
-# accounts may need additional configuration.
+# .ssh/config respectively. This is preferred over a symlink so each can be
+# further customized. For Bash, it is necessary to check if the repository file
+# is sourced (rather than checking for existence of file) since most
+# environments come with something by default.
 bashrcDst="$base/.bashrc"
-if [[ ! -f "$bashrcSrc" ]]; then
+if ! grep -qs "$bashrcDst" $bashrcSrc; then
 	echo "source \"$bashrcDst\"" > $bashrcSrc
 fi
 vimrcDst="$base/.vimrc"
