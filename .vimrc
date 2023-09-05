@@ -648,18 +648,19 @@ let g:is_bash = 1
 let g:tex_flavor = "latex"
 
 " In normal mode, use <leader>q to save Vim session to file and use <leader>Q to
-" load Vim session from file.
+" load Vim session from file. The session file goes in the working directory and
+" not the home directory so multiple Vim sessions can be saved and restored.
 set sessionoptions=tabpages
 func! SaveSession()
 	try
-		mksession ~/vim-session
+		mksession vim-session
 		quitall
 	endtry
 endfunc
 nnoremap <leader>q :call SaveSession()<cr>
 func! LoadSession()
-	source ~/vim-session
-	call delete(expand("~/vim-session"))
+	source vim-session
+	call delete(expand("vim-session"))
 endfunc
 nnoremap <leader>Q :call LoadSession()<cr>
 
