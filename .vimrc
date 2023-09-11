@@ -430,7 +430,7 @@ autocmd FileType * setlocal formatoptions-=b formatoptions-=l
 " Do not automatically wrap code except in text files, where text is treated as
 " code. Automatic wrapping will still occur in comments.
 autocmd FileType * setlocal formatoptions-=t
-autocmd FileType markdown,tex,text setlocal formatoptions+=t
+autocmd FileType gitcommit,markdown,tex,text setlocal formatoptions+=t
 
 " Enable autoindent for Markdown and text files. Without this a lot of
 " formatting doesn't work correctly such as when using dqap to format a bullet
