@@ -2,14 +2,13 @@ I am [Xudong Zheng](https://www.xudongz.com/) and this repository contains my
 dotfiles. This isn't meant to be used directly but rather can provide
 inspiration for things to include in your own dotfiles.
 
-You will find this helpful if you use some of the same software that I use. This
+You will find this particularly helpful if your setup is similar to mine. This
 includes:
 
-- Go for general programming
 - Vim for text editing
+- Colemak keyboard layout
 - Git for version control
 - tmux for terminal multiplexing
-- Colemak keyboard layout
 
 # How to Use
 

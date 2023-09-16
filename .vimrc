@@ -499,10 +499,12 @@ autocmd VimResized,TabEnter * wincmd =
 inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
 
-" In insert and normal mode, use Ctrl-C to save file. When starting in insert
-" mode, this will leave the user in normal mode.
-inoremap <c-c> <c-c>:w<cr>
-nnoremap <c-c> <c-c>:w<cr>
+" In insert and normal mode, use Ctrl-C to save file. If initially in insert
+" mode, this will remain in normal mode at the end. For insert mode, using imap
+" instead of inoremap is necessary so an abbreviation typed immediately before
+" Ctrl-C is correctly expanded.
+imap <c-c> <esc>:w<cr>
+nnoremap <c-c> :w<cr>
 
 " When pasting over text with o, do not copy the deleted text. See
 " https://bit.ly/2Mc0Ac9 for more information. Use O for the default visual

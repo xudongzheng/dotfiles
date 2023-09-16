@@ -263,6 +263,9 @@ function s {
 		sh)
 			bash "$@"
 			;;
+		swift)
+			swift "$@"
+			;;
 		*)
 			echo unrecognized script extension
 			;;
