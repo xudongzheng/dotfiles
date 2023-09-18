@@ -122,7 +122,7 @@ function gitdk {
 	user=$(awk -F / '{print $3}' <<< $str)
 	repo=$(awk -F / '{print $4}' <<< $str)
 
-	if [ "$hostname" == "github.com" ]; then
+	if [[ "$hostname" == "github.com" ]]; then
 		service=github
 	else
 		echo Git hostname is not recognized
@@ -131,14 +131,14 @@ function gitdk {
 
 	# If key already exists, stop. Otherwise generate SSH key.
 	key=~/.ssh/id_ed25519.$service.$user.$repo
-	if [ -f "$key" ]; then
+	if [[ -f "$key" ]]; then
 		echo key for $repo already exists
 		return
 	fi
 	ssh-keygen -t ed25519 -f $key -N "" > /dev/null
 
 	host=$repo.$user.$service.internal
-	if [ -f ~/.ssh/config-git ]; then
+	if [[ -f ~/.ssh/config-git ]]; then
 		echo >> ~/.ssh/config-git
 	fi
 	echo "Host $host" >> ~/.ssh/config-git
