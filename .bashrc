@@ -327,3 +327,12 @@ fi
 if hash git 2>/dev/null; then
 	source "$(dirname $bashSource)/shell/git.sh"
 fi
+
+if [[ $uname == "Darwin" ]]; then
+	firefox=/Applications/Firefox.app/Contents/MacOS/firefox
+else
+	firefox=firefox
+fi
+if command -v $firefox > /dev/null; then
+	source "$(dirname $bashSource)/shell/firefox.sh"
+fi

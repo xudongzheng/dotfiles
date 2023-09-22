@@ -638,6 +638,10 @@ let g:netrw_bufsettings = "noma nomod nu nobl nowrap ro rnu"
 " Display directories above files but otherwise sort alphabetically.
 let g:netrw_sort_sequence = "[\/]"
 
+" Netrw by default maps gx. Disable mapping so gx can be used to navigate to the
+" x character.
+let g:netrw_nogx = 1
+
 " Hide the .DS_Store file, .git directory, the current directory, and the parent
 " directory. We do not have to exclude .swp files since those are stored in a
 " separate directory.
