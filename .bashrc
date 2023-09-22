@@ -274,29 +274,29 @@ function s {
 
 # If Python available, use jfmt to format JSON and phttp to start a HTTP server
 # for static files.
-if hash python3 2>/dev/null; then
+if command -v python3 > /dev/null; then
 	alias jfmt="python3 -m json.tool"
 	alias phttp="python3 -m http.server"
 fi
 
 # Define alias for tmux or GNU Screen.
-if hash tmux 2>/dev/null; then
+if command -v tmux > /dev/null; then
 	alias t="tmux new-session -t 0 || tmux"
-elif hash screen 2>/dev/null; then
+elif command -v screen > /dev/null; then
 	alias t="screen -x || screen"
 fi
 
 # If wget is not available but cURL is available (such as on macOS), allow cURL
 # to be invoked using the wget command. Include -L to follow redirects.
 if ! hash wget 2>/dev/null; then
-	if hash curl 2>/dev/null; then
+	if command -v curl > /dev/null; then
 		alias wget="curl -O -L"
 	fi
 fi
 
 # If apt is available, define related aliases. Some are only necessary of the
 # user is root.
-if hash apt 2>/dev/null; then
+if command -v apt > /dev/null; then
 	# Use aps instead of acs for alias since c and s use the same finger.
 	alias aps="apt-cache search"
 
@@ -317,14 +317,14 @@ if hash apt 2>/dev/null; then
 fi
 
 # Define aliases for Go.
-if hash go 2>/dev/null; then
+if command -v go > /dev/null; then
 	alias gob="go build"
 	alias gog="go generate"
 	alias got="go test -c"
 	alias gotn="got -o /dev/null"
 fi
 
-if hash git 2>/dev/null; then
+if command -v git > /dev/null; then
 	source "$(dirname $bashSource)/shell/git.sh"
 fi
 

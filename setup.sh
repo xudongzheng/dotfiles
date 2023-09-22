@@ -14,7 +14,7 @@ if [[ -w "$base" ]]; then
 
 	# If GPG is installed, import the signing public key. If the user has the
 	# corresponding secret key, sign commits in repository.
-	if hash gpg 2>/dev/null; then
+	if command -v gpg > /dev/null; then
 		gpg --import public.pgp
 		pubkey="3482E963C87B750D0D65E71BBBF920F2DB00633A"
 		if gpg --list-secret-keys $pubkey &>/dev/null; then
@@ -52,13 +52,13 @@ fi
 
 # Create symlinks for other configuration files.
 files=(.gitconfig .inputrc)
-if hash gdb 2>/dev/null; then
+if command -v gdb > /dev/null; then
 	files+=(.gdbinit)
 fi
-if hash screen 2>/dev/null; then
+if command -v screen > /dev/null; then
 	files+=(.screenrc)
 fi
-if hash tmux 2>/dev/null; then
+if command -v tmux > /dev/null; then
 	files+=(.tmux.conf)
 fi
 for file in "${files[@]}"; do
