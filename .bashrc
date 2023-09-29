@@ -35,12 +35,14 @@ if [[ $uname == "Darwin" ]]; then
 	alias sha512sum="shasum -a 512"
 fi
 
-# Define alias for copying standard output to clipboard.
-if [[ $uname == "Darwin" ]]; then
-	alias xc="pbcopy"
-else
-	alias xc="xclip -sel clip"
-fi
+# Define function for copying standard input to clipboard.
+function xc {
+	if command -v pbcopy > /dev/null; then
+		pbcopy
+	elif command -v xclip > /dev/null; then
+		xclip -sel clip
+	fi
+}
 
 # The ls command is different on Linux and macOS. Set color scheme for macOS
 # per https://goo.gl/1ps44T.
@@ -206,6 +208,15 @@ function ndc {
 	vi $(awk -F: '{print $1}' <<< "$1")
 }
 
+# Use dotc to print and copy command for setting up dotfiles on a new server or
+# user.
+function dotc {
+	commit=$(git -C "$dotDir" rev-parse master)
+	cmd="git clone https://github.com/xudongzheng/dotfiles.git dot && git -C dot checkout $commit && bash dot/setup.sh && exit"
+	echo $cmd
+	echo $cmd | xc
+}
+
 # Use pub to print Ed25519 public key. It will generate a new key if one does
 # not exist.
 function pub {
@@ -215,16 +226,12 @@ function pub {
 	cat ~/.ssh/id_ed25519.pub
 }
 
-# Use pubc to print command that can be copied and pasted onto another server to
-# add the local public key.
+# Use pubc to print and copy command for adding the local SSH public key to a
+# remote server.
 function pubc {
-	echo 'mkdir -p ~/.ssh && echo "'$(pub)'" >> ~/.ssh/authorized_keys'
-}
-
-# Use sri to print subresource integrity value for file.
-function sri {
-	digest=$(openssl sha384 -binary "$1" | base64)
-	echo "sha384-$digest"
+	cmd='mkdir -p ~/.ssh && echo "'$(pub)'" >> ~/.ssh/authorized_keys'
+	echo $cmd
+	echo $cmd | xc
 }
 
 # Use mkc to create and change to a directory. Create parent directories if

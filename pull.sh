@@ -1,7 +1,6 @@
 set -e
 
-# Allow script to run from any directory.
-cd $(dirname $0)
+cd "$(dirname "$0")"
 
 # Fetch remote changes.
 git fetch
@@ -12,9 +11,10 @@ if [[ $1 != "" ]]; then
 	git merge "$1"
 else
 	key="3482E963C87B750D0D65E71BBBF920F2DB00633A"
-	data=$(git verify-commit --raw origin/master 2>&1)
+	commit=$(git rev-parse origin/master)
+	data=$(git verify-commit --raw $commit 2>&1)
 	if ! cut -d ' ' -f 2- <<< "$data" | grep -q "VALIDSIG $key"; then
 		echo invalid signature
 	fi
-	git merge origin/master
+	git merge $commit
 fi

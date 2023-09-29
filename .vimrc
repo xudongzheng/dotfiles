@@ -491,17 +491,20 @@ xnoremap m :
 " when the window is resized.
 autocmd VimResized,TabEnter * wincmd =
 
-" By default Ctrl-U deletes to beginning of line and Ctrl-W deletes the last
-" word. Recovering the deleted text is difficult. Ctrl-U can happen by accident
-" such as when accidentally inserting a Unicode character with Ctrl-Shift-U.
-" Create a separate change for Ctrl-U and Ctrl-W so they can be undone like
-" other changes per https://bit.ly/2ZSlinw.
+" By default, deleting with Ctrl-U and Ctrl-W in insert mode cannot be undone.
+" This is not ideal as sometimes these are pressed accidentally. Define mapping
+" to allow undoing per https://bit.ly/2ZSlinw.
 inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
 
+" In insert mode, Ctrl-Shift-U behaves like Ctrl-U. It's easy to trigger
+" accidentally since it's used for Unicode input on Linux. For simplicity, do
+" nothing and manually delete the inserted data afterwards.
+inoremap <c-s-u> <nop>
+
 " In insert and normal mode, use Ctrl-C to save file. If initially in insert
-" mode, this will remain in normal mode at the end. For insert mode, using imap
-" instead of inoremap is necessary so an abbreviation typed immediately before
+" mode, this will remain in normal mode at the end. For insert mode, imap is
+" necessary instead of inoremap so an abbreviation typed immediately before
 " Ctrl-C is correctly expanded.
 imap <c-c> <esc>:w<cr>
 nnoremap <c-c> :w<cr>

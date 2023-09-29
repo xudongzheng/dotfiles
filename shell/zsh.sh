@@ -13,7 +13,7 @@ SAVEHIST=100000
 HISTSIZE=100000
 
 # Include colon and vertical bar in $WORDCHARS. This ensures consistent behavior
-# with Bash when Ctrl-W is used with URLs or piped commands.
+# with Bash when Ctrl-W is used with URLs, IPv6 addresses, or piped commands.
 WORDCHARS=":|$WORDCHARS"
 
 # Store history with timestamp.

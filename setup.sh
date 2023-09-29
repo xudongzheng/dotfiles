@@ -1,11 +1,11 @@
 set -e
 
 cd "$(dirname "$0")"
-base=$(pwd)
 
 # If user has write access to dotfiles directory, make necessary changes to Git
 # repository. Depending on the setup, the dotfiles repository may be shared
 # between multiple users or multiple containers.
+base=$(pwd)
 if [[ -w "$base" ]]; then
 	# Unset master branch upstream so running "git pull" directly has no effect.
 	# Updates should be pulled using pull.sh. If branch upstream has already
