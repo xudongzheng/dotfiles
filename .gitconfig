@@ -19,3 +19,9 @@
 	# on the username and hostname. The email must be manually configured before
 	# allowing the commit.
 	useConfigOnly = true
+
+# For security reasons, Git does not allow operations on a repository owned by
+# another user by default. On machines where this repository is shared between
+# multiple users, make exception for repository.
+[safe]
+	directory = /opt/dot
