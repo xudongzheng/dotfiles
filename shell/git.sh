@@ -130,21 +130,24 @@ function gitdk {
 		return
 	fi
 
-	# If key already exists, stop. Otherwise generate SSH key.
+	# If key does not yet exist, generate SSH key and add custom host to
+	# configuration file.
 	key=~/.ssh/id_ed25519.$service.$user.$repo
-	if [[ -f "$key" ]]; then
-		echo key for $repo already exists
-		return
-	fi
-	ssh-keygen -t ed25519 -f $key -N "" > /dev/null
-
 	host=$repo.$user.$service.internal
-	if [[ -f ~/.ssh/config-git ]]; then
-		echo >> ~/.ssh/config-git
+	if [[ ! -f "$key" ]]; then
+		ssh-keygen -t ed25519 -f $key -N "" > /dev/null
+
+		# If configuration file exists, include empty line between hosts.
+		if [[ -f ~/.ssh/config-git ]]; then
+			echo >> ~/.ssh/config-git
+		fi
+
+		echo "Host $host" >> ~/.ssh/config-git
+		echo -e "\tHostName $hostname" >> ~/.ssh/config-git
+		echo -e "\tIdentityFile $key" >> ~/.ssh/config-git
+	else
+		echo Key for $service $user/$repo already exists
 	fi
-	echo "Host $host" >> ~/.ssh/config-git
-	echo -e "\tHostName $hostname" >> ~/.ssh/config-git
-	echo -e "\tIdentityFile $key" >> ~/.ssh/config-git
 
 	echo git@$host:$user/$repo.git
 	cat $key.pub
