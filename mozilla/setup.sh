@@ -28,6 +28,9 @@ function handleUserJS {
 		# Do not check if Firefox is the default browser. On macOS, Safari will
 		# remain the default browser.
 		writePref "$userJS" browser.shell.checkDefaultBrowser false
+
+		# Disable Firefox View.
+		writePref "$userJS" browser.tabs.firefox-view false
 	fi
 }
 
