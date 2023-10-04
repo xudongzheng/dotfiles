@@ -37,12 +37,20 @@ function handleUserJS {
 function handleTBFF {
 	tbDir=$1
 	ffDir=$2
-	grep Path= "$tbDir/profiles.ini" | sed "s/Path=//" | while read line; do
-		handleUserJS thunderbird "$tbDir/$line"
-	done
-	grep Path= "$ffDir/profiles.ini" | sed "s/Path=//" | while read line; do
-		handleUserJS firefox "$ffDir/$line"
-	done
+
+	tbIni="$tbDir/profiles.ini"
+	if [[ -f "$tbIni" ]]; then
+		grep Path= "$tbIni" | sed "s/Path=//" | while read line; do
+			handleUserJS thunderbird "$tbDir/$line"
+		done
+	fi
+
+	ffIni="$ffDir/profiles.ini"
+	if [[ -f "$ffIni" ]]; then
+		grep Path= "$ffIni" | sed "s/Path=//" | while read line; do
+			handleUserJS firefox "$ffDir/$line"
+		done
+	fi
 }
 
 uname=$(uname)
