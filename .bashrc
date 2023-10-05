@@ -212,7 +212,7 @@ function ndc {
 # user.
 function dotc {
 	commit=$(git -C "$dotDir" rev-parse master)
-	cmd="git clone https://github.com/xudongzheng/dotfiles.git dot && cd dot && git checkout $commit && git branch -f master HEAD && bash dot/setup.sh && exit"
+	cmd="git clone https://github.com/xudongzheng/dotfiles.git dot && cd dot && git checkout $commit && git branch -f master HEAD && bash setup.sh && exit"
 	echo $cmd
 	echo $cmd | xc
 }
