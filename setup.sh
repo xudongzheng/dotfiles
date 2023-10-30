@@ -69,3 +69,11 @@ done
 
 # Create directories for Vim temporary files.
 mkdir -p ~/.vim/{backup,swap,undo}
+
+# Suppress MOTD and "last login". On macOS, a new terminal tab opens with the
+# same working directory as the current tab by default. Per the comments on
+# https://bit.ly/45MZSJ2, .hushlogin is checked in the working directory.
+# Configure terminal to open tabs in $HOME will always suppress the "last login"
+# message. This behavior is preferred regardless as it's easier to open a new
+# tab and run commands without first having to check the working directory.
+touch ~/.hushlogin

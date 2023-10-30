@@ -107,7 +107,7 @@ set scrolloff=8
 set wildmenu
 
 " Have backspace behave as it does in other applications.
-set backspace=2
+set backspace=indent,eol,nostop
 
 " Allow Ctrl-A and Ctrl-X to increment and decrement alphabetical characters. Do
 " not treat numbers that begin with 0 as octal.
@@ -416,12 +416,11 @@ autocmd FileType mail unmap <buffer> \q
 autocmd FileType gitrebase xnoremap <buffer> <leader>h :s/pick/squash<cr>
 autocmd FileType gitcommit nnoremap <buffer> <leader>h G{kkdgg
 
-" Set tabs to be 4 spaces and use tabs instead of spaces. This uses autocmd so
-" we can override language-specific configuration. Python, for example, is
-" configured to expand tabs to spaces. YAML is an exception where we want to
-" expand tabs to spaces and use 2 spaces for indentation.
+" Set tabs to be 4 spaces and use tabs instead of spaces. This uses autocmd to
+" override Vim's language-specific configuration. YAML is an exception that uses
+" spaces for indentation.
 autocmd FileType * setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=0
-autocmd FileType yaml setlocal expandtab softtabstop=2
+autocmd FileType yaml setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
 
 " Wrap long line even if the initial line is longer than textwidth. Per
 " https://goo.gl/3pws7z, we should not combine flags when removing.
@@ -758,9 +757,11 @@ nnoremap <leader>E :Texplore<cr>
 nnoremap <leader>y :let @" = expand("%")<cr>
 nnoremap <leader>Y :let @" = expand("%:p")<cr>
 
-" Define mappings to convert spaces to tabs. Use <leader>4 to convert 4 spaces
-" to tabs and <leader>8 for 8 spaces. In normal mode, it affects the entire
-" file. In visual mode, it affects every selected line.
+" Define mappings to convert spaces to tabs. Use <leader>2, <leader>4, and
+" <leader>8 for indentation with 2/4/8 spaces respectively. In normal mode, this
+" applies to the entire file. In visual mode, this applies to the selected
+" lines. Running retab will update tabstop so it must be manually returned to 4.
+noremap <leader>2 :retab! 2<cr>:setlocal tabstop=4<cr>
 noremap <leader>4 :retab! 4<cr>
 noremap <leader>8 :retab! 8<cr>:setlocal tabstop=4<cr>
 

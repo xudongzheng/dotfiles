@@ -15,6 +15,9 @@ function handleUserJS {
 	# Disable using middle mouse button to paste.
 	writePref "$userJS" middlemouse.paste false
 
+	# When using a SOCKS5 proxy, DNS should be handled through the proxy.
+	writePref "$userJS" network.proxy.socks_remote_dns true
+
 	if [[ "$application" == "thunderbird" ]]; then
 		# Set Thunderbird date format. See https://bit.ly/3Qfbf8n for
 		# documentation.

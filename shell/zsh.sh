@@ -14,7 +14,7 @@ HISTSIZE=100000
 
 # Include colon and vertical bar in $WORDCHARS. This ensures consistent behavior
 # with Bash when Ctrl-W is used with URLs, IPv6 addresses, or piped commands.
-WORDCHARS=":|$WORDCHARS"
+WORDCHARS=":|@$WORDCHARS"
 
 # Store history with timestamp.
 setopt EXTENDED_HISTORY
@@ -50,5 +50,7 @@ function editCommandLine {
 zle -N editCommandLine
 bindkey '^x^e' editCommandLine
 
-alias history="history -i 0"
+# For the "history" command, use same timestamp format as Bash.
+alias history="history -t '[%Y-%m-%d %H:%M:%S %Z]' -i 0"
+
 alias vhi="vi ~/.zsh_history"
