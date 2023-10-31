@@ -34,6 +34,9 @@ function handleUserJS {
 
 		# Disable Firefox View.
 		writePref "$userJS" browser.tabs.firefox-view false
+
+		# Disable suggestions from sponsors in address bar.
+		writePref "$userJS" browser.urlbar.suggest.quicksuggest.sponsored false
 	fi
 }
 
