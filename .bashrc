@@ -35,6 +35,17 @@ if [[ $uname == "Darwin" ]]; then
 	alias sha512sum="shasum -a 512"
 fi
 
+# Define function to prevent Vim from piped to another program. This can happen
+# when I'm working with large amounts of text and using Vim as a pager. This comes from
+# https://bit.ly/3FG7m65.
+function vi {
+	if [[ -t 1 ]]; then
+		command vi "$@"
+	else
+		echo "Vim must run with TTY as standard output" >&2
+	fi
+}
+
 # Define function for copying standard input to clipboard.
 function xc {
 	if command -v pbcopy > /dev/null; then
@@ -96,6 +107,10 @@ alias vid="vi -"
 alias vie="vi -c Explore"
 alias vrc="vi .vimrc"
 alias wl="wc -l"
+
+# Define alias for cutting words. "cutw n" prints the n-th word on every line.
+# "cutw n-" prints every word starting from the n-th word on every line.
+alias cutw="cut -d ' ' -f"
 
 # Define alias for xargs. This replaces \n with \x00 so filenames containing
 # spaces are handled correctly.

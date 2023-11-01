@@ -24,12 +24,8 @@ alias lps="find ~/Documents/screenshot -maxdepth 1 -type f | sort | tail -n 1"
 alias fps='ff "$(lps)"'
 
 # Define alias for deleting most recent screenshot. Open in Firefox for
-# inspection and require confirmation as an extra precaution.
+# inspection and require confirmation to prevent accidental deletion.
 function rmps {
-	if [ "$1" != "" ]; then
-		echo did you mean to use rmfile?
-	else
-		fps
-		rm -i -v "$(lps)"
-	fi
+	fps
+	rm -i -v "$(lps)"
 }
