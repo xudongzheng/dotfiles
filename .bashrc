@@ -83,6 +83,7 @@ fi
 
 alias autk="vi ~/.ssh/authorized_keys"
 alias c="cd"
+alias cm="c - > /dev/null"
 alias crt="crontab -e"
 alias dfh="df -h"
 alias dr="date --rfc-3339=seconds"
@@ -198,9 +199,8 @@ function cu {
 	if [[ $count == "" ]]; then
 		count=1
 	fi
-	for i in $(seq 1 $1); do
-		c ..
-	done
+	str=$(seq -f "..%g" -s / $count | sed "s/[0-9]//g")
+	cd $str
 }
 
 # Define xe as an alternative for fc. The name was chosen since Ctrl-X Ctrl-E is

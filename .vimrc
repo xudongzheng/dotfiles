@@ -310,12 +310,12 @@ autocmd FileType css iab <buffer> // /* */<left><left><left>
 autocmd FileType html,svg,xml iab <buffer> // <!-- --><left><left><left><left>
 autocmd FileType sql iab <buffer> // --
 
-" Use tt instead of ==, which saves two keystrokes on my keyboard. In
-" JavaScript, use === to ensure that the types also match. Do the same in HTML
-" as equality comparison can appear in <script> and Vue.js templates, where we
-" want the same behavior.
+" Define abbreviations for == and !=. In JavaScript, this should be === and !==.
+" Handle HTML and Vue like JavaScript since since they may contain JavaScript.
 autocmd FileType * iab <buffer> tt ==
-autocmd FileType html,javascript iab <buffer> tt ===
+autocmd FileType * iab <buffer> !t rt
+autocmd FileType html,javascript,vue iab <buffer> tt ===
+autocmd FileType html,javascript,vue iab <buffer> rt !==
 
 " Define abbreviations for integer incrementation, which is the same in most
 " languages.

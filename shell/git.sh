@@ -53,6 +53,7 @@ alias gxar="gaa && gxr"
 alias gxm="gx -m"
 alias gxn="gx --amend"
 alias gxr='gx -m "$(date -R)"'
+alias gxs="gx --signoff"
 alias gy="gu && gxar && gp"
 
 # Define functions for working with main/master depending on what is used by the
@@ -68,7 +69,9 @@ function gcm { git checkout $(gitma); }
 function glm { git log $(gitma); }
 function gmm { git merge $(gitma); }
 function grim { git rebase -i $(gitma); }
+function griom { git rebase -i origin/$(gitma); }
 function grm { git rebase $(gitma); }
+function grom { git rebase origin/$(gitma); }
 
 # Define aliases for searching a Git repository. Use -z so Unicode names are not
 # escaped. It will also use \x00 as the separator, which is fine since xargs is
