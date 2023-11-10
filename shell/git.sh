@@ -122,9 +122,9 @@ function grih {
 function gitdk {
 	repo=$1
 	str=$(sed "s/[@:]/\//g" <<< $1 | sed "s/\.git//")
-	hostname=$(awk -F / '{print $2}' <<< $str)
-	user=$(awk -F / '{print $3}' <<< $str)
-	repo=$(awk -F / '{print $4}' <<< $str)
+	hostname=$(cut -d / -f 2 <<< $str)
+	user=$(cut -d / -f 3 <<< $str)
+	repo=$(cut -d / -f 4 <<< $str)
 
 	if [[ "$hostname" == "github.com" ]]; then
 		service=github

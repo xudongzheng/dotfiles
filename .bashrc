@@ -219,7 +219,12 @@ function cdn {
 
 # Similar to cdn above, use ndc to do edit the file.
 function ndc {
-	vi $(awk -F: '{print $1}' <<< "$1")
+	files=()
+	for file in "$@"; do
+		file=$(cut -d : -f 1 <<< "$file")
+		files+=("$file")
+	done
+	vi "${files[@]}"
 }
 
 # Use dotc to print and copy command for setting up dotfiles on a new server or
