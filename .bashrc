@@ -109,9 +109,10 @@ alias vie="vi -c Explore"
 alias vrc="vi .vimrc"
 alias wl="wc -l"
 
-# Define alias for cutting words. "cutw n" prints the n-th word on every line.
-# "cutw n-" prints every word starting from the n-th word on every line.
-alias cutw="cut -d ' ' -f"
+# Define alias for cutting words. Use "tr" to squeeze multiple consecutive
+# spaces into one. "cutw n" prints the n-th word on every line. "cutw n-" prints
+# every word starting from the n-th word on every line.
+alias cutw="tr -s ' ' | cut -d ' ' -f"
 
 # Define alias for xargs. This replaces \n with \x00 so filenames containing
 # spaces are handled correctly.
@@ -151,6 +152,8 @@ alias duh="du -sh"
 alias osx509="openssl x509 -text -noout -in"
 
 function aliasDir {
+	# When multiple directories are given, create alias for first directory that
+	# exists.
 	for dir in "${@:2}"; do
 		if [[ -d "$dir" ]]; then
 			alias $1="c '$dir'"
@@ -245,8 +248,11 @@ function pub {
 	cat ~/.ssh/id_ed25519.pub
 }
 
-# Use pubc to print and copy command for adding the local SSH public key to a
-# remote server.
+# Use pubxc to print and copy the local SSH public key.
+alias pubxc="pub && pub | xc"
+
+# Use pubc to print and copy command for adding the local SSH public key to
+# .ssh/authorized_keys.
 function pubc {
 	cmd='mkdir -p ~/.ssh && echo "'$(pub)'" >> ~/.ssh/authorized_keys'
 	echo $cmd

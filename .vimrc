@@ -107,7 +107,11 @@ set scrolloff=8
 set wildmenu
 
 " Have backspace behave as it does in other applications.
-set backspace=indent,eol,nostop
+if has("patch-8.2.590")
+	set backspace=indent,eol,nostop
+else
+	set backspace=indent,eol,start
+endif
 
 " Allow Ctrl-A and Ctrl-X to increment and decrement alphabetical characters. Do
 " not treat numbers that begin with 0 as octal.
