@@ -233,8 +233,12 @@ function ndc {
 # Use dotc to print and copy command for setting up dotfiles on a new server or
 # user.
 function dotc {
+	cmd=""
+	if [[ "$1" == "apt" ]]; then
+		cmd="apt update && apt install -y git vim tmux && "
+	fi
 	commit=$(git -C "$dotDir" rev-parse master)
-	cmd="git clone https://github.com/xudongzheng/dotfiles.git dot && cd dot && git checkout $commit && git branch -f master HEAD && bash setup.sh && exit"
+	cmd+="git clone https://github.com/xudongzheng/dotfiles.git dot && cd dot && git checkout $commit && git branch -f master HEAD && bash setup.sh && exit"
 	echo $cmd
 	echo $cmd | xc
 }
