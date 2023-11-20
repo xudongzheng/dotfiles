@@ -317,7 +317,7 @@ autocmd FileType sql iab <buffer> // --
 " Define abbreviations for == and !=. In JavaScript, this should be === and !==.
 " Handle HTML and Vue like JavaScript since since they may contain JavaScript.
 autocmd FileType * iab <buffer> tt ==
-autocmd FileType * iab <buffer> !t rt
+autocmd FileType * iab <buffer> rt !=
 autocmd FileType html,javascript,vue iab <buffer> tt ===
 autocmd FileType html,javascript,vue iab <buffer> rt !==
 
