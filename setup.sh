@@ -42,7 +42,7 @@ if ! grep -qs "$bashrcDst" $bashrcSrc; then
 fi
 vimrcDst="$base/.vimrc"
 if [[ ! -f ~/.vimrc ]]; then
-	echo 'exec "source " . fnameescape("'"$vimrcDst"'")' > ~/.vimrc
+	echo 'exec "source " .. fnameescape("'"$vimrcDst"'")' > ~/.vimrc
 fi
 sshconfigDst="$base/.ssh/config"
 if [[ ! -f ~/.ssh/config ]]; then

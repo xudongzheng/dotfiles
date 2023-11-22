@@ -159,15 +159,15 @@ autocmd FileType xdefaults noremap <buffer> <leader>c :normal U! <esc>
 " Use <leader>c to comment .ssh/known_hosts.
 autocmd BufRead known_hosts noremap <buffer> <leader>c :normal U#<esc>
 
-" Define <leader>c for HTML, SVG, and XML. For normal mode, append first since
-" prepending first may cause the line to be wrapped into multiple lines. Since
-" we handle normal and visual mode separately, we do not need to use the :normal
-" command and should use the underlying QWERTY mapping. TODO look into multiline
-" comments for other languages as well.
+" Define <leader>c for types like HTML and CSS that only support block comments.
+" For normal mode, append before prepend to prevent the comment line from being
+" wrapped into multiple lines.
 autocmd FileType html,svg,xml nnoremap <buffer> <leader>c A --><esc>I<!-- <esc>
 autocmd FileType html,svg,xml xnoremap <buffer> <leader>c c<!--<cr>--><esc>P
+autocmd FileType css nnoremap <buffer> <leader>c A */<esc>I/* <esc>
+autocmd FileType css xnoremap <buffer> <leader>c c/*<cr><bs><bs><bs>*/<esc>P
 
-" In a code file, use  <leader>p and <leader>P to print the visually-selected
+" In a code file, use <leader>p and <leader>P to print the visually-selected
 " variables.
 autocmd FileType go xnoremap <buffer> <leader>p y:r! echo "println($RANDOM, )"<cr>==$P
 autocmd FileType go xnoremap <buffer> <leader>P y:r! echo "fmt.Println($RANDOM, )"<cr>==$P
@@ -485,6 +485,11 @@ nnoremap <leader>W /\s\+$<cr>
 " Use <leader>f to change case until end of the word.
 nnoremap <leader>f ve~
 
+" In visual mode, use u to make selected text uppercase. Coincidentally with
+" Colemak already mapping l to u, l will make the selected text lowercase. L can
+" also be used for uppercase but that is easy to confuse with l.
+xnoremap u U
+
 " Use <leader>g to jump to the next Git conflict marker.
 nnoremap <leader>g /=======<cr>
 
@@ -513,9 +518,9 @@ function! XclipOperator(type)
 	" Copy to default register. The first case is for character motion (such as
 	" yanking some words), the second is for line motion (such as yanking some
 	" lines), and the last is for visual mode.
-	if a:type ==# 'char'
+	if a:type ==# "char"
 		execute "normal! `[v`]y"
-	elseif a:type ==# 'line'
+	elseif a:type ==# "line"
 		execute "normal! `[V`]y"
 	else
 		execute "normal! gvy"
@@ -577,8 +582,8 @@ nnoremap <leader>" di'v<left>r"p
 " Define function to source Vim files relative to this .vimrc.
 let s:dotfiles_dir = fnamemodify(expand("<sfile>:h"), ":p")
 func! SourceVim(path)
-	let l:script_path = s:dotfiles_dir . a:path
-	exec "source " . l:script_path
+	let l:script_path = s:dotfiles_dir .. a:path
+	exec "source " .. l:script_path
 endfunc
 
 call SourceVim("vim/abbrev.vim")
