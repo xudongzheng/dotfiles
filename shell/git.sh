@@ -15,7 +15,6 @@ alias gdcs="gdc --stat"
 alias gdk="gd --check"
 alias gds="gd --stat"
 alias ge="git blame"
-alias gep="git ls-files | ep"
 alias gf="git fetch"
 alias gg="git fetch && git reset --hard @{u}"
 alias gh="git show"
@@ -46,7 +45,6 @@ alias gt="git stash"
 alias gta="gt apply"
 alias gtp="gt -p"
 alias gu="git pull -p"
-alias gw="git ls-files | xargs cat | wc -l"
 alias gx="git commit"
 alias gxa="gx -a"
 alias gxar="gaa && gxr"
@@ -73,15 +71,21 @@ function griom { git rebase -i origin/$(gitma); }
 function grm { git rebase $(gitma); }
 function grom { git rebase origin/$(gitma); }
 
-# Define aliases for searching a Git repository. Use -z so Unicode names are not
-# escaped. It will also use \x00 as the separator, which is fine since xargs is
-# an alias that expects it. This uses "git grep" instead of "git ls-files" since
-# the latter includes submodules, which grep will give an error for since they
-# are directories. See https://goo.gl/DLz58m for details.
+# Define aliases for processing Git repository content. Use -z so Unicode names
+# are not escaped. The flag also changes the separator to \x00, which is fine
+# since xargs is an alias that already expects it. Use "git grep" instead of
+# "git ls-files" since the latter includes submodules. which should be ignored
+# since these aliases are for files. See https://goo.gl/DLz58m for details.
+alias gw="git grep -z --cached -l '' | xargs cat | wc -l"
 alias lg="git grep -z --cached -l '' | xargs grep --color -n"
 alias lgi="lg -i"
 alias lgt="lg TODO"
 alias lgtt="lg 'TODO TODO'"
+
+# Define alias for searching filenames in a Git repository. Use -z so Unicode
+# names are not escaped. As that also changes the separator to 0x00, convert
+# back to \n before grepping.
+alias gep="git ls-files -z | sed 's/\x00/\n/g' | ep"
 
 # Use gxua to set the repository email address to the default alias email. Use
 # gxul to set it to the email of the last commit. We must use single quotes for
