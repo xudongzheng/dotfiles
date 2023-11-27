@@ -3,40 +3,48 @@ set -e
 cd "$(dirname "$0")"
 
 function writePref {
-	echo "user_pref(\"$2\", $3);" >> "$1"
+	echo "user_pref(\"$2\", $3);" >> "$1/user.js"
 }
 
 function handleUserJS {
-	application=$1
-	userJS="$2/user.js"
+	application="$1"
+	userDir="$2"
 
-	> "$userJS"
+	# Clear user.js.
+	> "$userDir/user.js"
 
 	# Disable using middle mouse button to paste.
-	writePref "$userJS" middlemouse.paste false
+	writePref "$userDir" middlemouse.paste false
 
 	# When using a SOCKS5 proxy, DNS should be handled through the proxy.
-	writePref "$userJS" network.proxy.socks_remote_dns true
+	writePref "$userDir" network.proxy.socks_remote_dns true
 
 	if [[ "$application" == "thunderbird" ]]; then
 		# Set Thunderbird date format. See https://bit.ly/3Qfbf8n for
 		# documentation.
-		writePref "$userJS" intl.date_time.pattern_override.date_short '"yyyy-MM-dd"'
+		writePref "$userDir" intl.date_time.pattern_override.date_short '"yyyy-MM-dd"'
 	elif [[ "$application" == "firefox" ]]; then
 		# Configure Firefox home page.
-		writePref "$userJS" browser.newtabpage.activity-stream.feeds.section.topstories false
-		writePref "$userJS" browser.newtabpage.activity-stream.showSponsoredTopSites false
-		writePref "$userJS" browser.newtabpage.activity-stream.topSitesRows 4
+		writePref "$userDir" browser.newtabpage.activity-stream.feeds.section.topstories false
+		writePref "$userDir" browser.newtabpage.activity-stream.showSponsoredTopSites false
+		writePref "$userDir" browser.newtabpage.activity-stream.topSitesRows 4
 
 		# Do not check if Firefox is the default browser. On macOS, Safari will
 		# remain the default browser.
-		writePref "$userJS" browser.shell.checkDefaultBrowser false
+		writePref "$userDir" browser.shell.checkDefaultBrowser false
 
 		# Disable Firefox View.
-		writePref "$userJS" browser.tabs.firefox-view false
+		writePref "$userDir" browser.tabs.firefox-view false
 
 		# Disable suggestions from sponsors in address bar.
-		writePref "$userJS" browser.urlbar.suggest.quicksuggest.sponsored false
+		writePref "$userDir" browser.urlbar.suggest.quicksuggest.sponsored false
+
+		# Always ask where to save download files.
+		writePref "$userDir" browser.download.useDownloadDir false
+
+		# When opening a PDF, by default Firefox will download it and open the
+		# local file. Have Firefox open it without saving it to a file.
+		writePref "$userDir" browser.download.open_pdf_attachments_inline true
 	fi
 }
 

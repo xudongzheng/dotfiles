@@ -484,11 +484,6 @@ nnoremap <leader>W /\s\+$<cr>
 " Use <leader>f to change case until end of the word.
 nnoremap <leader>f ve~
 
-" In visual mode, use u to make selected text uppercase. Coincidentally with
-" Colemak already mapping l to u, l will make the selected text lowercase. L can
-" also be used for uppercase but that is easy to confuse with l.
-xnoremap u U
-
 " Use <leader>g to jump to the next Git conflict marker.
 nnoremap <leader>g /=======<cr>
 
