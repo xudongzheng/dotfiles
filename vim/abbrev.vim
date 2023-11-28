@@ -4,12 +4,6 @@ func! AbbrevPHPSnippets()
 endfunc
 autocmd FileType php call AbbrevPHPSnippets()
 
-func! AbbrevCSnippets()
-	iab <buffer> maintn int main() {<cr><cr>}<up><bs>
-	iab <buffer> null NULL
-endfunc
-autocmd FileType c,cpp call AbbrevCSnippets()
-
 " Many languages use toString() to convert to string.
 autocmd FileType java,javascript,scala iab <buffer> strtn toString()
 

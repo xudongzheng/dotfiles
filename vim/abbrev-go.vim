@@ -123,7 +123,7 @@ func! AbbrevGoSnippets()
 endfunc
 autocmd FileType go call AbbrevGoSnippets()
 
-" Define mapping for common Go snippets.
+" Define visual mapping for common Go snippets.
 func! MapGoSnippets()
 	xnoremap <leader>b c[]byte()<esc>P
 	xnoremap <leader>l clen()<esc>P

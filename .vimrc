@@ -581,4 +581,5 @@ func! SourceVim(path)
 endfunc
 
 call SourceVim("vim/abbrev.vim")
+call SourceVim("vim/abbrev-c.vim")
 call SourceVim("vim/abbrev-go.vim")
