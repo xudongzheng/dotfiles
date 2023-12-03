@@ -1,3 +1,8 @@
+# Set terminal prompt and xterm title. The zero-length portion of $PS1 is
+# wrapped with \[ and \] so the prompt length is calculated correctly.
+term_title="\u@\h:\w"
+PS1="\[\e]0;$term_title\a\]$term_title\$ "
+
 # Increase Bash history size.
 HISTSIZE=100000
 HISTFILESIZE=200000
@@ -7,12 +12,5 @@ HISTTIMEFORMAT="[%F %T %Z] "
 
 # Ignore consecutive duplicate commands and commands starting with a space.
 HISTCONTROL=erasedups:ignorespace
-
-# Set xterm title.
-case "$TERM" in
-	xterm*|rxvt*)
-		PS1="\[\e]0;\u@\h:\w\a\]$PS1"
-		;;
-esac
 
 alias vhi="vi ~/.bash_history"

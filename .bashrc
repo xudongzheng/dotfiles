@@ -1,5 +1,3 @@
-export TERM=xterm-256color
-
 # Set default editor. On most platforms, Vi and Vim both refer to the same
 # editor. When using Ctrl-X Ctrl-E, Zsh's edit-command-line tries to advance the
 # cursor to the same position as it was in terminal, which is not the behavior
@@ -131,12 +129,13 @@ alias sins="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 alias sinsr="sins -l root"
 
 # Define aliases for tar. When extracting as root, tar will extract with the
-# setuid/setgid attributes by default. This can be a problem when untrusted
-# archives are extracted to a location accessible to other users. Include
-# --no-same-permissions to prevent this issue.
+# setuid/setgid attribute by default. This can be a problem when untrusted
+# archives are extracted to a location accessible to other users so prevent this
+# with --no-same-permissions. As root tar also defaults to maintaining file
+# ownership when extracting. This is disabled with --no-same-owner.
 alias tarcf="tar cf"
 alias tarzcf="tar zcf"
-alias tarxf="tar --no-same-permissions -xf"
+alias tarxf="tar --no-same-permissions --no-same-owner -xf"
 
 # Create an alias for cp and mv as to prompt before overwriting existing files.
 alias cp="cp -i"

@@ -1,5 +1,7 @@
-# Use the same prompt format as Bash on Linux.
-PROMPT="%n@%m:%~$ "
+# Set terminal prompt and xterm title. The zero-length portion of $PS1 is
+# wrapped with %{ and %} so the prompt length is calculated correctly.
+term_title="%n@%m:%~"
+PS1=$'%{\e]0;'"$term_title"$'\a%}'"$term_title\$ "
 
 # Use Emacs bindings. This is already the default when Zsh is launched from
 # macOS terminal or remote SSH. For some reason, Vim bindings is the default

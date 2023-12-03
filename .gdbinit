@@ -10,6 +10,11 @@ define lc
 	continue
 end
 
+# Halt process running in background.
+define mh
+	mon halt
+end
+
 # Reset in background.
 define mr
 	mon reset

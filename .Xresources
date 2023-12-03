@@ -1,3 +1,5 @@
+XTerm.termName: xterm-256color
+
 ! Set cursor size. Otherwise, it occasionally appears larger in graphical
 ! programs such as Firefox.
 Xcursor.size: 24
