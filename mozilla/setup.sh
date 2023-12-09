@@ -23,6 +23,9 @@ function handleUserJS {
 		# Set Thunderbird date format. See https://bit.ly/3Qfbf8n for
 		# documentation.
 		writePref "$userDir" intl.date_time.pattern_override.date_short '"yyyy-MM-dd"'
+
+		# Set display density to compact.
+		writePref "$userDir" mail.uidensity 0
 	elif [[ "$application" == "firefox" ]]; then
 		# Configure Firefox home page.
 		writePref "$userDir" browser.newtabpage.activity-stream.feeds.section.topstories false

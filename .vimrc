@@ -532,15 +532,25 @@ xnoremap <leader>j :<c-u>call XclipOperator(visualmode())<cr>
 
 " Use <leader>J to reformat selection with arbitrary width and copy to
 " clipboard. This is useful for writing messages in Vim before sending with an
-" external application.
-function! XclipReformat()
+" external application. The operator function does not handle the char type
+" since reformatting makes no sense in that context.
+function! XclipReformatOperator(type)
 	setlocal textwidth=1000
-	execute "normal! gvgqgv"
-	call XclipOperator(visualmode())
+	if a:type ==# "line"
+		execute "normal! `[V`]gq"
+	else
+		execute "normal! gvgqgv"
+	endif
+	call XclipOperator(a:type)
 	setlocal textwidth=80
-	execute "normal! gvgq"
+	if a:type ==# "line"
+		execute "normal! `[V`]gq"
+	else
+		execute "normal! gvgq"
+	endif
 endfunction
-xnoremap <leader>J :<c-u>call XclipReformat()<cr>
+nnoremap <leader>J :set operatorfunc=XclipReformatOperator<cr>g@
+xnoremap <leader>J :<c-u>call XclipReformatOperator(visualmode())<cr>
 
 " Use <leader>e to open Netrw in the current window. Use <leader>E to open Netrw
 " in a new tab.
