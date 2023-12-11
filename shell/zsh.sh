@@ -52,6 +52,13 @@ function editCommandLine {
 zle -N editCommandLine
 bindkey '^x^e' editCommandLine
 
+# Use Alt and Ctrl with left and right arrows to navigate by words. This comes
+# from https://bit.ly/3NJvfhJ.
+bindkey "^[[1;3D" backward-word
+bindkey "^[[1;3C" forward-word
+bindkey "^[[1;5D" backward-word
+bindkey "^[[1;5C" forward-word
+
 # For the "history" command, use same timestamp format as Bash.
 alias history="history -t '[%Y-%m-%d %H:%M:%S %Z]' -i 0"
 
