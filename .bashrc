@@ -100,6 +100,7 @@ alias ng="n | ep"
 alias p="ps aux"
 alias pg="p | ep"
 alias rp="realpath"
+alias sort="LC_ALL=C sort"
 alias tm="touch -m"
 alias usm="useradd -s /bin/bash -m"
 alias vid="vi -"
@@ -140,6 +141,12 @@ alias tarxf="tar --no-same-permissions --no-same-owner -xf"
 # Create an alias for cp and mv as to prompt before overwriting existing files.
 alias cp="cp -i"
 alias mv="mv -i"
+
+# Create function to undo mv. This can be easily accessed by editing the initial
+# mv command and adding the prefix.
+function unmv {
+	mv "$2" "$1"
+}
 
 # Create aliases for calculating size of directories and files. Use --summarize
 # (-s) subdirectories are not calculated separately. Use the -b flag to consider

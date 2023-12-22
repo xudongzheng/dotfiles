@@ -117,6 +117,10 @@ endif
 " not treat numbers that begin with 0 as octal.
 set nrformats+=alpha nrformats-=octal
 
+" Use :V and :S to create vertical and horizontal split.
+command V :Vexplore
+command S :Sexplore
+
 " Highlight trailing whitespace per https://bit.ly/35RTov2.
 func! HighlightTrailingWS()
 	highlight ExtraWhitespace ctermbg=red

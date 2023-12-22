@@ -1,4 +1,4 @@
-# Enable 256-color support.
+! Enable 256-color support.
 XTerm.termName: xterm-256color
 
 ! Set cursor size. Otherwise, it occasionally appears larger in graphical

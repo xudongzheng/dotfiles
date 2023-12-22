@@ -13,7 +13,7 @@ func! AbbrevGoImport()
 	iab <buffer> tehn "encoding/hex"
 	iab <buffer> tejn "encoding/json"
 	iab <buffer> tepn "encoding/pem"
-	iab <buffer> tern "errors""
+	iab <buffer> tern "errors"
 	iab <buffer> tfcn "fusion/context"
 	iab <buffer> tfcrn "fusion/crypto/rand"
 	iab <buffer> tfen "fusion/errors"
