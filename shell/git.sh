@@ -156,6 +156,9 @@ function gitdk {
 		echo Key for $service $user/$repo already exists
 	fi
 
-	echo git@$host:$user/$repo.git
 	cat $key.pub
+
+	echo Press enter to clone git@$host:$user/$repo.git, Ctrl-C to exit.
+	read -p ""
+	git clone git@$host:$user/$repo.git
 }

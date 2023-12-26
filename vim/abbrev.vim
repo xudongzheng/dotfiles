@@ -4,6 +4,12 @@ func! AbbrevPHPSnippets()
 endfunc
 autocmd FileType php call AbbrevPHPSnippets()
 
+" Define abbreviations for Python snippets.
+func! AbbrevPythonSnippets()
+	xnoremap <leader>l clen()<esc>P
+endfunc
+autocmd FileType python call AbbrevPythonSnippets()
+
 " Many languages use toString() to convert to string.
 autocmd FileType java,javascript,scala iab <buffer> strtn toString()
 

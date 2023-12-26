@@ -18,7 +18,7 @@ function ff {
 
 # Define alias for getting most recent screenshots. Use "ps" suffix for "print
 # screen" instead of "ss" for "screenshot" to avoid same finger repetition.
-alias lps="find ~/Documents/screenshot -maxdepth 1 -type f | sort | tail -n 1"
+alias lps="find ~/Documents/screenshot -maxdepth 1 -type f | grep -w Screen | sort | tail -n 1"
 
 # Define alias for opening most recent screenshot.
 alias fps='ff "$(lps)"'
