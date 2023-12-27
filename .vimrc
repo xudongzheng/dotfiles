@@ -121,6 +121,14 @@ set nrformats+=alpha nrformats-=octal
 command V :Vexplore
 command S :Sexplore
 
+" When tmux is used, Vim can't detect that xterm bracketed paste is supported so
+" it must be configured manually. This snippet comes from https://bit.ly/3GZcaUG
+" and ':help xterm-bracketed-paste'.
+let &t_BE = "\e[?2004h"
+let &t_BD = "\e[?2004l"
+let &t_PS = "\e[200~"
+let &t_PE = "\e[201~"
+
 " Highlight trailing whitespace per https://bit.ly/35RTov2.
 func! HighlightTrailingWS()
 	highlight ExtraWhitespace ctermbg=red

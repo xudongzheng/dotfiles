@@ -158,7 +158,7 @@ function gitdk {
 
 	cat $key.pub
 
-	echo Press enter to clone git@$host:$user/$repo.git, Ctrl-C to exit.
+	echo Press enter to clone git@$host:$user/$repo.git or press Ctrl-C to quit
 	read -p ""
 	git clone git@$host:$user/$repo.git
 }
