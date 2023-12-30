@@ -129,6 +129,11 @@ let &t_BD = "\e[?2004l"
 let &t_PS = "\e[200~"
 let &t_PE = "\e[201~"
 
+" An abbrevation at the end of pasted text gets expanded but it shouldn't be.
+" See https://bit.ly/3RGkCwX for Vim issue. Breaking the undo sequence is a
+" workaround that stops that though I have no clue why it works.
+autocmd OptionSet paste if &paste == 0 | call feedkeys("\<c-g>u") | endif
+
 " Highlight trailing whitespace per https://bit.ly/35RTov2.
 func! HighlightTrailingWS()
 	highlight ExtraWhitespace ctermbg=red

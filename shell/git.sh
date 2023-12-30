@@ -159,6 +159,10 @@ function gitdk {
 	cat $key.pub
 
 	echo Press enter to clone git@$host:$user/$repo.git or press Ctrl-C to quit
-	read -p ""
+	if [[ $SHELL == "/bin/bash" ]]; then
+		read -p ""
+	elif [[ $SHELL == "/bin/zsh" ]]; then
+		read "?"
+	fi
 	git clone git@$host:$user/$repo.git
 }
