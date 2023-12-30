@@ -511,6 +511,9 @@ xnoremap <leader>a ! LC_ALL=C sort<cr>
 " Use <leader>A to highlight non-ASCII characters.
 nnoremap <leader>A /[^\t -~]<cr>
 
+" Use <leader>r to reverse visually selected lines.
+xnoremap <leader>r ! tac<cr>
+
 " Use <leader>t to search for triple TODO.
 nnoremap <leader>t /TODO TODO<cr>
 
