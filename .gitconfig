@@ -4,11 +4,6 @@
 [init]
 	defaultBranch = main
 
-# When local and remote branches diverge, automatically rebase local changes on
-# top of remote branch when pulling.
-[pull]
-	rebase = true
-
 [push]
 	default = simple
 

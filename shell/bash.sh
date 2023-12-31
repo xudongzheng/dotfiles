@@ -1,6 +1,6 @@
 # If /root/.hostname exists (such as in a Docker container), use that instead of
 # the hostname for the terminal prompt and xterm title.
-if [ -f .hostname ]; then
+if [[ -f .hostname ]]; then
 	term_title="\u@$(cat .hostname):\w"
 else
 	term_title="\u@\h:\w"
