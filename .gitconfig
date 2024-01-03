@@ -4,6 +4,10 @@
 [init]
 	defaultBranch = main
 
+# Only allow fast-forward pulls by default.
+[pull]
+	ff = only
+
 [push]
 	default = simple
 

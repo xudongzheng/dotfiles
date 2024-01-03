@@ -329,10 +329,19 @@ elif command -v screen > /dev/null; then
 fi
 
 # If wget is not available but cURL is available (such as on macOS), allow cURL
-# to be invoked using the wget command. Include -L to follow redirects.
+# to be invoked using the wget command.
 if ! hash wget 2>/dev/null; then
 	if command -v curl > /dev/null; then
-		alias wget="curl -O -L"
+		function wget {
+			# Do not overwrite existing file.
+			name=$(basename "$1")
+			if [[ -f "$name" ]]; then
+				name=$(mktemp "${name}XXXXXX")
+			fi
+
+			# Include -L to follow redirects.
+			curl -o "$name" -L "$1"
+		}
 	fi
 fi
 

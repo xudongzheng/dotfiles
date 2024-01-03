@@ -1,50 +1,71 @@
-# Define basic aliases for Git.
 alias ga="git add"
 alias gaa="ga -A"
 alias gap="ga -p"
+
 alias gb="git branch"
 alias gba="gb -a"
-alias gbhd="gb -D"
+alias gbD="gb -D"
+
 alias gc="git checkout"
 alias gcb="gc -b"
 alias gcdd="gc --"
+
+alias gC="git clone"
+
 alias gd="git diff --find-copies"
 alias gdc="gd --cached"
 alias gdck="gdc --check"
 alias gdcs="gdc --stat"
 alias gdk="gd --check"
 alias gds="gd --stat"
+
 alias ge="git blame"
+
 alias gf="git fetch"
+
 alias gg="git fetch && git reset --hard @{u}"
+
 alias gh="git show"
 alias gian="git update-index --no-assume-unchanged"
 alias giau="git update-index --assume-unchanged"
+
 alias gl="git log --graph --decorate --stat --find-renames --date-order --show-signature"
 alias glb="gl --branches --remotes --tags"
 alias glf="gl --pretty=fuller"
 alias glo="git log --pretty=oneline --abbrev-commit"
+
 alias gm="git merge"
 alias gma="gm --abort"
-alias gn="git clone"
+
 alias gnfd="git clean -f -d"
+
 alias gp="git push"
 alias gpf="gp --force"
 alias gps="gp --set-upstream"
 alias gpso="gps origin"
+
 alias gr="git rebase"
 alias gra="gr --abort"
 alias grc="gr --continue"
-alias grh="git reset HEAD"
-alias grhc="git reset HEAD^"
 alias gri="gr -i"
 alias grs="gr --skip"
-alias grv="git remote -v"
+
+alias grh="git reset HEAD"
+alias grhc="git reset HEAD^"
+
+alias gRv="git remote -v"
+
 alias gs="git status"
+
 alias gt="git stash"
 alias gta="gt apply"
 alias gtp="gt -p"
+
+alias gT="git tag"
+alias gTd="git tag -d"
+
 alias gu="git pull -p"
+
 alias gx="git commit"
 alias gxa="gx -a"
 alias gxar="gaa && gxr"
@@ -52,6 +73,7 @@ alias gxm="gx -m"
 alias gxn="gx --amend"
 alias gxr='gx -m "$(date -R)"'
 alias gxs="gx --signoff"
+
 alias gy="gu && gxar && gp"
 
 # Define functions for working with main/master depending on what is used by the
@@ -63,8 +85,8 @@ function gitma {
 		echo "master"
 	fi
 }
-function gcm { git checkout $(gitma); }
-function glm { git log $(gitma); }
+function gcm { git checkout $(gitma) "$@"; }
+function glm { gl $(gitma) "$@"; }
 function gmm { git merge $(gitma); }
 function grim { git rebase -i $(gitma); }
 function griom { git rebase -i origin/$(gitma); }

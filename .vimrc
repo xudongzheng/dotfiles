@@ -32,11 +32,16 @@ noremap T F
 noremap U I
 noremap Y O
 
-" Use the desert color scheme starting with Vim 9. Use elflord if older.
+" Use the desert color scheme starting with Vim 9. Use elflord if older and
+" slate in vimdiff since highlighted lines are hard to see in elflord.
 if v:version >= 900
 	colors desert
 else
-	colors elflord
+	if &diff
+		colors slate
+	else
+		colors elflord
+	endif
 endif
 
 " Enable syntax highlighting.
@@ -132,7 +137,7 @@ let &t_PE = "\e[201~"
 " An abbrevation at the end of pasted text gets expanded but it shouldn't be.
 " See https://bit.ly/3RGkCwX for Vim issue. Breaking the undo sequence is a
 " workaround that stops that though I have no clue why it works.
-autocmd OptionSet paste if &paste == 0 | call feedkeys("\<c-g>u") | endif
+autocmd OptionSet paste if &paste == 0 && mode() == "i" | call feedkeys("\<c-g>u") | endif
 
 " Highlight trailing whitespace per https://bit.ly/35RTov2.
 func! HighlightTrailingWS()
