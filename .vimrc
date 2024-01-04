@@ -373,29 +373,12 @@ nnoremap <F12> :noh<cr>
 " changes. We will unmap everything and map only the functions that we need.
 autocmd FileType netrw mapclear <buffer>
 
-" Define function for calling internal Netrw function. Ideally we would use
-" netrw#Call but there is a bug in the implementation per http://bit.ly/2l9fLtd.
-" The bug is fixed in Vim 8.1.1715 and we can switch to netrw#Call once the
-" patch is included everywhere.
-func! NetrwFunction(suffix)
-	redir => scriptnames
-	silent! scriptnames
-	redir END
-	for script in split(l:scriptnames, "\n")
-		if l:script =~ "netrw.vim"
-			return printf("<snr>%d_%s", str2nr(split(l:script, ":")[0]), a:suffix)
-		endif
-	endfor
-endfunc
-
 " Use s to go up a directory and t to enter a directory.
 func! NetrwBrowse(dest)
-	let NetrwChange = function(NetrwFunction("NetrwBrowseChgDir"))
-	call netrw#LocalBrowseCheck(NetrwChange(1, a:dest))
+	call netrw#LocalBrowseCheck(netrw#Call("NetrwBrowseChgDir", 1, a:dest))
 endfunc
 func! NetrwReturn()
-	let NetrwGetWord = function(NetrwFunction("NetrwGetWord"))
-	call NetrwBrowse(NetrwGetWord())
+	call NetrwBrowse(netrw#Call("NetrwGetWord"))
 endfunc
 autocmd FileType netrw nnoremap <buffer> s :call NetrwBrowse("..")<cr>
 autocmd FileType netrw nnoremap <buffer> t :call NetrwReturn()<cr>
@@ -421,20 +404,16 @@ autocmd FileType netrw nnoremap <buffer> ow :call NetrwBrowse(getcwd())<cr>
 " instead of m for creating a new directory since Netrw's NetrwBrowseChgDir
 " internally uses m for marking and redefining m would break NetrwBrowse().
 func! NetrwCreate()
-	let NetrwOpenFile = function(NetrwFunction("NetrwOpenFile"))
-	call NetrwOpenFile(1)
+	call netrw#Call("NetrwOpenFile", 1)
 endfunc
 func! NetrwMkdir()
-	let NetrwMakeDir = function(NetrwFunction("NetrwMakeDir"))
-	call NetrwMakeDir("")
+	call netrw#Call("NetrwMakeDir", "")
 endfunc
 func! NetrwRename()
-	let NetrwLocalRename = function(NetrwFunction("NetrwLocalRename"))
-	call NetrwLocalRename(b:netrw_curdir)
+	call netrw#Call("NetrwLocalRename", b:netrw_curdir)
 endfunc
 func! NetrwRemove()
-	let NetrwLocalRm = function(NetrwFunction("NetrwLocalRm"))
-	call NetrwLocalRm(b:netrw_curdir)
+	call netrw#Call("NetrwLocalRm", b:netrw_curdir)
 endfunc
 autocmd FileType netrw nnoremap <buffer> c :call NetrwCreate()<cr>
 autocmd FileType netrw nnoremap <buffer> M :call NetrwMkdir()<cr>
