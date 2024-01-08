@@ -180,11 +180,21 @@ function gitdk {
 
 	cat $key.pub
 
-	echo Press enter to clone git@$host:$user/$repo.git or press Ctrl-C to quit
-	if [[ $SHELL == "/bin/bash" ]]; then
-		read -p ""
-	elif [[ $SHELL == "/bin/zsh" ]]; then
-		read "?"
+	inside_git_repo="$(git rev-parse --is-inside-work-tree 2>/dev/null)"
+	if [[ "$inside_git_repo" ]]; then
+		echo "Enter remote name to add remote or press Ctrl-C to quit"
+	else
+		echo "Press enter to clone or press Ctrl-C to quit"
 	fi
-	git clone git@$host:$user/$repo.git
+	if [[ $SHELL == "/bin/bash" ]]; then
+		read -r remote
+	elif [[ $SHELL == "/bin/zsh" ]]; then
+		read -r "remote?"
+	fi
+	repo="git@$host:$user/$repo.git"
+	if [[ "$inside_git_repo" ]]; then
+		git remote add $remote $repo
+	else
+		git clone $repo
+	fi
 }
