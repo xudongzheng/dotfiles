@@ -118,6 +118,13 @@ else
 	set backspace=indent,eol,start
 endif
 
+" When running in binary mode (with -b flag), make EOL characters visible. Tabs
+" should be displayed normally.
+if &binary
+	set listchars=tab:\ \ ,eol:$
+	set list
+endif
+
 " Allow Ctrl-A and Ctrl-X to increment and decrement alphabetical characters. Do
 " not treat numbers that begin with 0 as octal.
 set nrformats+=alpha nrformats-=octal
@@ -145,6 +152,9 @@ func! HighlightTrailingWS()
 	match ExtraWhitespace /\s\+$/
 endfunc
 autocmd BufEnter * call HighlightTrailingWS()
+
+" Use <leader>W to delete trailing whitespace characters.
+nnoremap <leader>W :%s/ \+$//<cr>
 
 " By default, set the spell checker language to English. Use <leader>l and
 " <leader>L to change to Spanish and English respectively. For both, ignore
@@ -478,9 +488,6 @@ nnoremap <leader>u :s/+/-/g<cr>:s/\//_/g<cr>
 
 " Use <leader>w to close tab, similar to Ctrl-W in GUI programs.
 nnoremap <leader>w :tabclose<cr>
-
-" Use <leader>W to search for trailing whitespace characters.
-nnoremap <leader>W /\s\+$<cr>
 
 " Use <leader>f to change case until end of the word.
 nnoremap <leader>f ve~
