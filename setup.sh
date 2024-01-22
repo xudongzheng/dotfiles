@@ -47,7 +47,8 @@ fi
 sshconfigDst="$base/.ssh/config"
 if [[ ! -f ~/.ssh/config ]]; then
 	mkdir -p ~/.ssh
-	echo "Include \"$sshconfigDst\"" > ~/.ssh/config
+	echo "Include \"$sshconfigDst\"" >> ~/.ssh/config
+	echo "Include config-*" >> ~/.ssh/config
 fi
 
 # Create symlinks for other configuration files.
