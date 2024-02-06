@@ -48,6 +48,9 @@ function handleUserJS {
 		# When opening a PDF, by default Firefox will download it and open the
 		# local file. Have Firefox open it without saving it to a file.
 		writePref "$userDir" browser.download.open_pdf_attachments_inline true
+
+		# Disable geolocation API.
+		writePref "$userDir" geo.enabled false
 	fi
 }
 

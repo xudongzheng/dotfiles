@@ -97,7 +97,7 @@ alias hig="history | ep"
 alias ll="l -hla"
 alias n="netstat -nlp"
 alias ng="n | ep"
-alias p="ps aux"
+alias p="ps auxf"
 alias pg="p | ep"
 alias rp="realpath"
 alias sort="LC_ALL=C sort"
@@ -180,17 +180,19 @@ aliasDir css ~/Documents/screenshot
 dotDir=$(dirname "$bashSource")
 aliasDir cdot "$dotDir"
 
-# Define function to edit shell configuration file in the working directory.
-function src {
-	shellrc=(.bashrc .zshrc)
-	for value in "${shellrc[@]}"; do
-		if [[ -f $value ]]; then
-			vi $value
+function viargs {
+	for file in "$@"; do
+		if [[ -e "$file" ]]; then
+			vi "$file"
 			return
 		fi
 	done
-	echo "unable to find shell configuration file"
+	echo "unable to find matching file"
 }
+
+# Define function to edit various files in the working directory.
+alias src="viargs .bashrc .zshrc"
+alias vrm="viargs readme.* README.*"
 
 # Use dqap (like in Vim) to undo line wrapping in a file. This is very similar
 # to the "fmt" command. Per https://goo.gl/PfzvyS, the Linux "fmt" has a limit

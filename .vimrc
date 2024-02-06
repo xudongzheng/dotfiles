@@ -244,11 +244,36 @@ autocmd FileType mail unmap <buffer> \q
 autocmd FileType gitrebase xnoremap <buffer> <leader>h :s/pick/squash<cr>
 autocmd FileType gitcommit nnoremap <buffer> <leader>h G{kkdgg
 
-" Set tabs to be 4 spaces and use tabs instead of spaces. This uses autocmd to
-" override Vim's language-specific configuration. YAML is an exception that uses
-" spaces for indentation.
-autocmd FileType * setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=0
-autocmd FileType yaml setlocal expandtab shiftwidth=2 tabstop=2 softtabstop=2
+" Define function for set tab settings.
+function! SetTabWidth(tab_width, priority)
+	" If priority is lower, ignore.
+	if !exists("b:tab_width_prio")
+		let b:tab_width_prio = 0
+	endif
+	if a:priority < b:tab_width_prio
+		return
+	endif
+
+	" If tabs are used for indentation, width argument should be 0 and the
+	" display width is 4. If spaces are used for indentation, width should be
+	" the tab width.
+	let b:tab_width = a:tab_width
+	let b:tab_width_prio = a:priority
+	if b:tab_width == 0
+		setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=0
+	else
+		setlocal expandtab
+		execute 'setlocal shiftwidth=' . b:tab_width
+		execute 'setlocal tabstop=' . b:tab_width
+		execute 'setlocal softtabstop=' . b:tab_width
+	endif
+endfunction
+
+" Define tab settings. By default, use tabs for indentation (priority 0).
+" Projects can override that with priority 1. Files (such as YAML) can override
+" project settings with priority 2.
+autocmd FileType * call SetTabWidth(0, 0)
+autocmd FileType yaml call SetTabWidth(2, 2)
 
 " Wrap long line even if the initial line is longer than textwidth. Per
 " https://goo.gl/3pws7z, we should not combine flags when removing.
@@ -474,7 +499,7 @@ endfunc
 nnoremap <leader>q :call SaveSession()<cr>
 func! LoadSession()
 	source vim-session
-	call delete(expand("vim-session"))
+	call delete("vim-session")
 endfunc
 nnoremap <leader>Q :call LoadSession()<cr>
 
