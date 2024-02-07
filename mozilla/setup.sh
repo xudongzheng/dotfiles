@@ -49,8 +49,11 @@ function handleUserJS {
 		# local file. Have Firefox open it without saving it to a file.
 		writePref "$userDir" browser.download.open_pdf_attachments_inline true
 
-		# Disable geolocation API.
-		writePref "$userDir" geo.enabled false
+		# Do not allow sites to request camera or geolocation permissions by
+		# default. Individual sites may still be allowed to request permission
+		# by opening Page Info and navigating to Permissions.
+		writePref "$userDir" permissions.default.camera 2
+		writePref "$userDir" permissions.default.geo 2
 	fi
 }
 
