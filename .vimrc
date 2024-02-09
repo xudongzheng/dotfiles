@@ -94,10 +94,15 @@ set nojoinspaces
 " Increase history for search and command line entries.
 set history=10000
 
-" Highlight the active line and the active column.
+" Highlight the active line and the active column. The CursorLine color chosen
+" here is a bit more prominent than the default.
 set cursorline
 set cursorcolumn
 highlight CursorColumn ctermbg=lightcyan ctermfg=black
+
+" Enable line number for help pages. Additionally, set conceallevel so concealed
+" characters do not break CursorColumn.
+autocmd FileType help setlocal number relativenumber conceallevel=0
 
 " Set the text width to 80 and create a vertical bar in 81st column. Some
 " filetypes such as gitcommit have a custom width defined and we use autocmd
@@ -465,8 +470,10 @@ if v:version < 900
 	let g:netrw_timefmt = "%Y.%m.%d %H:%M:%S %Z"
 endif
 
-" Netrw hides line numbers by default. Show relative line numbers in netrw.
-let g:netrw_bufsettings = "noma nomod nu nobl nowrap ro rnu"
+" Netrw hides line numbers by default. Show relative line numbers in netrw. The
+" upstream default includes nobuflisted, which is excluded here so terminal
+" works correctly. See https://bit.ly/489Lkoc for details.
+let g:netrw_bufsettings = "nomodifiable nomodified number relativenumber nowrap readonly"
 
 " Display directories above files but otherwise sort alphabetically.
 let g:netrw_sort_sequence = "[\/]"
@@ -532,6 +539,25 @@ xnoremap <leader>r ! tac<cr>
 
 " Use <leader>t to search for triple TODO.
 nnoremap <leader>t /TODO TODO<cr>
+
+" Use <leader>T to open terminal in a vertical split.
+function! OpenTerminal()
+	" Store initial working directory.
+	let l:cwd = getcwd()
+
+	" Open in vertical split if window is wide enough.
+	let l:fileDir = expand('%:p:h')
+	execute 'cd ' . l:fileDir
+	if winwidth(0) > 160
+		vertical terminal
+	else
+		terminal
+	endif
+
+	" Restore initial working directory.
+	execute 'cd ' . l:cwd
+endfunction
+nnoremap <leader>T :call OpenTerminal()<cr>
 
 " Use <leader>z to correct word under cursor to first suggestion.
 nnoremap <leader>z z=1<cr><cr>
