@@ -1,4 +1,4 @@
-func! AbbrevCSnippets()
+function! AbbrevCSnippets()
 	iab <buffer> maintn int main() {<cr><cr>}<up><bs>
 	iab <buffer> null NULL
 
@@ -14,10 +14,10 @@ func! AbbrevCSnippets()
 	iab <buffer> lxwrn LOG_HEXDUMP_WRN(, , ");<left><left><left>
 	iab <buffer> lxerr LOG_HEXDUMP_ERR(, , ");<left><left><left>
 
-endfunc
+endfunction
 autocmd FileType c,cpp call AbbrevCSnippets()
 
-func! MapCSnippets()
+function! MapCSnippets()
 	xnoremap <leader>l csizeof()<esc>P
-endfunc
+endfunction
 autocmd FileType go call MapCSnippets()

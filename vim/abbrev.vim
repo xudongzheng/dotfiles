@@ -1,13 +1,13 @@
 " Define abbreviations for PHP snippets.
-func! AbbrevPHPSnippets()
+function! AbbrevPHPSnippets()
 	iab <buffer> dietn die();
-endfunc
+endfunction
 autocmd FileType php call AbbrevPHPSnippets()
 
 " Define abbreviations for Python snippets.
-func! AbbrevPythonSnippets()
+function! AbbrevPythonSnippets()
 	xnoremap <leader>l clen()<esc>P
-endfunc
+endfunction
 autocmd FileType python call AbbrevPythonSnippets()
 
 " Many languages use toString() to convert to string.
@@ -17,7 +17,7 @@ autocmd FileType java,javascript,scala iab <buffer> strtn toString()
 autocmd FileType swift xnoremap <leader>s cString()<esc>P
 
 " Define abbreviations for TeX snippets.
-func! AbbrevTeXSnippets()
+function! AbbrevTeXSnippets()
 	iab <buffer> beq \begin{equation}
 	iab <buffer> deq \end{equation}
 	iab <buffer> ber \begin{verbatim}
@@ -29,19 +29,19 @@ func! AbbrevTeXSnippets()
 	iab <buffer> mbz \mathbb{Z}
 	iab <buffer> infty \infty
 	iab <buffer> ninfty -\infty
-endfunc
+endfunction
 autocmd FileType tex call AbbrevTeXSnippets()
 
 " Define abbreviations for HTML and XML. Many of the HTML abbreviations are for
 " working with Go templates.
-func! AbbrevHTMLSnippets()
+function! AbbrevHTMLSnippets()
 	iab <buffer> tdotn {{.}}
 	iab <buffer> tdotx {{.}}<left><left>
 	iab <buffer> teln {{else}}
 	iab <buffer> tendn {{end}}
 	iab <buffer> tifn {{if}}<left><left>
 	iab <buffer> trn {{range}}<left><left>
-endfunc
+endfunction
 autocmd FileType html call AbbrevHTMLSnippets()
 
 " Define abbreviations for comments in various languages.

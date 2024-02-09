@@ -152,10 +152,10 @@ let &t_PE = "\e[201~"
 autocmd OptionSet paste if &paste == 0 && mode() == "i" | call feedkeys("\<c-g>u") | endif
 
 " Highlight trailing whitespace per https://bit.ly/35RTov2.
-func! HighlightTrailingWS()
+function! HighlightTrailingWS()
 	highlight ExtraWhitespace ctermbg=red
 	match ExtraWhitespace /\s\+$/
-endfunc
+endfunction
 autocmd BufEnter * call HighlightTrailingWS()
 
 " Use <leader>W to delete trailing whitespace characters.
@@ -171,14 +171,14 @@ nnoremap <leader>L :setlocal spelllang=en,cjk<cr>
 " Use <leader>s in normal mode to automatically format Go source code.
 autocmd FileType go nnoremap <buffer> <leader>s :! gofmt -w=true -s %<cr>:e<cr>
 
-func! MapText()
+function! MapText()
 	" In text files, use <leader>d to insert the date in the American format.
 	" This code comes from https://bit.ly/2UWmveA.
 	nnoremap <buffer> <leader>d "=strftime('%B %-d, %Y')<cr>p
 
 	" Use <leader>x for checking and unchecking a checkbox.
 	nnoremap <leader>x :s/\[x\]/[_]/e<cr>:s/\[ \]/[x]/e<cr>:s/\[_\]/[ ]/e<cr>
-endfunc
+endfunction
 autocmd FileType markdown,text call MapText()
 
 " Use <leader>c to comment code. This should work in normal mode (for the active
@@ -217,7 +217,7 @@ autocmd FileType sh xnoremap <buffer> <leader>p y:r! echo "echo $RANDOM $"<cr>==
 " visual selection.
 autocmd BufRead addp-hunk-edit.diff xnoremap <buffer> <leader>p :s/^-/ /e<cr>gv:g/^+/d<cr>
 
-func! MapMarkdownSnippets()
+function! MapMarkdownSnippets()
 	" In Markdown, use <leader><cr>1 through <leader><cr>6 for making a line
 	" into a heading.
 	nnoremap <buffer> <leader><cr>1 I# <esc>
@@ -234,7 +234,7 @@ func! MapMarkdownSnippets()
 
 	" Use <leader><cr>l to make the selected text a link.
 	xnoremap <buffer> <leader><cr>l c[]<esc>P<right>a()<esc>
-endfunc
+endfunction
 autocmd FileType markdown call MapMarkdownSnippets()
 
 " When modifying crontab, use <leader>* as a shortcut for defining a cron that
@@ -327,11 +327,11 @@ autocmd BufRead,BufNewFile * if &filetype == "" | setlocal filetype=text | endif
 " use BufRead and BufNewFile instead of FileType. This combination ensures that
 " the setting takes effect in every window that opens the buffer. With FileType,
 " it would only take effect in the first window that opens the buffer.
-func! EnableSpell()
+function! EnableSpell()
 	if index(["gitcommit", "markdown", "tex", "text"], &filetype) >= 0
 		setlocal spell
 	endif
-endfunc
+endfunction
 autocmd BufRead,BufNewFile * call EnableSpell()
 
 " Sometimes the spell checker does not work correctly in large TeX files. This
@@ -414,19 +414,19 @@ nnoremap <F12> :noh<cr>
 autocmd FileType netrw mapclear <buffer>
 
 " Use t to enter a directory.
-func! NetrwBrowse(dest)
+function! NetrwBrowse(dest)
 	call netrw#LocalBrowseCheck(netrw#Call("NetrwBrowseChgDir", 1, a:dest))
-endfunc
-func! NetrwReturn()
+endfunction
+function! NetrwReturn()
 	call NetrwBrowse(netrw#Call("NetrwGetWord"))
-endfunc
+endfunction
 autocmd FileType netrw nnoremap <buffer> t :call NetrwReturn()<cr>
 
 " Use p to go up a directory.
-func! NetrwParent()
+function! NetrwParent()
 	call feedkeys(":call NetrwBrowse('..')\<cr>")
 	return ""
-endfunc
+endfunction
 autocmd FileType netrw nnoremap <expr> <buffer> p NetrwParent()
 
 " Define additional keys for navigating to the (r) root directory, the (h) home
@@ -438,18 +438,18 @@ autocmd FileType netrw nnoremap <buffer> ow :call NetrwBrowse(getcwd())<cr>
 " Map additional functions for creating, renaming, and deleting. This uses M
 " instead of m for creating a new directory since Netrw's NetrwBrowseChgDir
 " internally uses m for marking and redefining m would break NetrwBrowse().
-func! NetrwCreate()
+function! NetrwCreate()
 	call netrw#Call("NetrwOpenFile", 1)
-endfunc
-func! NetrwMkdir()
+endfunction
+function! NetrwMkdir()
 	call netrw#Call("NetrwMakeDir", "")
-endfunc
-func! NetrwRename()
+endfunction
+function! NetrwRename()
 	call netrw#Call("NetrwLocalRename", b:netrw_curdir)
-endfunc
-func! NetrwRemove()
+endfunction
+function! NetrwRemove()
 	call netrw#Call("NetrwLocalRm", b:netrw_curdir)
-endfunc
+endfunction
 autocmd FileType netrw nnoremap <buffer> c :call NetrwCreate()<cr>
 autocmd FileType netrw nnoremap <buffer> M :call NetrwMkdir()<cr>
 autocmd FileType netrw nnoremap <buffer> r :call NetrwRename()<cr>
@@ -492,17 +492,17 @@ let g:tex_flavor = "latex"
 " load Vim session from file. The session file goes in the working directory and
 " not the home directory so multiple Vim sessions can be saved and restored.
 set sessionoptions=tabpages
-func! SaveSession()
+function! SaveSession()
 	try
 		mksession vim-session
 		quitall
 	endtry
-endfunc
+endfunction
 nnoremap <leader>q :call SaveSession()<cr>
-func! LoadSession()
+function! LoadSession()
 	source vim-session
 	call delete("vim-session")
-endfunc
+endfunction
 nnoremap <leader>Q :call LoadSession()<cr>
 
 " In visual mode, use <leader>q and <leader>Q to place the selected text in
@@ -642,10 +642,10 @@ nnoremap <leader>" di'v<left>r"p
 
 " Define function to source Vim files relative to this .vimrc.
 let s:dotfiles_dir = fnamemodify(expand("<sfile>:h"), ":p")
-func! SourceVim(path)
+function! SourceVim(path)
 	let l:script_path = s:dotfiles_dir .. a:path
 	execute "source " .. l:script_path
-endfunc
+endfunction
 
 call SourceVim("vim/abbrev.vim")
 call SourceVim("vim/abbrev-c.vim")

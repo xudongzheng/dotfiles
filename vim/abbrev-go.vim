@@ -1,5 +1,5 @@
 " Define abbreviation for Go import paths.
-func! AbbrevGoImport()
+function! AbbrevGoImport()
 	iab <buffer> tbion "bufio"
 	iab <buffer> tbn "bytes"
 	iab <buffer> tcn "context"
@@ -45,11 +45,11 @@ func! AbbrevGoImport()
 	iab <buffer> ttn "time"
 	iab <buffer> tttn "text/template"
 	iab <buffer> tuun "unicode/utf8"
-endfunc
+endfunction
 autocmd FileType go call AbbrevGoImport()
 
 " Define abbreviation for Go snippets.
-func! AbbrevGoSnippets()
+function! AbbrevGoSnippets()
 	iab <buffer> ;t :=
 	iab <buffer> b64std base64.StdEncoding
 	iab <buffer> b64url base64.URLEncoding
@@ -120,14 +120,14 @@ func! AbbrevGoSnippets()
 	iab <buffer> fvr1 for _, v1 := range
 	iab <buffer> fvr2 for _, v2 := range
 	iab <buffer> fvr3 for _, v3 := range
-endfunc
+endfunction
 autocmd FileType go call AbbrevGoSnippets()
 
 " Define visual mapping for common Go snippets.
-func! MapGoSnippets()
+function! MapGoSnippets()
 	xnoremap <leader>b c[]byte()<esc>P
 	xnoremap <leader>l clen()<esc>P
 	xnoremap <leader>s cstring()<esc>P
 	xnoremap <leader>f cfloat64()<esc>P
-endfunc
+endfunction
 autocmd FileType go call MapGoSnippets()
