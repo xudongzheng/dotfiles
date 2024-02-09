@@ -413,26 +413,21 @@ nnoremap <F12> :noh<cr>
 " changes. We will unmap everything and map only the functions that we need.
 autocmd FileType netrw mapclear <buffer>
 
-" Use s to go up a directory and t to enter a directory.
+" Use t to enter a directory.
 func! NetrwBrowse(dest)
 	call netrw#LocalBrowseCheck(netrw#Call("NetrwBrowseChgDir", 1, a:dest))
 endfunc
 func! NetrwReturn()
 	call NetrwBrowse(netrw#Call("NetrwGetWord"))
 endfunc
-autocmd FileType netrw nnoremap <buffer> s :call NetrwBrowse("..")<cr>
 autocmd FileType netrw nnoremap <buffer> t :call NetrwReturn()<cr>
 
-" Vim has a hard time when s above is preceded by a number. In Netrw, it only
-" works when the preceding number is less than or equal to the number of lines
-" between the current line and the end of the Netrw listing (inclusive). Use o
-" for going up multiple directories. Typically the number of levels is small and
-" the operation will use a right handed key followed by a left handed key.
-for i in range(1,9)
-	let path = repeat("../", i)
-	let cmd = printf('autocmd FileType netrw nnoremap <buffer> o%d :call NetrwBrowse("%s")<cr>', i, path)
-	exec cmd
-endfor
+" Use p to go up a directory.
+func! NetrwParent()
+	call feedkeys(":call NetrwBrowse('..')\<cr>")
+	return ""
+endfunc
+autocmd FileType netrw nnoremap <expr> <buffer> p NetrwParent()
 
 " Define additional keys for navigating to the (r) root directory, the (h) home
 " directory, and (w) the current working directory.
@@ -649,7 +644,7 @@ nnoremap <leader>" di'v<left>r"p
 let s:dotfiles_dir = fnamemodify(expand("<sfile>:h"), ":p")
 func! SourceVim(path)
 	let l:script_path = s:dotfiles_dir .. a:path
-	exec "source " .. l:script_path
+	execute "source " .. l:script_path
 endfunc
 
 call SourceVim("vim/abbrev.vim")
