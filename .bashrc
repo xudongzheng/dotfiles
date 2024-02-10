@@ -79,6 +79,14 @@ if [[ $uname == "Darwin" ]]; then
 	}
 fi
 
+# Define alias for ps.
+if [[ $uname == "Darwin" ]]; then
+	alias p="ps aux"
+else
+	alias p="ps auxf"
+fi
+alias pg="p | ep"
+
 alias autk="vi ~/.ssh/authorized_keys"
 alias c="cd"
 alias cm="c - > /dev/null"
@@ -97,8 +105,6 @@ alias hig="history | ep"
 alias ll="l -hla"
 alias n="netstat -nlp"
 alias ng="n | ep"
-alias p="ps auxf"
-alias pg="p | ep"
 alias rp="realpath"
 alias sort="LC_ALL=C sort"
 alias tm="touch -m"
