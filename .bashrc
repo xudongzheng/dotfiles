@@ -148,10 +148,15 @@ alias tarxf="tar --no-same-permissions --no-same-owner -xf"
 alias cp="cp -i"
 alias mv="mv -i"
 
-# Create function to undo mv. This can be easily accessed by editing the initial
-# mv command and adding the prefix.
+# Create function to undo mv. This can be easily executed by editing the initial
+# "mv" command and adding the "un" prefix.
 function unmv {
-	mv "$2" "$1"
+	# Handled based on whether the destination is a directory.
+	if [[ -d "$2" ]]; then
+		mv "$2/$(basename $1)" "$(dirname $1)"
+	else
+		mv "$2" "$1"
+	fi
 }
 
 # Create aliases for calculating size of directories and files. Use --summarize

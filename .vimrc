@@ -303,6 +303,9 @@ autocmd FileType css setlocal formatoptions+=ro
 " Use the same word boundary for all file types.
 autocmd FileType * set iskeyword=@,48-57,_
 
+" Use Bash syntax for shell scripts.
+autocmd FileType sh,zsh setlocal filetype=bash
+
 " Treat .fs (F#) and .kt (Kotlin) files as Scala files. They are obviously
 " different but are similar enough for most of syntax highlighting and
 " indentation to work. OCaml is another candidate for F# but it doesn't handle
@@ -481,9 +484,6 @@ let g:netrw_nogx = 1
 " directory. We do not have to exclude .swp files since those are stored in a
 " separate directory.
 let g:netrw_list_hide = "^\\.DS_Store,\\.git/,^\\./,^\\.\\./"
-
-" Use bash syntax for shell scripts.
-let g:is_bash = 1
 
 " Treat all .tex files as LaTeX.
 let g:tex_flavor = "latex"
