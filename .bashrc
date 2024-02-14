@@ -81,11 +81,11 @@ fi
 
 # Define alias for ps.
 if [[ $uname == "Darwin" ]]; then
-	alias p="ps aux"
+	alias pim="ps aux | vid"
 else
-	alias p="ps auxf"
+	alias pim="ps auxf | vid"
 fi
-alias pg="p | ep"
+alias pg="ps aux | ep"
 
 alias autk="vi ~/.ssh/authorized_keys"
 alias c="cd"

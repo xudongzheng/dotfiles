@@ -53,7 +53,9 @@ alias grs="gr --skip"
 alias grh="git reset HEAD"
 alias grhc="git reset HEAD^"
 
-alias gRv="git remote -v"
+alias gR="git remote -v"
+alias gRa="git remote add"
+alias gRr="git remote remove"
 
 alias gs="git status"
 
