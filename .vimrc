@@ -312,11 +312,11 @@ autocmd FileType sh,zsh setlocal filetype=bash
 " braces well.
 autocmd BufRead,BufNewFile *.fs,*.kt setlocal filetype=scala
 
-" Treat overlay files for Zephyr/ZMK and ZMK keymap files as DeviceTree.
+" Treat Zephyr overlay files and ZMK keymap files as DeviceTree.
 autocmd BufRead,BufNewFile *.keymap,*.overlay setlocal filetype=dts
 
-" Treat Zephyr defconfig files as regular configuration files.
-autocmd BufRead,BufNewFile *_defconfig setlocal filetype=conf
+" Treat Zephyr config files as regular configuration files.
+autocmd BufRead,BufNewFile .config,*_defconfig setlocal filetype=conf
 
 " Set filetype for SSH configuration files that are included from the main file.
 autocmd BufRead,BufNewFile ~/.ssh/config-* setlocal filetype=sshconfig
@@ -425,10 +425,15 @@ function! NetrwReturn()
 endfunction
 autocmd FileType netrw nnoremap <buffer> t :call NetrwReturn()<cr>
 
-" Use p to go up a directory.
+" Use p to go up a directory. It can be preceded by a number to go up multiple
+" directories.
 function! NetrwParent()
-	call feedkeys(":call NetrwBrowse('..')\<cr>")
-	return ""
+	let l:count = v:count
+	if l:count == 0
+		let l:count = 1
+	endif
+	let l:path = expand('%:p:h') . repeat("/..", l:count)
+	return ":Explore " . l:path . "\<cr>"
 endfunction
 autocmd FileType netrw nnoremap <expr> <buffer> p NetrwParent()
 

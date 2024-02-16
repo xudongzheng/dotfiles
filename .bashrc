@@ -15,11 +15,26 @@ fi
 # Bash and Zsh and this should work with both.
 bashSource="${BASH_SOURCE[0]:-${(%):-%x}}"
 
+function aliasDir {
+	# When multiple directories are given, create alias for first directory that
+	# exists.
+	for dir in "${@:2}"; do
+		if [[ -d "$dir" ]]; then
+			alias $1="c '$dir'"
+			return
+		fi
+	done
+}
+
+# Define alias for changing to the dotfiles directory.
+dotDir=$(dirname "$bashSource")
+aliasDir cdot "$dotDir"
+
 # Load shell specific code.
 if [[ $SHELL == "/bin/bash" ]]; then
-	source "$(dirname $bashSource)/shell/bash.sh"
+	source "$dotDir/shell/bash.sh"
 elif [[ $SHELL == "/bin/zsh" ]]; then
-	source "$(dirname $bashSource)/shell/zsh.sh"
+	source "$dotDir/shell/zsh.sh"
 fi
 
 # Define aliases for checksums on macOS to match the commands on Linux.
@@ -168,17 +183,6 @@ alias duh="du -sh"
 # Create alias for parsing x509 certificate.
 alias osx509="openssl x509 -text -noout -in"
 
-function aliasDir {
-	# When multiple directories are given, create alias for first directory that
-	# exists.
-	for dir in "${@:2}"; do
-		if [[ -d "$dir" ]]; then
-			alias $1="c '$dir'"
-			return
-		fi
-	done
-}
-
 # Create aliases for changing to common directories for directories that exists.
 aliasDir cde ~/Desktop
 aliasDir cdl ~/Downloads
@@ -186,10 +190,6 @@ aliasDir cdoc ~/Documents
 aliasDir csh ~/.ssh
 aliasDir csr ~/src
 aliasDir css ~/Documents/screenshot
-
-# Define alias for changing to the dotfiles directory.
-dotDir=$(dirname "$bashSource")
-aliasDir cdot "$dotDir"
 
 function viargs {
 	for file in "$@"; do
@@ -389,7 +389,7 @@ if command -v go > /dev/null; then
 fi
 
 if command -v git > /dev/null; then
-	source "$(dirname $bashSource)/shell/git.sh"
+	source "$dotDir/shell/git.sh"
 fi
 
 if [[ $uname == "Darwin" ]]; then
@@ -398,5 +398,5 @@ else
 	firefox=firefox
 fi
 if command -v $firefox > /dev/null; then
-	source "$(dirname $bashSource)/shell/firefox.sh"
+	source "$dotDir/shell/firefox.sh"
 fi
