@@ -11,10 +11,6 @@ if [[ -d ~/.local/bin ]]; then
 	export PATH=~/.local/bin:$PATH
 fi
 
-# Get path to current file per https://bit.ly/33OR2Lh. The logic varies between
-# Bash and Zsh and this should work with both.
-bashSource="${BASH_SOURCE[0]:-${(%):-%x}}"
-
 function aliasDir {
 	# When multiple directories are given, create alias for first directory that
 	# exists.
@@ -26,8 +22,10 @@ function aliasDir {
 	done
 }
 
-# Define alias for changing to the dotfiles directory.
-dotDir=$(dirname "$bashSource")
+# Define alias for changing to the dotfiles directory. The logic for getting the
+# current file path comes from https://bit.ly/33OR2Lh. This works with both Bash
+# and Zsh.
+dotDir=$(dirname "${BASH_SOURCE[0]:-${(%):-%x}}")
 aliasDir cdot "$dotDir"
 
 # Load shell specific code.
@@ -59,12 +57,15 @@ function vi {
 	fi
 }
 
-# Define function for copying standard input to clipboard.
+# Define function to print and copy standard input to clipboard. The trailing
+# newline is stripped, if it exists.
 function xc {
+	read -r input
+	echo "$input"
 	if command -v pbcopy > /dev/null; then
-		pbcopy
+		echo -n "$input" | pbcopy
 	elif command -v xclip > /dev/null; then
-		xclip -sel clip
+		echo -n "$input" | xclip -sel clip
 	fi
 }
 
@@ -250,8 +251,8 @@ function ndc {
 	vi "${files[@]}"
 }
 
-# Use dotc to print and copy command for setting up dotfiles on a new server or
-# user.
+# Use dotc to print and copy the command for setting up dotfiles on a new server
+# or user.
 function dotc {
 	cmd=""
 	if [[ "$1" == "apt" ]]; then
@@ -259,7 +260,6 @@ function dotc {
 	fi
 	commit=$(git -C "$dotDir" rev-parse master)
 	cmd+="git clone https://github.com/xudongzheng/dotfiles.git dot && cd dot && git checkout $commit && git branch -f master HEAD && bash setup.sh && exit"
-	echo $cmd
 	echo $cmd | xc
 }
 
@@ -273,13 +273,12 @@ function pub {
 }
 
 # Use pubxc to print and copy the local SSH public key.
-alias pubxc="pub && pub | xc"
+alias pubxc="pub | xc"
 
 # Use pubc to print and copy command for adding the local SSH public key to
 # .ssh/authorized_keys.
 function pubc {
 	cmd='mkdir -p ~/.ssh && echo "'$(pub)'" >> ~/.ssh/authorized_keys'
-	echo $cmd
 	echo $cmd | xc
 }
 
