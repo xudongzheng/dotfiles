@@ -432,8 +432,12 @@ function! NetrwParent()
 	if l:count == 0
 		let l:count = 1
 	endif
-	let l:path = expand('%:p:h') . repeat("/..", l:count)
-	return ":Explore " . l:path . "\<cr>"
+	let l:path = repeat("../", l:count)
+
+	" Start with <esc> because otherwise 2p would go up 4 directories and 3p
+	" would go up 9 directories. I've tried a variety of other simpler
+	" techniques and pretty much everything else came with some edge case.
+	return "\<esc>:call NetrwBrowse('" . l:path . "')\<cr>"
 endfunction
 autocmd FileType netrw nnoremap <expr> <buffer> p NetrwParent()
 
