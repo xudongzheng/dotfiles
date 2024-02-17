@@ -47,14 +47,20 @@ if [[ $uname == "Darwin" ]]; then
 fi
 
 # Define function to prevent Vim from piped to another program. This can happen
-# when I'm working with large amounts of text and using Vim as a pager. This comes from
-# https://bit.ly/3FG7m65.
+# when I'm working with large amounts of text and using Vim as a pager. This
+# comes from https://bit.ly/3FG7m65.
 function vi {
 	if [[ -t 1 ]]; then
 		command vi "$@"
 	else
 		echo "Vim must run with TTY as standard output" >&2
 	fi
+}
+
+# Define ping function wrapper to lookup SSH host before pinging.
+function ping {
+	addr=$(ssh -G "$1" | grep "^hostname " | awk '{print $2}')
+	command ping "$addr"
 }
 
 # Define function to print and copy standard input to clipboard. The trailing
@@ -357,6 +363,25 @@ if ! hash wget 2>/dev/null; then
 		}
 	fi
 fi
+
+function ipa {
+	if [[ $uname == "Darwin" ]]; then
+		ifconfig | grep -o "^[a-z0-9]\+:" | sed "s/://" | while read ifce; do
+			addr=$(ifconfig "$ifce" | grep -w inet | awk '{print $2}')
+			if [[ "$addr" != "" ]]; then
+				echo -e "$ifce\t$addr"
+			fi
+		done
+	else
+		ip -brief addr | while read line; do
+			ifce=$(awk '{print $1}' <<< "$line")
+			addr=$(awk '{print $3}' <<< "$line" | awk -F / '{print $1}')
+			if [[ "$addr" != "" ]]; then
+				echo -e "$ifce\t$addr"
+			fi
+		done
+	fi
+}
 
 # If apt is available, define related aliases. Some are only necessary of the
 # user is root.

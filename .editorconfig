@@ -1,0 +1,3 @@
+# Configure GitHub to display tabs as 4 spaces.
+[*]
+indent_size = 4
