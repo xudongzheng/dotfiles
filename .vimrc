@@ -94,6 +94,10 @@ set nojoinspaces
 " Increase history for search and command line entries.
 set history=10000
 
+" Use <F11> to trigger window commands. Ctrl-W is the default, which I want to
+" retain for deleting the previous word such as in terminal.
+set termwinkey=<F11>
+
 " Highlight the active line and the active column. The CursorLine color chosen
 " here is a bit more prominent than the default.
 set cursorline
@@ -531,12 +535,15 @@ nnoremap <leader>f ve~
 " Use <leader>g to jump to the next Git conflict marker.
 nnoremap <leader>g /=======<cr>
 
-" Use <leader>a to sort visually selected lines. Sort by ASCII per
+" Use <leader>a in normal mode to select everything.
+nnoremap <leader>a ggVG
+
+" Use <leader>A in normal mode to highlight non-ASCII characters.
+nnoremap <leader>A /[^\t -~]<cr>
+
+" Use <leader>a in visual mode to sort the selected lines. Sort by ASCII per
 " https://goo.gl/HuZ6KL.
 xnoremap <leader>a ! LC_ALL=C sort<cr>
-
-" Use <leader>A to highlight non-ASCII characters.
-nnoremap <leader>A /[^\t -~]<cr>
 
 " Use <leader>r to reverse visually selected lines.
 xnoremap <leader>r ! tac<cr>
@@ -544,7 +551,7 @@ xnoremap <leader>r ! tac<cr>
 " Use <leader>t to search for triple TODO.
 nnoremap <leader>t /TODO TODO<cr>
 
-" Use <leader>T to open terminal in a vertical split.
+" Use <leader>T to open terminal in a split.
 function! OpenTerminal()
 	" Store initial working directory.
 	let l:cwd = getcwd()
@@ -562,6 +569,11 @@ function! OpenTerminal()
 	execute 'cd ' . l:cwd
 endfunction
 nnoremap <leader>T :call OpenTerminal()<cr>
+
+" In terminal, use Ctrl-N to go to the next window. Define the same for normal
+" mode for consistency.
+tnoremap <c-n> <F11>w
+nnoremap <c-n> <c-w>w
 
 " Use <leader>z to correct word under cursor to first suggestion.
 nnoremap <leader>z z=1<cr><cr>
