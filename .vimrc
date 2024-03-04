@@ -279,9 +279,10 @@ function! SetTabWidth(tab_width, priority)
 endfunction
 
 " Define tab settings. By default, use tabs for indentation (priority 0).
-" Projects can override that with priority 1. Files (such as YAML) can override
-" project settings with priority 2.
-autocmd FileType * call SetTabWidth(0, 0)
+" VimEnter is included alongside the buffer events so tab width is set when
+" reading from standard input. Projects can override the tab width with priority
+" 1. Files (such as YAML) can override project settings with priority 2.
+autocmd BufRead,BufNewFile,VimEnter * call SetTabWidth(0, 0)
 autocmd FileType yaml call SetTabWidth(2, 2)
 
 " Wrap long line even if the initial line is longer than textwidth. Per

@@ -133,6 +133,7 @@ alias sort="LC_ALL=C sort"
 alias tm="touch -m"
 alias usm="useradd -s /bin/bash -m"
 alias vid="vi -"
+alias vidi="vimdiff"
 alias vie="vi -c Explore"
 alias vrc="vi .vimrc"
 alias wl="wc -l"
@@ -333,10 +334,16 @@ function s {
 	esac
 }
 
-# If Python available, use jfmt to format JSON and phttp to start a HTTP server
-# for static files.
+function space2tab {
+	perl -pe 's/^((    )+)/"\t" x (length($1)\/4)/e'
+}
+
 if command -v python3 > /dev/null; then
-	alias jfmt="python3 -m json.tool"
+	# Define function to format JSON. Indent with tabs instead of spaces.
+	function jfmt {
+		python3 -m json.tool "$@" | space2tab
+	}
+
 	alias phttp="python3 -m http.server"
 fi
 
