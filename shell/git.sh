@@ -19,7 +19,12 @@ alias gdcs="gdc --stat"
 alias gdk="gd --check"
 alias gds="gd --stat"
 
-alias ge="git blame"
+# Often I search with grep before using "git blame". Allow the double click path
+# to be copied and used directly.
+function ge {
+	file=$(cut -d : -f 1 <<< "$1")
+	git blame "$file"
+}
 
 alias gf="git fetch"
 

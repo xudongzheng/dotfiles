@@ -231,13 +231,13 @@ function! MapMarkdownSnippets()
 	nnoremap <buffer> <leader><cr>5 I##### <esc>
 	nnoremap <buffer> <leader><cr>6 I###### <esc>
 
-	" Use <leader><cr>b to make the selected text bold. Use <leader><cr>i for
+	" Use <leader><c-b> to make the selected text bold. Use <leader><c-i> for
 	" italics.
-	xnoremap <buffer> <leader><cr>b c****<esc><left>P
-	xnoremap <buffer> <leader><cr>i c**<esc>P
+	xnoremap <buffer> <leader><c-b> c****<esc><left>P
+	xnoremap <buffer> <leader><c-i> c**<esc>P
 
-	" Use <leader><cr>l to make the selected text a link.
-	xnoremap <buffer> <leader><cr>l c[]<esc>P<right>a()<esc>
+	" Use <leader><c-l> to make the selected text a link.
+	xnoremap <buffer> <leader><c-l> c[]<esc>P<right>a()<esc>
 endfunction
 autocmd FileType markdown call MapMarkdownSnippets()
 
@@ -552,24 +552,31 @@ xnoremap <leader>r ! tac<cr>
 " Use <leader>t to search for triple TODO.
 nnoremap <leader>t /TODO TODO<cr>
 
-" Use <leader>T to open terminal in a split.
-function! OpenTerminal()
+" Use <leader>T to open terminal in a split. Use <leader><c-t> to open terminal
+" in a new tab.
+function! OpenTerminal(newtab)
 	" Store initial working directory.
 	let l:cwd = getcwd()
 
 	" Open in vertical split if window is wide enough.
 	let l:fileDir = expand('%:p:h')
 	execute 'cd ' . l:fileDir
-	if winwidth(0) > 160
-		vertical terminal
+	if a:newtab
+		tabnew
+		terminal ++curwin
 	else
-		terminal
+		if winwidth(0) > 160
+			vertical terminal
+		else
+			terminal
+		endif
 	endif
 
 	" Restore initial working directory.
 	execute 'cd ' . l:cwd
 endfunction
-nnoremap <leader>T :call OpenTerminal()<cr>
+nnoremap <leader>T :call OpenTerminal(0)<cr>
+nnoremap <leader><c-t> :call OpenTerminal(1)<cr>
 
 " In terminal, use Ctrl-N to go to the next window. Define the same for normal
 " mode for consistency.
