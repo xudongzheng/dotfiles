@@ -125,7 +125,6 @@ alias fep="find . | ep"
 alias fm="free -m"
 alias fms="fm -s 5"
 alias hig="history | ep"
-alias ll="l -hla"
 alias n="netstat -nlp"
 alias ng="n | ep"
 alias rp="realpath"
@@ -137,6 +136,12 @@ alias vidi="vimdiff"
 alias vie="vi -c Explore"
 alias vrc="vi .vimrc"
 alias wl="wc -l"
+
+# Define aliases for file listing. When sorting by time, default to newest files
+# at the end as they are most likely the relevant ones.
+alias ll="l -hlA"
+alias llrt="ll -t"
+alias llt="ll -rt"
 
 # Define alias for cutting words. Use "tr" to squeeze multiple consecutive
 # spaces into one. "cutw n" prints the n-th word on every line. "cutw n-" prints
@@ -334,8 +339,16 @@ function s {
 	esac
 }
 
+# Display tabs as 4 spaces
+tabs -4
+
+# Define function for converting spaces to tabs.
 function space2tab {
-	perl -pe 's/^((    )+)/"\t" x (length($1)\/4)/e'
+	width=$1
+	if [[ "$width" == "" ]]; then
+		width=4
+	fi
+	perl -pe 's/^( +)/"\t" x (length($1)\/'$width')/e'
 }
 
 if command -v python3 > /dev/null; then
