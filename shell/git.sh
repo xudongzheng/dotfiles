@@ -75,10 +75,10 @@ alias gu="git pull -p"
 
 alias gx="git commit"
 alias gxa="gx -a"
-alias gxar="gaa && gxr"
-alias gxm="gx -m"
 alias gxn="gx --amend"
+alias gxan="gaa && gxn"
 alias gxr='gx -m "$(date -R)"'
+alias gxar="gaa && gxr"
 alias gxs="gx --signoff"
 
 alias gy="gu && gxar && gp"

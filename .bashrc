@@ -339,8 +339,11 @@ function s {
 	esac
 }
 
-# Display tabs as 4 spaces
-tabs -4
+# Set tab width to 4 spaces. This is only done for interactive sessions since
+# doing it unconditionally breaks scp on Linux.
+if [[ $- == *i* ]]; then
+	tabs -4
+fi
 
 # Define function for converting spaces to tabs.
 function space2tab {

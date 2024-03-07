@@ -181,7 +181,7 @@ function! MapText()
 	nnoremap <buffer> <leader>d "=strftime('%B %-d, %Y')<cr>p
 
 	" Use <leader>x for checking and unchecking a checkbox.
-	nnoremap <leader>x :s/\[x\]/[_]/e<cr>:s/\[ \]/[x]/e<cr>:s/\[_\]/[ ]/e<cr>
+	nnoremap <buffer> <leader>x :s/\[x\]/[_]/e<cr>:s/\[ \]/[x]/e<cr>:s/\[_\]/[ ]/e<cr>
 endfunction
 autocmd FileType markdown,text call MapText()
 
@@ -252,6 +252,25 @@ autocmd FileType mail unmap <buffer> \q
 " Use <leader>h and <leader>H to simplify git rebase.
 autocmd FileType gitrebase xnoremap <buffer> <leader>h :s/pick/squash<cr>
 autocmd FileType gitcommit nnoremap <buffer> <leader>h G{kkdgg
+
+" Use <leader>d to display the staged diff when writing a commit message.
+function! GitCommitDiff()
+	" Load diff in a split.
+	if winwidth(0) > 160
+		vnew
+	else
+		new
+	endif
+	read ! git diff --cached
+	setlocal filetype=diff
+
+	" Delete empty first line.
+	1delete
+
+	" Allow buffer to be closed without saving.
+	setlocal buftype=nofile
+endfunction
+autocmd FileType gitcommit nnoremap <buffer> <leader>d :call GitCommitDiff()<cr>
 
 " Define function for set tab settings.
 function! SetTabWidth(tab_width, priority)
