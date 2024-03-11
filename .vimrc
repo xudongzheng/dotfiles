@@ -631,7 +631,7 @@ function! XclipOperator(type)
 
 	" Copy to system clipboard with xclip.
 	if executable("xclip")
-		call system("xclip -sel clip", getreg('"'))
+		call system("nohup xclip -sel clip", getreg('"'))
 	elseif executable("pbcopy")
 		call system("pbcopy", getreg('"'))
 	endif

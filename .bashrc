@@ -214,7 +214,18 @@ aliasDir cdl ~/Downloads
 aliasDir cdoc ~/Documents
 aliasDir csh ~/.ssh
 aliasDir csr ~/src
-aliasDir css ~/Documents/screenshot
+
+# On Linux, the screenshot is saved directly into the archive directory. On
+# macOS, it's manually archived periodically.
+function ssdir {
+	if [[ $uname == "Darwin" ]]; then
+		echo ~/Documents/screenshot
+	else
+		echo ~/Documents/screenshot/archive/$(hostname)/$(date +%Y/%m)
+	fi
+	touch ~/hey
+}
+alias css='cd "$(ssdir)"'
 
 function viargs {
 	for file in "$@"; do
