@@ -108,6 +108,10 @@ highlight CursorColumn ctermbg=lightcyan ctermfg=black
 " characters do not break CursorColumn.
 autocmd FileType help setlocal number relativenumber conceallevel=0
 
+" If the file is standard input, allow it to close without a warning even if it
+" wasn't saved.
+autocmd StdinReadPost * setlocal buftype=nofile
+
 " Set the text width to 80 and create a vertical bar in 81st column. Some
 " filetypes such as gitcommit have a custom width defined and we use autocmd
 " here so our textwidth value takes precedence.

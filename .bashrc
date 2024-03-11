@@ -177,12 +177,23 @@ alias tarxf="tar --no-same-permissions --no-same-owner -xf"
 alias cp="cp -i"
 alias mv="mv -i"
 
-# Create function to undo mv. This can be easily executed by editing the initial
-# "mv" command and adding the "un" prefix.
+# Create function to undo mv. This can be easily used by editing the initial
+# "mv" command and adding the "un" prefix. This exists for convenience and
+# doesn't handle many cases such as moving multiple files.
 function unmv {
-	# Handled based on whether the destination is a directory.
-	if [[ -d "$2" ]]; then
-		mv "$2/$(basename $1)" "$(dirname $1)"
+	# If destination is a file, swap arguments to undo.
+	if [[ -f "$2" ]]; then
+		mv "$2" "$1"
+		return
+	fi
+
+	# If destination is a directory, it's not possible to determine with 100%
+	# certainty if the previous operation involved renaming or moving. For
+	# simplicity, assume move if the destination directory contains an entry
+	# matching the source.
+	dst="$2/$(basename $1)"
+	if [[ -e "$dst" ]]; then
+		mv "$dst" "$(dirname $1)"
 	else
 		mv "$2" "$1"
 	fi
