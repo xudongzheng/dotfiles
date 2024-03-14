@@ -214,11 +214,11 @@ autocmd FileType css xnoremap <buffer> <leader>c c/*<cr><bs><bs><bs>*/<esc>P
 
 " In a code file, use <leader>p and <leader>P to add a print statement with a
 " random number. In visual mode, the selected variables are printed as well.
-function! AppendPrint(tpl, visual)
+function! AppendPrint(tpl, visual, separator)
 	" If in visual mode, include selected variable names.
 	if a:visual
 		normal! gvy
-		let l:varnames = ", " . getreg('"')
+		let l:varnames = a:separator . getreg('"')
 	else
 		let l:varnames = ""
 	endif
@@ -229,17 +229,17 @@ function! AppendPrint(tpl, visual)
 	" Construct line and add to file.
 	execute "normal! o" . printf(a:tpl, l:randnum, l:varnames) . "\<esc>"
 endfunction
-function! DefinePrint(types, leader, tpl)
-	execute 'autocmd FileType ' . a:types . ' nnoremap <buffer> <leader>' . a:leader . ' :call AppendPrint("' . a:tpl . '", 0)<cr>'
-	execute 'autocmd FileType ' . a:types . ' vnoremap <buffer> <leader>' . a:leader . ' :call AppendPrint("' . a:tpl . '", 1)<cr>'
+function! DefinePrint(types, leader, tpl, separator)
+	execute 'autocmd FileType ' . a:types . ' nnoremap <buffer> <leader>' . a:leader . ' :call AppendPrint("' . a:tpl . '", 0, "' . a:separator . '")<cr>'
+	execute 'autocmd FileType ' . a:types . ' vnoremap <buffer> <leader>' . a:leader . ' :call AppendPrint("' . a:tpl . '", 1, "' . a:separator . '")<cr>'
 endfunction
-call DefinePrint("go", "p", "println(%d%s)")
-call DefinePrint("go", "P", "fmt.Println(%d%s)")
-call DefinePrint("javascript", "p", "console.log(%d%s)")
-call DefinePrint("php", "p", "var_dump(%d%s);")
-call DefinePrint("python,swift", "p", "print(%d%s)")
-call DefinePrint("python,swift", "p", "print(%d%s)")
-call DefinePrint("bash", "p", "echo %d%s")
+call DefinePrint("go", "p", "println(%d%s)", ", ")
+call DefinePrint("go", "P", "fmt.Println(%d%s)", ", ")
+call DefinePrint("javascript", "p", "console.log(%d%s)", ", ")
+call DefinePrint("php", "p", "var_dump(%d%s);", ", ")
+call DefinePrint("python,swift", "p", "print(%d%s)", ", ")
+call DefinePrint("python,swift", "p", "print(%d%s)", ", ")
+call DefinePrint("bash", "p", "echo %d%s", " $")
 
 " When editing a diff file using 'git add -p', use <leader>p to exclude the
 " visual selection.

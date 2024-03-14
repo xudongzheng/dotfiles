@@ -100,16 +100,21 @@ function griom { git rebase -i origin/$(gitma); }
 function grm { git rebase $(gitma); }
 function grom { git rebase origin/$(gitma); }
 
-# Define aliases for processing Git repository content. Use -z so Unicode names
-# are not escaped. The flag also changes the separator to \x00, which is fine
-# since xargs is an alias that already expects it. Use "git grep" instead of
-# "git ls-files" since the latter includes submodules. which should be ignored
-# since these aliases are for files. See https://goo.gl/DLz58m for details.
-alias gw="git grep -z --cached -l '' | xargs cat | wc -l"
+# Define aliases for searching a Git repository. Use -z so Unicode filenames are
+# not escaped. The flag also changes the separator to \x00, which is fine since
+# xargs is an alias that already expects it. Use "git grep" instead of "git
+# ls-files" since the latter includes submodules. which should be ignored since
+# these aliases are for files. See https://goo.gl/DLz58m for details.
 alias lg="git grep -z --cached -l '' | xargs grep --color -n"
 alias lgi="lg -i"
 alias lgt="lg TODO"
 alias lgtt="lg 'TODO TODO'"
+
+# Define aliases for counting lines in a Git repository. The general version
+# uses -z to deal with Unicode filenames. The secondary version excludes files
+# tracked by Git LFS but has some drawbacks due to using "git ls-files".
+alias gw="git grep -z --cached -l '' | xargs cat | wc -l"
+alias gW="git ls-files | grep -vFf <(git lfs ls-files -n) | xargs cat | wc -l"
 
 # Define alias for searching filenames in a Git repository. Use -z so Unicode
 # names are not escaped. As that also changes the separator to 0x00, convert
@@ -135,7 +140,7 @@ function gfb {
 	if [[ $2 == "" ]]; then
 		list="HEAD~20...HEAD"
 	fi
-	git filter-branch --env-filter "$1" -f "$list"
+	FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --env-filter "$1" -f "$list"
 }
 function gfad {
 	gfb 'GIT_AUTHOR_DATE=$GIT_COMMITTER_DATE; export GIT_AUTHOR_DATE' "$1"
