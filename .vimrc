@@ -194,7 +194,7 @@ autocmd FileType markdown,text call MapText()
 " accounts for the Colemak mapping. There are obviously many missing filetypes
 " and they will be added as needed. While we don't use Groovy directly, we use
 " it through Gradle. We have xdefaults for the .Xresources file.
-autocmd FileType cfg,cmake,conf,config,crontab,debsources,dockerfile,gdb,gitrebase,kconfig,make,pamconf,perl,python,readline,ruby,sh,sshconfig,sshdconfig,tmux,yaml,zsh noremap <buffer> <leader>c :normal U# <esc>
+autocmd FileType cfg,cmake,conf,config,crontab,debsources,dockerfile,gdb,gitrebase,kconfig,make,pamconf,perl,python,readline,ruby,bash,sshconfig,sshdconfig,tmux,yaml, noremap <buffer> <leader>c :normal U# <esc>
 autocmd FileType arduino,c,cpp,cs,dts,go,groovy,java,javascript,objc,php,scala,swift noremap <buffer> <leader>c :normal U// <esc>
 autocmd FileType sql noremap <buffer> <leader>c :normal U-- <esc>
 autocmd FileType matlab,tex noremap <buffer> <leader>c :normal U% <esc>
@@ -212,14 +212,34 @@ autocmd FileType html,svg,xml xnoremap <buffer> <leader>c c<!--<cr>--><esc>P
 autocmd FileType css nnoremap <buffer> <leader>c A */<esc>I/* <esc>
 autocmd FileType css xnoremap <buffer> <leader>c c/*<cr><bs><bs><bs>*/<esc>P
 
-" In a code file, use <leader>p and <leader>P to print the visually-selected
-" variables.
-autocmd FileType go xnoremap <buffer> <leader>p y:r! echo "println($RANDOM, )"<cr>==$P
-autocmd FileType go xnoremap <buffer> <leader>P y:r! echo "fmt.Println($RANDOM, )"<cr>==$P
-autocmd FileType javascript xnoremap <buffer> <leader>p y:r! echo "console.log($RANDOM, )"<cr>==$P
-autocmd FileType php xnoremap <buffer> <leader>p y:r! echo "var_dump($RANDOM, );"<cr>==$<left>P
-autocmd FileType python,swift xnoremap <buffer> <leader>p y:r! echo "print($RANDOM, )"<cr>==$P
-autocmd FileType sh xnoremap <buffer> <leader>p y:r! echo "echo $RANDOM $"<cr>==$p
+" In a code file, use <leader>p and <leader>P to add a print statement with a
+" random number. In visual mode, the selected variables are printed as well.
+function! AppendPrint(tpl, visual)
+	" If in visual mode, include selected variable names.
+	if a:visual
+		normal! gvy
+		let l:varnames = ", " . getreg('"')
+	else
+		let l:varnames = ""
+	endif
+
+	" Generate random 4 digit number.
+	let l:randnum = 1000 + rand() % 9000
+
+	" Construct line and add to file.
+	execute "normal! o" . printf(a:tpl, l:randnum, l:varnames) . "\<esc>"
+endfunction
+function! DefinePrint(types, leader, tpl)
+	execute 'autocmd FileType ' . a:types . ' nnoremap <buffer> <leader>' . a:leader . ' :call AppendPrint("' . a:tpl . '", 0)<cr>'
+	execute 'autocmd FileType ' . a:types . ' vnoremap <buffer> <leader>' . a:leader . ' :call AppendPrint("' . a:tpl . '", 1)<cr>'
+endfunction
+call DefinePrint("go", "p", "println(%d%s)")
+call DefinePrint("go", "P", "fmt.Println(%d%s)")
+call DefinePrint("javascript", "p", "console.log(%d%s)")
+call DefinePrint("php", "p", "var_dump(%d%s);")
+call DefinePrint("python,swift", "p", "print(%d%s)")
+call DefinePrint("python,swift", "p", "print(%d%s)")
+call DefinePrint("bash", "p", "echo %d%s")
 
 " When editing a diff file using 'git add -p', use <leader>p to exclude the
 " visual selection.

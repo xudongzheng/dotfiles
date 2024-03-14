@@ -223,7 +223,6 @@ function ssdir {
 	else
 		echo ~/Documents/screenshot/archive/$(hostname)/$(date +%Y/%m)
 	fi
-	touch ~/hey
 }
 alias css='cd "$(ssdir)"'
 
