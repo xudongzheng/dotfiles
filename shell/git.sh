@@ -100,26 +100,31 @@ function griom { git rebase -i origin/$(gitma); }
 function grm { git rebase $(gitma); }
 function grom { git rebase origin/$(gitma); }
 
-# Define aliases for searching a Git repository. Use -z so Unicode filenames are
-# not escaped. The flag also changes the separator to \x00, which is fine since
-# xargs is an alias that already expects it. Use "git grep" instead of "git
-# ls-files" since the latter includes submodules. which should be ignored since
-# these aliases are for files. See https://goo.gl/DLz58m for details.
-alias lg="git grep -z --cached -l '' | xargs grep --color -n"
+# Define alias for listing repository files. Use "git grep" instead of "git
+# ls-files" since the latter includes submodules. which should be excluded. See
+# https://goo.gl/DLz58m for details. Use -z so Unicode filenames are not
+# escaped. The flag changes the separator to \x00, which is fine since this is
+# designed for use with xargs. If Git LFS is installed, exclude tracked files.
+if command -v git-lfs > /dev/null; then
+	alias gL="git grep -z --cached -l '' | grep --null-data -vFf <(git lfs ls-files -n)"
+else
+	alias gL="git grep -z --cached -l ''"
+fi
+
+# Define aliases for searching a Git repository. The flag also changes the separator to \x00, which is fine since
+# xargs is an alias that already expects it.
+alias lg="gL | xargs grep --color -n"
 alias lgi="lg -i"
 alias lgt="lg TODO"
 alias lgtt="lg 'TODO TODO'"
 
-# Define aliases for counting lines in a Git repository. The general version
-# uses -z to deal with Unicode filenames. The secondary version excludes files
-# tracked by Git LFS but has some drawbacks due to using "git ls-files".
-alias gw="git grep -z --cached -l '' | xargs cat | wc -l"
-alias gW="git ls-files | grep -vFf <(git lfs ls-files -n) | xargs cat | wc -l"
+# Define aliases for counting lines in a Git repository.
+alias gw="gL | xargs cat | wc -l"
 
 # Define alias for searching filenames in a Git repository. Use -z so Unicode
 # names are not escaped. As that also changes the separator to 0x00, convert
 # back to \n before grepping.
-alias gep="git ls-files -z | tr '\0' '\n' | ep"
+alias gep="git ls-files -z | ep --null-data | tr '\0' '\n' | ep"
 
 # Use gxua to set the repository email address to the default alias email. Use
 # gxul to set it to the email of the last commit. We must use single quotes for
