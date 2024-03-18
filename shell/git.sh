@@ -124,7 +124,7 @@ alias gw="gL | xargs cat | wc -l"
 # Define alias for searching filenames in a Git repository. Use -z so Unicode
 # names are not escaped. As that also changes the separator to 0x00, convert
 # back to \n before grepping.
-alias gep="git ls-files -z | ep --null-data | tr '\0' '\n' | ep"
+alias gep="git ls-files -z | tr '\0' '\n' | ep"
 
 # Use gxua to set the repository email address to the default alias email. Use
 # gxul to set it to the email of the last commit. We must use single quotes for

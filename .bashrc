@@ -221,7 +221,7 @@ function ssdir {
 	if [[ $uname == "Darwin" ]]; then
 		echo ~/Documents/screenshot
 	else
-		echo ~/Documents/screenshot/archive/$(hostname)/$(date +%Y/%m)
+		echo ~/Documents/screenshot/$(hostname)/$(date +%Y/%m)
 	fi
 }
 alias css='cd "$(ssdir)"'
