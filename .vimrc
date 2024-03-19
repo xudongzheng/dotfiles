@@ -184,8 +184,8 @@ function! MapText()
 	" This code comes from https://bit.ly/2UWmveA.
 	nnoremap <buffer> <leader>d "=strftime('%B %-d, %Y')<cr>p
 
-	" Use <leader>x for checking and unchecking a checkbox.
-	nnoremap <buffer> <leader>x :s/\[x\]/[_]/e<cr>:s/\[ \]/[x]/e<cr>:s/\[_\]/[ ]/e<cr>
+	" Use <leader>c for checking and unchecking a checkbox.
+	nnoremap <buffer> <leader>c :s/\[x\]/[_]/e<cr>:s/\[ \]/[x]/e<cr>:s/\[_\]/[ ]/e<cr>
 endfunction
 autocmd FileType markdown,text call MapText()
 
@@ -636,29 +636,40 @@ nnoremap <leader>b :echo bufnr('%')<cr>
 " Use <leader>i to make id uppercase.
 nnoremap <leader>i :s/id\>/ID/g<cr>
 
-" Use <leader>j to copy to system clipboard. In normal mode, it triggers an
-" operator that takes a motion. In visual mode, it handles the selected text.
-function! XclipOperator(type)
+function! XclipOperator(type, suffix)
 	" Copy to default register. The first case is for character motion (such as
 	" yanking some words), the second is for line motion (such as yanking some
 	" lines), and the last is for visual mode.
 	if a:type ==# "char"
-		execute "normal! `[v`]y"
+		execute "normal! `[v`]" . a:suffix
 	elseif a:type ==# "line"
-		execute "normal! `[V`]y"
+		execute "normal! `[V`]" . a:suffix
 	else
-		execute "normal! gvy"
+		execute "normal! gv" . a:suffix
 	endif
 
 	" Copy to system clipboard with xclip.
 	if executable("xclip")
-		call system("nohup xclip -sel clip", getreg('"'))
+		call system("nohup xclip -sel clip &", getreg('"'))
 	elseif executable("pbcopy")
 		call system("pbcopy", getreg('"'))
 	endif
 endfunction
-nnoremap <leader>j :set operatorfunc=XclipOperator<cr>g@
-xnoremap <leader>j :<c-u>call XclipOperator(visualmode())<cr>
+
+" Use <leader>j to copy to system clipboard. In normal mode, it triggers an
+" operator that takes a motion. In visual mode, it handles the selected text.
+function! XclipOperatorCopy(type)
+	call XclipOperator(a:type, "y")
+endfunction
+nnoremap <leader>j :set operatorfunc=XclipOperatorCopy<cr>g@
+xnoremap <leader>j :<c-u>call XclipOperatorCopy(visualmode())<cr>
+
+" Use <leader>x to cut to system clipboard. It behaves like <leader>j.
+function! XclipOperatorCut(type)
+	call XclipOperator(a:type, "x")
+endfunction
+nnoremap <leader>x :set operatorfunc=XclipOperatorCut<cr>g@
+xnoremap <leader>x :<c-u>call XclipOperatorCut(visualmode())<cr>
 
 " Use <leader>J to reformat selection with arbitrary width and copy to
 " clipboard. This is useful for writing messages in Vim before sending with an
@@ -671,7 +682,7 @@ function! XclipReformatOperator(type)
 	else
 		execute "normal! gvgqgv"
 	endif
-	call XclipOperator(a:type)
+	call XclipOperator(a:type, "y")
 	setlocal textwidth=80
 	if a:type ==# "line"
 		execute "normal! `[V`]gq"
