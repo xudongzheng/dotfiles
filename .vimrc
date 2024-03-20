@@ -724,6 +724,48 @@ nnoremap <tab> :tabp<cr>
 nnoremap <leader>' di"v<left>r'p
 nnoremap <leader>" di'v<left>r"p
 
+function! SelectQuotes(command)
+	" Define variables for tracking which quote character is the nearest.
+	let l:best_char = ''
+	let l:best_length = -1
+
+	" Iterate over the quote characters to find the nearest pair.
+	for l:char in ['"', "'", "`"]
+		" Search for nearest character. The c flag includes the character under
+		" the cursor. The n flag maintains the current cursor position. The W
+		" flag prevents wrapping around the beginning and end of the file.
+		let l:back_pos = searchpos(l:char, 'bcnW')
+		let l:forward_pos = searchpos(l:char, 'cnW')
+
+		" Skip if either back or forward search not found.
+		if l:back_pos[0] == 0 || l:forward_pos[0] == 0
+			continue
+		endif
+
+		" Use length between pair to determine which is the closest.
+		let l:back_byte = line2byte(l:back_pos[0]) + l:back_pos[1]
+		let l:forward_byte = line2byte(l:forward_pos[0]) + l:forward_pos[1]
+		let l:quote_length = l:forward_byte - l:back_byte
+		if l:best_length == -1 || l:quote_length < l:best_length
+			let l:best_char = l:char
+			let l:best_length = l:quote_length
+		endif
+	endfor
+
+	" If a best match was found, perform the operation
+	if l:best_char != ""
+		execute "normal! v" . a:command . l:best_char
+    endif
+endfunction
+
+" Define text object that work around multiple quote characters. This uses c
+" (for comilla) instead of q since ac is easier to type than aq. This exists for
+" convenience and isn't expected to handle all edge cases.
+onoremap uc :<c-u>call SelectQuotes("i")<CR>
+xnoremap uc :<c-u>call SelectQuotes("i")<CR>
+onoremap ac :<c-u>call SelectQuotes("a")<CR>
+xnoremap ac :<c-u>call SelectQuotes("a")<CR>
+
 " Define function to source Vim files relative to this .vimrc.
 let s:dotfiles_dir = fnamemodify(expand("<sfile>:h"), ":p")
 function! SourceVim(path)
