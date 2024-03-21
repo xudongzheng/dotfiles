@@ -166,8 +166,10 @@ function! HighlightTrailingWS()
 endfunction
 autocmd BufEnter * call HighlightTrailingWS()
 
-" Use <leader>W to delete trailing whitespace characters.
+" Use <leader>W to delete trailing spaces. In normal mode, it's applied to the
+" entire file. In visual mode, it's only applied to the selected lines.
 nnoremap <leader>W :%s/ \+$//<cr>
+xnoremap <leader>W :s/ \+$//<cr>
 
 " By default, set the spell checker language to English. Use <leader>l and
 " <leader>L to change to Spanish and English respectively. For both, ignore
@@ -236,7 +238,7 @@ function! DefinePrint(types, leader, tpl, separator)
 endfunction
 call DefinePrint("go", "p", "println(%d%s)", ", ")
 call DefinePrint("go", "P", "fmt.Println(%d%s)", ", ")
-call DefinePrint("javascript", "p", "console.log(%d%s)", ", ")
+call DefinePrint("javascript,typescript,vue", "p", "console.log(%d%s)", ", ")
 call DefinePrint("php", "p", "var_dump(%d%s);", ", ")
 call DefinePrint("python,swift", "p", "print(%d%s)", ", ")
 call DefinePrint("python,swift", "p", "print(%d%s)", ", ")
