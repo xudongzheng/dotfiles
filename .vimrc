@@ -299,6 +299,19 @@ function! GitCommitDiff()
 endfunction
 autocmd FileType gitcommit nnoremap <buffer> <leader>d :call GitCommitDiff()<cr>
 
+function! EnableCopilot()
+	" Skip if file is for editing shell command.
+	if match(expand("%:p"), '^/tmp/bash-fc') == 0 || match(expand("%:p"), '^/private/tmp/') == 0
+		return
+	endif
+
+	" Enable Copilot if plugin exists.
+	if isdirectory(expand("~/.vim/pack/github/opt/copilot.vim"))
+		packadd copilot.vim
+	endif
+endfunction
+autocmd VimEnter * call EnableCopilot()
+
 " Define function for set tab settings.
 function! SetTabWidth(tab_width, priority)
 	" If priority is lower, ignore.
