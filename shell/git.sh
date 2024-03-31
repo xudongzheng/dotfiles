@@ -172,7 +172,7 @@ function gitdk {
 	if [[ "$hostname" == "github.com" ]]; then
 		service=github
 	else
-		echo Git hostname is not recognized
+		echo "Git hostname is not recognized"
 		return
 	fi
 
@@ -192,7 +192,7 @@ function gitdk {
 		echo -e "\tHostName $hostname" >> ~/.ssh/config-git
 		echo -e "\tIdentityFile $key" >> ~/.ssh/config-git
 	else
-		echo Key for $service $user/$repo already exists
+		echo "Key for $service $user/$repo already exists"
 	fi
 
 	cat $key.pub

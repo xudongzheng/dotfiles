@@ -101,6 +101,12 @@ if [[ $uname == "Darwin" ]]; then
 	}
 fi
 
+alias rp="realpath"
+
+function rpc {
+	rp "$@" | xc
+}
+
 # Define alias for ps.
 if [[ $uname == "Darwin" ]]; then
 	alias p="ps aux"
@@ -127,7 +133,6 @@ alias fms="fm -s 5"
 alias hig="history | ep"
 alias n="netstat -nlp"
 alias ng="n | ep"
-alias rp="realpath"
 alias sort="LC_ALL=C sort"
 alias tm="touch -m"
 alias usm="useradd -s /bin/bash -m"
@@ -355,7 +360,7 @@ function s {
 			swift "$@"
 			;;
 		*)
-			echo unrecognized script extension
+			echo "Failed to recognize script extension"
 			;;
 	esac
 }
@@ -391,9 +396,9 @@ elif command -v screen > /dev/null; then
 	alias t="screen -x || screen"
 fi
 
-# If wget is not available but cURL is available (such as on macOS), allow cURL
-# to be invoked using the wget command.
-if ! hash wget 2>/dev/null; then
+# If wget is not available but cURL is available such as on macOS, allow cURL to
+# be invoked using the wget command.
+if ! command -v wget > /dev/null; then
 	if command -v curl > /dev/null; then
 		function wget {
 			# Do not overwrite existing file.
