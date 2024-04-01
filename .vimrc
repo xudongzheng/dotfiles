@@ -313,7 +313,7 @@ endfunction
 autocmd VimEnter * call EnableCopilot()
 
 " Define function for set tab settings.
-function! SetTabWidth(tab_width, priority)
+function! SetTabWidth(tab_width, tab_indent, priority)
 	" If priority is lower, ignore.
 	if !exists("b:tab_width_prio")
 		let b:tab_width_prio = 0
@@ -321,19 +321,18 @@ function! SetTabWidth(tab_width, priority)
 	if a:priority < b:tab_width_prio
 		return
 	endif
-
-	" If tabs are used for indentation, width argument should be 0 and the
-	" display width is 4. If spaces are used for indentation, width should be
-	" the tab width.
-	let b:tab_width = a:tab_width
 	let b:tab_width_prio = a:priority
-	if b:tab_width == 0
-		setlocal noexpandtab shiftwidth=4 tabstop=4 softtabstop=0
+
+	" Set settings based on whether tabs or spaces are used for indentation.
+	if a:tab_indent == 1
+		setlocal noexpandtab softtabstop=0
+		execute 'setlocal shiftwidth=' . a:tab_width
+		execute 'setlocal tabstop=' . a:tab_width
 	else
 		setlocal expandtab
-		execute 'setlocal shiftwidth=' . b:tab_width
-		execute 'setlocal tabstop=' . b:tab_width
-		execute 'setlocal softtabstop=' . b:tab_width
+		execute 'setlocal shiftwidth=' . a:tab_width
+		execute 'setlocal tabstop=' . a:tab_width
+		execute 'setlocal softtabstop=' . a:tab_width
 	endif
 endfunction
 
@@ -341,8 +340,8 @@ endfunction
 " VimEnter is included alongside the buffer events so tab width is set when
 " reading from standard input. Projects can override the tab width with priority
 " 1. Files (such as YAML) can override project settings with priority 2.
-autocmd BufRead,BufNewFile,VimEnter * call SetTabWidth(0, 0)
-autocmd FileType yaml call SetTabWidth(2, 2)
+autocmd BufRead,BufNewFile,VimEnter * call SetTabWidth(4, 1, 0)
+autocmd FileType yaml call SetTabWidth(2, 0, 2)
 
 " Wrap long line even if the initial line is longer than textwidth. Per
 " https://goo.gl/3pws7z, we should not combine flags when removing.
