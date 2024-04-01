@@ -766,10 +766,29 @@ function! SelectQuotes(command)
 		endif
 	endfor
 
-	" If a best match was found, perform the operation
 	if l:best_char != ""
-		execute "normal! v" . a:command . l:best_char
-    endif
+		" If character under the cursor is the matched quote character, use Vim
+		" builtin selection functionality. This edge case is not easy to handle
+		" manually. The builtin functionality is not used universally as it
+		" cannot select across multiple lines.
+		let l:current_char = getline('.')[col('.') - 1]
+		if l:best_char == l:current_char
+			execute "normal! v" . a:command . l:best_char
+			return
+		endif
+
+		" Select text by searching backwards and forwards.
+		if a:command == "i"
+			let l:back_suffix = "\<space>"
+			let l:forward_suffix = "\<bs>"
+		else
+			let l:back_suffix = ""
+			let l:forward_suffix = ""
+		endif
+		execute "normal! ?" . l:best_char . "\<cr>" . l:back_suffix
+		normal! v
+		execute "normal! /" . l:best_char . "\<cr>" . l:forward_suffix
+	endif
 endfunction
 
 " Define text object that work around multiple quote characters. This uses c
