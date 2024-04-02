@@ -54,6 +54,10 @@ function handleUserJS {
 		# by opening Page Info and navigating to Permissions.
 		writePref "$userDir" permissions.default.camera 2
 		writePref "$userDir" permissions.default.geo 2
+
+		# Disable address and credit card autofill.
+		writePref "$userDir" extensions.formautofill.addresses.enabled false
+		writePref "$userDir" extensions.formautofill.creditCards.enabled false
 	fi
 }
 
