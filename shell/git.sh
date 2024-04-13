@@ -113,7 +113,9 @@ fi
 
 # Define aliases for searching a Git repository. The flag also changes the separator to \x00, which is fine since
 # xargs is an alias that already expects it.
-alias lg="gL | xargs grep --color -n"
+function lg {
+	gL | xargs grep --color -n "$@" --
+}
 alias lgi="lg -i"
 alias lgt="lg TODO"
 alias lgtt="lg 'TODO TODO'"
