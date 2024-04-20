@@ -58,6 +58,9 @@ function handleUserJS {
 		# Disable address and credit card autofill.
 		writePref "$userDir" extensions.formautofill.addresses.enabled false
 		writePref "$userDir" extensions.formautofill.creditCards.enabled false
+
+		# Disable JavaScript in PDF to prevent things such as alerts.
+		writePref "$userDir" pdfjs.enableScripting false
 	fi
 }
 

@@ -55,9 +55,13 @@ autocmd FileType netrw nnoremap <buffer> x :call NetrwRemove()<cr>
 
 " Display file size and modification time in Netrw. Use dot instead of hyphen as
 " date separator to make searching easier since hyphen is frequently used in
-" dated filenames. For the time being, Vim 9 is excluded due to a bug in how it
-" handles long filenames. See https://bit.ly/45Q14gd for details.
-if v:version < 900
+" dated filenames. A subset of Vim 9 is excluded due to a bug in how it handles
+" long filenames. See https://bit.ly/45Q14gd for details.
+if has("patch-9.0.2121")
+	let g:netrw_liststyle = 1
+	let g:netrw_maxfilenamelen = 39
+	let g:netrw_timefmt = "%Y.%m.%d %H:%M:%S %Z"
+elseif !has("patch-9.0.0")
 	let g:netrw_liststyle = 1
 	let g:netrw_maxfilenamelen = 40
 	let g:netrw_timefmt = "%Y.%m.%d %H:%M:%S %Z"

@@ -34,7 +34,7 @@ noremap Y O
 
 " Use the desert color scheme starting with Vim 9. Use elflord if older and
 " slate in vimdiff since highlighted lines are hard to see in elflord.
-if v:version >= 900
+if has("patch-9.0.0")
 	colors desert
 else
 	if &diff
@@ -58,8 +58,10 @@ let mapleader = " "
 set notimeout
 set ttimeout
 
-" Store temporary files in .vim to keep the working directories clean.
-set directory=~/.vim/swap
+" Store temporary files in .vim to keep the working directories clean. The
+" double trailing slash is so that the swap filename is constructed using the
+" full file path.
+set directory=~/.vim/swap//
 set undodir=~/.vim/undo
 
 " Enable mouse support.
@@ -478,20 +480,26 @@ nnoremap <F12> :noh<cr>
 " Treat all .tex files as LaTeX.
 let g:tex_flavor = "latex"
 
-" In normal mode, use <leader>q to save Vim session to file and use <leader>Q to
-" load Vim session from file. The session file goes in the working directory and
-" not the home directory so multiple Vim sessions can be saved and restored.
+" Use <leader>q to save Vim session to file and use <leader>Q to load Vim
+" session from file. All session files are stored in ~/.vim/session so it's easy
+" to locate every session that can be restored.
 set sessionoptions=tabpages
+function! GetSessionFile()
+	let l:session_file = substitute(getcwd(), "/", "_", "g")
+	return expand("~/.vim/session/" . l:session_file)
+endfunction
 function! SaveSession()
 	try
-		mksession vim-session
+		execute "mksession " . GetSessionFile()
 		quitall
 	endtry
 endfunction
 nnoremap <leader>q :call SaveSession()<cr>
 function! LoadSession()
-	source vim-session
-	call delete("vim-session")
+	try
+		execute "source " . GetSessionFile()
+		call delete(GetSessionFile())
+	endtry
 endfunction
 nnoremap <leader>Q :call LoadSession()<cr>
 

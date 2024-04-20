@@ -69,7 +69,7 @@ for file in "${files[@]}"; do
 done
 
 # Create directories for Vim temporary files.
-mkdir -p ~/.vim/{backup,swap,undo}
+mkdir -p ~/.vim/{session,swap,undo}
 
 # Suppress MOTD and "last login". On macOS, a new terminal tab opens with the
 # same working directory as the current tab by default. Per the comments on
