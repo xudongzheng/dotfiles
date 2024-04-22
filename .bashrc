@@ -387,6 +387,11 @@ if command -v python3 > /dev/null; then
 		python3 -m json.tool "$@" | space2tab
 	}
 
+	# Define function to format JSON and write output to file.
+	function jpretty {
+		jfmt "$1" > "${1%.json}.pretty.json"
+	}
+
 	alias phttp="python3 -m http.server"
 fi
 
