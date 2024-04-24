@@ -11,6 +11,9 @@ if [[ -d ~/.local/bin ]]; then
 	export PATH=~/.local/bin:$PATH
 fi
 
+# Display 24-hour time when running the "date" command.
+export LC_TIME=C
+
 function aliasDir {
 	# When multiple directories are given, create alias for first directory that
 	# exists.
@@ -389,7 +392,9 @@ if command -v python3 > /dev/null; then
 
 	# Define function to format JSON and write output to file.
 	function jpretty {
-		jfmt "$1" > "${1%.json}.pretty.json"
+		for file in "$@"; do
+			jfmt "$file" > "${file%.json}.pretty.json"
+		done
 	}
 
 	alias phttp="python3 -m http.server"

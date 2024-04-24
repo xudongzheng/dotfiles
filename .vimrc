@@ -186,7 +186,7 @@ autocmd FileType go nnoremap <buffer> <leader>s :! gofmt -w=true -s %<cr>:e<cr>
 function! MapText()
 	" In text files, use <leader>d to insert the date in the American format.
 	" This code comes from https://bit.ly/2UWmveA.
-	nnoremap <buffer> <leader>d "=strftime('%B %-d, %Y')<cr>p
+	nnoremap <buffer> <leader>d "=strftime("%B %-d, %Y")<cr>p
 
 	" Use <leader>c for checking and unchecking a checkbox.
 	nnoremap <buffer> <leader>c :s/\[x\]/[_]/e<cr>:s/\[ \]/[x]/e<cr>:s/\[_\]/[ ]/e<cr>
@@ -235,8 +235,8 @@ function! AppendPrint(tpl, visual, separator)
 	execute "normal! o" . printf(a:tpl, l:randnum, l:varnames) . "\<esc>"
 endfunction
 function! DefinePrint(types, leader, tpl, separator)
-	execute 'autocmd FileType ' . a:types . ' nnoremap <buffer> <leader>' . a:leader . ' :call AppendPrint("' . a:tpl . '", 0, "' . a:separator . '")<cr>'
-	execute 'autocmd FileType ' . a:types . ' vnoremap <buffer> <leader>' . a:leader . ' :call AppendPrint("' . a:tpl . '", 1, "' . a:separator . '")<cr>'
+	execute "autocmd FileType " . a:types . " nnoremap <buffer> <leader>" . a:leader . ' :call AppendPrint("' . a:tpl . '", 0, "' . a:separator . '")<cr>'
+	execute "autocmd FileType " . a:types . " vnoremap <buffer> <leader>" . a:leader . ' :call AppendPrint("' . a:tpl . '", 1, "' . a:separator . '")<cr>'
 endfunction
 call DefinePrint("go", "p", "println(%d%s)", ", ")
 call DefinePrint("go", "P", "fmt.Println(%d%s)", ", ")
@@ -303,7 +303,7 @@ autocmd FileType gitcommit nnoremap <buffer> <leader>d :call GitCommitDiff()<cr>
 
 function! EnableCopilot()
 	" Skip if file is for editing shell command.
-	if match(expand("%:p"), '^/tmp/bash-fc') == 0 || match(expand("%:p"), '^/private/tmp/') == 0
+	if match(expand("%:p"), "^/tmp/bash-fc") == 0 || match(expand("%:p"), "^/private/tmp/") == 0
 		return
 	endif
 
@@ -328,13 +328,13 @@ function! SetTabWidth(tab_width, tab_indent, priority)
 	" Set settings based on whether tabs or spaces are used for indentation.
 	if a:tab_indent == 1
 		setlocal noexpandtab softtabstop=0
-		execute 'setlocal shiftwidth=' . a:tab_width
-		execute 'setlocal tabstop=' . a:tab_width
+		execute "setlocal shiftwidth=" . a:tab_width
+		execute "setlocal tabstop=" . a:tab_width
 	else
 		setlocal expandtab
-		execute 'setlocal shiftwidth=' . a:tab_width
-		execute 'setlocal tabstop=' . a:tab_width
-		execute 'setlocal softtabstop=' . a:tab_width
+		execute "setlocal shiftwidth=" . a:tab_width
+		execute "setlocal tabstop=" . a:tab_width
+		execute "setlocal softtabstop=" . a:tab_width
 	endif
 endfunction
 
@@ -543,8 +543,8 @@ function! OpenTerminal(newtab)
 	let l:cwd = getcwd()
 
 	" Open in vertical split if window is wide enough.
-	let l:fileDir = expand('%:p:h')
-	execute 'cd ' . l:fileDir
+	let l:fileDir = expand("%:p:h")
+	execute "cd " . l:fileDir
 	if a:newtab
 		tabnew
 		terminal ++curwin
@@ -557,7 +557,7 @@ function! OpenTerminal(newtab)
 	endif
 
 	" Restore initial working directory.
-	execute 'cd ' . l:cwd
+	execute "cd " . l:cwd
 endfunction
 nnoremap <leader>T :call OpenTerminal(0)<cr>
 nnoremap <leader><c-t> :call OpenTerminal(1)<cr>
@@ -571,7 +571,7 @@ nnoremap <c-n> <c-w>w
 nnoremap <leader>z z=1<cr><cr>
 
 " Use <leader>b to show the current buffer number.
-nnoremap <leader>b :echo bufnr('%')<cr>
+nnoremap <leader>b :echo bufnr("%")<cr>
 
 " Use <leader>i to make id uppercase.
 nnoremap <leader>i :s/id\>/ID/g<cr>
@@ -612,8 +612,8 @@ function! SelectQuotes(command)
 		" Search for nearest character. The c flag includes the character under
 		" the cursor. The n flag maintains the current cursor position. The W
 		" flag prevents wrapping around the beginning and end of the file.
-		let l:back_pos = searchpos(l:char, 'bcnW')
-		let l:forward_pos = searchpos(l:char, 'cnW')
+		let l:back_pos = searchpos(l:char, "bcnW")
+		let l:forward_pos = searchpos(l:char, "cnW")
 
 		" Skip if either back or forward search not found.
 		if l:back_pos[0] == 0 || l:forward_pos[0] == 0
@@ -635,7 +635,7 @@ function! SelectQuotes(command)
 		" builtin selection functionality. This edge case is not easy to handle
 		" manually. The builtin functionality is not used universally as it
 		" cannot select across multiple lines.
-		let l:current_char = getline('.')[col('.') - 1]
+		let l:current_char = getline(".")[col(".") - 1]
 		if l:best_char == l:current_char
 			execute "normal! v" . a:command . l:best_char
 			return
