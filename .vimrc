@@ -567,6 +567,9 @@ nnoremap <leader><c-t> :call OpenTerminal(1)<cr>
 tnoremap <c-n> <F11>w
 nnoremap <c-n> <c-w>w
 
+" In terminal, use Ctrl-O to paste from the default Vim register.
+tnoremap <c-o> <F11>""
+
 " Use <leader>z to correct word under cursor to first suggestion.
 nnoremap <leader>z z=1<cr><cr>
 
