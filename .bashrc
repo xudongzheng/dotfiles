@@ -62,8 +62,13 @@ function vi {
 
 # Define ping function wrapper to lookup SSH host before pinging.
 function ping {
-	addr=$(ssh -G "$1" | grep "^hostname " | awk '{print $2}')
-	command ping "$addr"
+	# Look up host using "ssh" command. The last argument is host to look up.
+	addr="${@: -1}"
+	addr=$(ssh -G "$addr" | grep "^hostname " | awk '{print $2}')
+
+	# Call "ping" with the given arguments. The last argument is replace with
+	# the lookup result.
+	command ping "${@:1:$#-1}" "$addr"
 }
 
 # Define function to print and copy standard input to clipboard. The trailing
@@ -224,13 +229,14 @@ aliasDir cdoc ~/Documents
 aliasDir csh ~/.ssh
 aliasDir csr ~/src
 
-# On Linux, the screenshot is saved directly into the archive directory. On
-# macOS, it's manually archived periodically.
+# If screenshot is organized by month, follow "current" symlink. Otherwise print
+# main screenshot directory.
 function ssdir {
-	if [[ $uname == "Darwin" ]]; then
-		echo ~/Documents/screenshot
+	current=~/Documents/screenshot/current
+	if [[ -e $current ]]; then
+		readlink $current
 	else
-		echo ~/Documents/screenshot/$(hostname)/$(date +%Y/%m)
+		echo ~/Documents/screenshot
 	fi
 }
 alias css='cd "$(ssdir)"'
