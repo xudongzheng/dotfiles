@@ -18,6 +18,6 @@ HISTFILESIZE=200000
 HISTTIMEFORMAT="[%F %T %Z] "
 
 # Ignore consecutive duplicate commands and commands starting with a space.
-HISTCONTROL=erasedups:ignorespace
+HISTCONTROL=ignoreboth:erasedups
 
 alias vhi="vi ~/.bash_history"

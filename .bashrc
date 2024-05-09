@@ -76,10 +76,12 @@ function ping {
 function xc {
 	read -r input
 	echo "$input"
-	if command -v pbcopy > /dev/null; then
-		echo -n "$input" | pbcopy
-	elif command -v xclip > /dev/null; then
+	if command -v xclip > /dev/null; then
 		echo -n "$input" | xclip -sel clip
+	elif command -v pbcopy > /dev/null; then
+		echo -n "$input" | pbcopy
+	elif command -v clip.exe > /dev/null; then
+		echo -n "$input" | clip.exe
 	fi
 }
 
