@@ -15,6 +15,8 @@ function! XclipOperator(type, suffix)
 		call system("nohup xclip -sel clip &", getreg('"'))
 	elseif executable("pbcopy")
 		call system("pbcopy", getreg('"'))
+	elseif executable("clip.exe")
+		call system("clip.exe", getreg('"'))
 	endif
 endfunction
 

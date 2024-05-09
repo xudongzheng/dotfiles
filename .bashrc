@@ -1,3 +1,8 @@
+# Exit if not interactive, such as when transfering files via scp.
+if [[ $- != *i* ]]; then
+	return
+fi
+
 # Set default editor. On most platforms, Vi and Vim both refer to the same
 # editor. When using Ctrl-X Ctrl-E, Zsh's edit-command-line tries to advance the
 # cursor to the same position as it was in terminal, which is not the behavior
@@ -385,11 +390,8 @@ function s {
 	esac
 }
 
-# Set tab width to 4 spaces. This is only done for interactive sessions since
-# doing it unconditionally breaks scp on Linux.
-if [[ $- == *i* ]]; then
-	tabs -4
-fi
+# Set tab width to 4 spaces.
+tabs -4
 
 # Define function for converting spaces to tabs.
 function space2tab {
