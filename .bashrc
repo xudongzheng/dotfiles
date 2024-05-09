@@ -224,10 +224,18 @@ alias duh="du -sh"
 # Create alias for parsing x509 certificate.
 alias osx509="openssl x509 -text -noout -in"
 
+# In WSL2, determine path to native home directory.
+if command -v powershell.exe > /dev/null; then
+	userHome=/mnt/c/Users/$(powershell.exe -Command 'Write-Host -NoNewline $env:USERNAME')
+	aliasDir cw $userHome
+else
+	userHome=$HOME
+fi
+
 # Create aliases for changing to common directories for directories that exists.
-aliasDir cde ~/Desktop
-aliasDir cdl ~/Downloads
-aliasDir cdoc ~/Documents
+aliasDir cde $userHome/Desktop
+aliasDir cdl $userHome/Downloads
+aliasDir cdoc $userHome/Documents
 aliasDir csh ~/.ssh
 aliasDir csr ~/src
 
