@@ -1,3 +1,15 @@
+# Define function for creating directory aliases. This is defined before exiting
+# for non-interactive sessions since the function may be called from ~/.bashrc.
+function aliasDir {
+	# When multiple directories are given, create alias for first that exists.
+	for dir in "${@:2}"; do
+		if [[ -d "$dir" ]]; then
+			alias $1="c '$dir'"
+			return
+		fi
+	done
+}
+
 # Exit if not interactive, such as when transfering files via scp.
 if [[ $- != *i* ]]; then
 	return
@@ -18,17 +30,6 @@ fi
 
 # Display 24-hour time when running the "date" command.
 export LC_TIME=C
-
-function aliasDir {
-	# When multiple directories are given, create alias for first directory that
-	# exists.
-	for dir in "${@:2}"; do
-		if [[ -d "$dir" ]]; then
-			alias $1="c '$dir'"
-			return
-		fi
-	done
-}
 
 # Define alias for changing to the dotfiles directory. The logic for getting the
 # current file path comes from https://bit.ly/33OR2Lh. This works with both Bash
