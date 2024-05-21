@@ -80,7 +80,7 @@ function ping {
 # Define function to print and copy standard input to clipboard. The trailing
 # newline is stripped, if it exists.
 function xc {
-	read -r input
+	read -r -d "" input
 	echo "$input"
 	if command -v xclip > /dev/null; then
 		echo -n "$input" | xclip -sel clip
