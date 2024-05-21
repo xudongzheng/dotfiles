@@ -77,20 +77,6 @@ function ping {
 	command ping "${@:1:$#-1}" "$addr"
 }
 
-# Define function to print and copy standard input to clipboard. The trailing
-# newline is stripped, if it exists.
-function xc {
-	read -r -d "" input
-	echo "$input"
-	if command -v xclip > /dev/null; then
-		echo -n "$input" | xclip -sel clip
-	elif command -v pbcopy > /dev/null; then
-		echo -n "$input" | pbcopy
-	elif command -v clip.exe > /dev/null; then
-		echo -n "$input" | clip.exe
-	fi
-}
-
 # The ls command is different on Linux and macOS. Set color scheme for macOS
 # per https://goo.gl/1ps44T.
 if [[ $uname == "Darwin" ]]; then
@@ -158,6 +144,7 @@ alias vidi="vimdiff"
 alias vie="vi -c Explore"
 alias vrc="vi .vimrc"
 alias wl="wc -l"
+alias xc="bash $dotDir/clipboard/copy.sh"
 
 # Define aliases for file listing. When sorting by time, default to newest files
 # at the end as they are most likely the relevant ones.

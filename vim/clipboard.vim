@@ -10,13 +10,10 @@ function! XclipOperator(type, suffix)
 		execute "normal! gv" . a:suffix
 	endif
 
-	" Copy to system clipboard with xclip.
-	if executable("xclip")
-		call system("nohup xclip -sel clip &", getreg('"'))
-	elseif executable("pbcopy")
-		call system("pbcopy", getreg('"'))
-	elseif executable("clip.exe")
-		call system("clip.exe", getreg('"'))
+	" Attempt to copy to system clipboard with xclip.
+	call system("bash " . g:dotfiles_dir . "clipboard/copy.sh", getreg('"'))
+	if v:shell_error
+		echoerr "Unable to copy to clipboard"
 	endif
 endfunction
 

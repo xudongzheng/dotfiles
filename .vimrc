@@ -667,9 +667,9 @@ onoremap ac :<c-u>call SelectQuotes("a")<CR>
 xnoremap ac :<c-u>call SelectQuotes("a")<CR>
 
 " Define function to source Vim files relative to this .vimrc.
-let s:dotfiles_dir = fnamemodify(expand("<sfile>:h"), ":p")
+let g:dotfiles_dir = fnamemodify(expand("<sfile>:h"), ":p")
 function! SourceVim(path)
-	let l:script_path = s:dotfiles_dir .. a:path
+	let l:script_path = g:dotfiles_dir .. a:path
 	execute "source " .. l:script_path
 endfunction
 

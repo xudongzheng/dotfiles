@@ -12,15 +12,25 @@ alias gcdd="gc --"
 
 alias gC="git clone"
 
-# Define alias for "git diff" and "git show" with source/destination path
-# prefix. These are useful for piping to a file and using with "git apply".
-alias gdp="git diff --find-copies"
-alias ghp="git show"
+# Define function for "git diff". If output is terminal, include --no-prefix so
+# it's easier to select and copy the path using the mouse. If output is a file,
+# include prefix so the output can be used with "git apply".
+function gd {
+	if [[ -t 1 ]]; then
+		git diff --find-copies --no-prefix "$@"
+	else
+		git diff --find-copies "$@"
+	fi
+}
 
-# Define version of "git diff" and "git show" without path prefix. This is the
-# preferred version since it's easier to select and copy the paths.
-alias gd="gdp --no-prefix"
-alias gh="ghp --no-prefix"
+# Define "git show" just like "git diff".
+function gh {
+	if [[ -t 1 ]]; then
+		git show --no-prefix "$@"
+	else
+		git show "$@"
+	fi
+}
 
 alias gdc="gd --cached"
 alias gdck="gdc --check"
