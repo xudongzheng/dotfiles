@@ -1,4 +1,11 @@
+#!/bin/bash
+
 set -e
+
+# Get directory. This works regardless of whether the script is executed
+# directly or via the "bash" command. On macOS, the script is executed directly
+# by the Shortcuts application.
+dir=$(dirname "${BASH_SOURCE[0]}")
 
 # Only allow one instance to run at a time.
 if [[ -f ~/clipboard ]]; then
