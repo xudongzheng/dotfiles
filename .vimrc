@@ -579,11 +579,6 @@ nnoremap <leader>b :echo bufnr("%")<cr>
 " Use <leader>i to make id uppercase.
 nnoremap <leader>i :s/id\>/ID/g<cr>
 
-" Use <leader>y and <leader>Y to yank respectively the relative and absolute
-" file/directory path. This comes from https://bit.ly/2TdYq0O.
-nnoremap <leader>y :let @" = expand("%")<cr>
-nnoremap <leader>Y :let @" = expand("%:p")<cr>
-
 " Define mappings to convert spaces to tabs. Use <leader>2, <leader>4, and
 " <leader>8 for indentation with 2/4/8 spaces respectively. In normal mode, this
 " applies to the entire file. In visual mode, this applies to the selected
