@@ -173,6 +173,10 @@ autocmd BufEnter * call HighlightTrailingWS()
 nnoremap <leader>W :%s/ \+$//<cr>
 xnoremap <leader>W :s/ \+$//<cr>
 
+" Use <leader>l to search without changing the search pattern. This is useful
+" for locating a file in Netrw before continuing the same search.
+nnoremap <leader>/ :keeppatterns /
+
 " By default, set the spell checker language to English. Use <leader>l and
 " <leader>L to change to Spanish and English respectively. For both, ignore
 " Chinese characters.

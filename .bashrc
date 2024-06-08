@@ -95,20 +95,6 @@ else
 	alias tom="top -E m -e m -o %MEM"
 fi
 
-# Define realpath function for converting relative path to absolute path. The
-# command exists natively in Linux but not macOS.
-if [[ $uname == "Darwin" ]]; then
-	function realpath {
-		echo $(cd $(dirname "$1") && pwd)/$(basename "$1")
-	}
-fi
-
-alias rp="realpath"
-
-function rpc {
-	rp "$@" | xc
-}
-
 # Define alias for ps.
 if [[ $uname == "Darwin" ]]; then
 	alias p="ps aux"
@@ -145,6 +131,20 @@ alias vie="vi -c Explore"
 alias vrc="vi .vimrc"
 alias wl="wc -l"
 alias xc="bash $dotDir/clipboard/copy.sh"
+
+# Define realpath function for converting relative path to absolute path. The
+# command exists natively in Linux but not macOS.
+if [[ $uname == "Darwin" ]]; then
+	function realpath {
+		echo $(cd $(dirname "$1") && pwd)/$(basename "$1")
+	}
+fi
+
+alias rp="realpath"
+
+function rpc {
+	rp "$@" | xc
+}
 
 # Define aliases for file listing. When sorting by time, default to newest files
 # at the end as they are most likely the relevant ones.
