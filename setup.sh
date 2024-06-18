@@ -31,11 +31,11 @@ else
 	bashrcSrc=~/.bashrc
 fi
 
-# Configure Bash, Vim, and SSH to source the repository .bashrc, .vimrc, and
-# .ssh/config respectively. This is preferred over a symlink so each can be
-# further customized. For Bash, it is necessary to check if the repository file
-# is sourced (rather than checking for existence of file) since most
-# environments come with something by default.
+# Configure Bash and Vim to source the repository .bashrc and .vimrc
+# respectively. This is preferred over a symlink so the local user can be
+# customized. For Bash, it is better to check if the repository file is sourced
+# (rather than checking for its existence) since user directories typically come
+# with a file by default.
 bashrcDst="$base/.bashrc"
 if ! grep -qs "$bashrcDst" $bashrcSrc; then
 	echo "source \"$bashrcDst\"" > $bashrcSrc
@@ -44,10 +44,13 @@ vimrcDst="$base/.vimrc"
 if [[ ! -f ~/.vimrc ]]; then
 	echo 'execute "source " .. fnameescape("'"$vimrcDst"'")' > ~/.vimrc
 fi
+
+# Source repository .ssh/config for SSH. If the repository is shared between
+# multiple users, then .ssh/config must be owned by root for it to be included.
 sshconfigDst="$base/.ssh/config"
 if [[ ! -f ~/.ssh/config ]]; then
 	mkdir -p ~/.ssh
-	echo "Include \"$sshconfigDst\"" >> ~/.ssh/config
+	echo "Include \"$sshconfigDst\"" > ~/.ssh/config
 	echo "Include config-*" >> ~/.ssh/config
 fi
 

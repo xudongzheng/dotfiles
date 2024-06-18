@@ -124,7 +124,7 @@ function grom { git rebase origin/$(gitma); }
 # escaped. The flag changes the separator to \x00, which is fine since this is
 # designed for use with xargs. If Git LFS is installed, exclude tracked files.
 if command -v git-lfs > /dev/null; then
-	alias gL="git grep -z --cached -l '' | grep --null-data -vFf <(git lfs ls-files -n)"
+	alias gL="git grep -z --cached -l '' | grep --null-data -vFf <(s $dotDir/shell/git-ls-lfs.py)"
 else
 	alias gL="git grep -z --cached -l ''"
 fi
