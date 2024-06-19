@@ -60,7 +60,7 @@ alias glo="git log --pretty=oneline --abbrev-commit"
 alias gm="git merge"
 alias gma="gm --abort"
 
-alias gnfd="git clean -f -d"
+alias gnfdx="git clean -f -d -x"
 
 alias gp="git push"
 alias gpf="gp --force"
