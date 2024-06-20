@@ -1,5 +1,13 @@
 set -e
 
+while getopts "q" opt; do
+	case ${opt} in
+		q)
+			quiet=1
+			;;
+	esac
+done
+
 # Read standard input until EOF. Suppress exit code as the "read" command will
 # exit with non-zero status when it encounters EOF.
 read -r -d "" input || true
@@ -12,7 +20,7 @@ elif command -v pbcopy > /dev/null; then
 	echo -n "$input" | pbcopy
 elif command -v clip.exe > /dev/null; then
 	echo -n "$input" | clip.exe
-else
+elif [[ "$quiet" == "" ]]; then
 	echo "Unable to copy to clipboard"
 	exit 1
 fi
