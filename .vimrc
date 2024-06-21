@@ -96,10 +96,6 @@ set nojoinspaces
 " Increase history for search and command line entries.
 set history=10000
 
-" Use <F11> to trigger window commands. Ctrl-W is the default, which I want to
-" retain for deleting the previous word such as in terminal.
-set termwinkey=<F11>
-
 " Highlight the active line and the active column. The CursorLine color chosen
 " here is a bit more prominent than the default.
 set cursorline
@@ -420,6 +416,12 @@ xnoremap m :
 " when the window is resized.
 autocmd VimResized,TabEnter * wincmd =
 
+" Use Ctrl-A and Ctrl-E for home and end in insert and command mode.
+inoremap <c-a> <home>
+inoremap <c-e> <end>
+cnoremap <c-a> <home>
+cnoremap <c-e> <end>
+
 " By default, deleting with Ctrl-U and Ctrl-W in insert mode cannot be undone.
 " This is not ideal as sometimes these are pressed accidentally. Define mapping
 " to allow undoing per https://bit.ly/2ZSlinw.
@@ -460,26 +462,26 @@ nnoremap dn <c-w><c-j>
 nnoremap de <c-w><c-k>
 nnoremap di <c-w><c-l>
 
-" Use <F4> to toggle spell checker.
-inoremap <F4> <c-o>:setlocal spell!<cr>
-nnoremap <F4> :setlocal spell!<cr>
+" Use F4 to toggle spell checker.
+inoremap <f4> <c-o>:setlocal spell!<cr>
+nnoremap <f4> :setlocal spell!<cr>
 
-" Use <F5> to refresh a file from disk.
-inoremap <F5> <c-o>:e<cr>
-nnoremap <F5> :e<cr>
+" Use F5 to refresh a file from disk.
+inoremap <f5> <c-o>:e<cr>
+nnoremap <f5> :e<cr>
 
-" Use <F6> to wrap/unwrap text.
+" Use F6 to wrap/unwrap text.
 set nowrap
-inoremap <F6> <c-o>:setlocal wrap!<cr>
-nnoremap <F6> :setlocal wrap!<cr>
+inoremap <f6> <c-o>:setlocal wrap!<cr>
+nnoremap <f6> :setlocal wrap!<cr>
 
-" Use <F10> to show diff since file save.
-inoremap <F10> <c-o>:w !diff % -<cr>
-nnoremap <F10> :w !diff % -<cr>
+" Use F10 to show diff since file save.
+inoremap <f10> <c-o>:w !diff % -<cr>
+nnoremap <f10> :w !diff % -<cr>
 
-" Use <F12> key to unhighlight searched text.
-inoremap <F12> <c-o>:noh<cr>
-nnoremap <F12> :noh<cr>
+" Use F12 key to unhighlight searched text.
+inoremap <f12> <c-o>:noh<cr>
+nnoremap <f12> :noh<cr>
 
 " Treat all .tex files as LaTeX.
 let g:tex_flavor = "latex"
@@ -539,40 +541,6 @@ xnoremap <leader>r ! tac<cr>
 
 " Use <leader>t to search for triple TODO.
 nnoremap <leader>t /TODO TODO<cr>
-
-" Use <leader>T to open terminal in a split. Use <leader><c-t> to open terminal
-" in a new tab.
-function! OpenTerminal(newtab)
-	" Store initial working directory.
-	let l:cwd = getcwd()
-
-	" Open in vertical split if window is wide enough.
-	let l:fileDir = expand("%:p:h")
-	execute "cd " . l:fileDir
-	if a:newtab
-		tabnew
-		terminal ++curwin
-	else
-		if winwidth(0) > 160
-			vertical terminal
-		else
-			terminal
-		endif
-	endif
-
-	" Restore initial working directory.
-	execute "cd " . l:cwd
-endfunction
-nnoremap <leader>T :call OpenTerminal(0)<cr>
-nnoremap <leader><c-t> :call OpenTerminal(1)<cr>
-
-" In terminal, use Ctrl-N to go to the next window. Define the same for normal
-" mode for consistency.
-tnoremap <c-n> <F11>w
-nnoremap <c-n> <c-w>w
-
-" In terminal, use Ctrl-O to paste from the default Vim register.
-tnoremap <c-o> <F11>""
 
 " Use <leader>z to correct word under cursor to first suggestion.
 nnoremap <leader>z z=1<cr><cr>
@@ -660,10 +628,10 @@ endfunction
 " Define text object that work around multiple quote characters. This uses c
 " (for comilla) instead of q since ac is easier to type than aq. This exists for
 " convenience and isn't expected to handle all edge cases.
-onoremap uc :<c-u>call SelectQuotes("i")<CR>
-xnoremap uc :<c-u>call SelectQuotes("i")<CR>
-onoremap ac :<c-u>call SelectQuotes("a")<CR>
-xnoremap ac :<c-u>call SelectQuotes("a")<CR>
+onoremap uc :<c-u>call SelectQuotes("i")<cr>
+xnoremap uc :<c-u>call SelectQuotes("i")<cr>
+onoremap ac :<c-u>call SelectQuotes("a")<cr>
+xnoremap ac :<c-u>call SelectQuotes("a")<cr>
 
 " Define function to source Vim files relative to this .vimrc.
 let g:dotfiles_dir = fnamemodify(expand("<sfile>:h"), ":p")
@@ -672,8 +640,9 @@ function! SourceVim(path)
 	execute "source " .. l:script_path
 endfunction
 
-call SourceVim("vim/abbrev.vim")
 call SourceVim("vim/abbrev-c.vim")
 call SourceVim("vim/abbrev-go.vim")
+call SourceVim("vim/abbrev.vim")
 call SourceVim("vim/clipboard.vim")
 call SourceVim("vim/netrw.vim")
+call SourceVim("vim/terminal.vim")
