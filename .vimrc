@@ -532,9 +532,11 @@ nnoremap <leader>a ggVG
 " Use <leader>A in normal mode to highlight non-ASCII characters.
 nnoremap <leader>A /[^\t -~]<cr>
 
-" Use <leader>a in visual mode to sort the selected lines. Sort by ASCII per
-" https://goo.gl/HuZ6KL.
+" Use <leader>a in visual mode to sort the selected lines. By default, sort
+" using binary per https://goo.gl/HuZ6KL. Use <leader>A to sort with en_US,
+" which is useful for case-insensitive sorting.
 xnoremap <leader>a ! LC_ALL=C sort<cr>
+xnoremap <leader>A ! LC_ALL=en_US.UTF-8 sort<cr>
 
 " Use <leader>r to reverse visually selected lines.
 xnoremap <leader>r ! tac<cr>
@@ -567,7 +569,7 @@ nnoremap \ :tabn<cr>
 nnoremap <tab> :tabp<cr>
 
 " Use <leader>' to convert the surrounding double quotes to single quotes.
-" Simiarly use <leader>" to convert from single quotes to double quotes. Both
+" Similarly use <leader>" to convert from single quotes to double quotes. Both
 " use `` to return to the previous cursor location after replacing a quote.
 nnoremap <leader>' di"v<left>r'p
 nnoremap <leader>" di'v<left>r"p
@@ -639,6 +641,13 @@ function! SourceVim(path)
 	let l:script_path = g:dotfiles_dir .. a:path
 	execute "source " .. l:script_path
 endfunction
+
+" Define mapping to search the selected text. This is based on
+" https://bit.ly/3KU5Dgf. The selection is first yanked to the default register.
+" Use \V to enable 'very nomagic' searching so special characters are searched
+" as is. The search character and backslash still need special escaping.
+vnoremap / y/\V<c-r>=escape(@",'/\')<cr><cr>
+vnoremap ? y?\V<c-r>=escape(@",'?\')<cr><cr>
 
 call SourceVim("vim/abbrev-c.vim")
 call SourceVim("vim/abbrev-go.vim")

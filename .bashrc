@@ -28,9 +28,6 @@ if [[ -d ~/.local/bin ]]; then
 	export PATH=~/.local/bin:$PATH
 fi
 
-# Display 24-hour time when running the "date" command.
-export LC_TIME=C
-
 # Define alias for changing to the dotfiles directory. The logic for getting the
 # current file path comes from https://bit.ly/33OR2Lh. This works with both Bash
 # and Zsh.
@@ -122,7 +119,6 @@ alias hig="history | ep"
 alias n="netstat -nlp"
 alias ng="n | ep"
 alias pwdc="pwd | xc"
-alias sort="LC_ALL=C sort"
 alias tm="touch -m"
 alias usm="useradd -s /bin/bash -m"
 alias vid="vi -"
@@ -156,6 +152,12 @@ alias llt="ll -rt"
 # spaces into one. "cutw n" prints the n-th word on every line. "cutw n-" prints
 # every word starting from the n-th word on every line.
 alias cutw="tr -s ' ' | cut -d ' ' -f"
+
+# Define aliases for sorting. By default, sort using binary. Sorting with
+# English locale is useful when the result should be case insensitive. The
+# second alias uses "command" so it doesn't call into the first alias.
+alias sort="LC_ALL=C sort"
+alias sorten="LC_ALL=en_US.UTF-8 command sort"
 
 # Define alias for xargs. This replaces \n with \x00 so filenames containing
 # spaces are handled correctly.
