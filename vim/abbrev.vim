@@ -1,6 +1,7 @@
 " Define abbreviations for Bash snippets.
 function! AbbrevBashSnippets()
 	iab <buffer> ift if [[ ]]; then<cr>fi<esc><up>4<right>u
+	iab <buffer> elift elif [[ ]]; then<esc>8<left>u
 endfunction
 autocmd FileType bash call AbbrevBashSnippets()
 

@@ -227,12 +227,13 @@ else
 	userHome=$HOME
 fi
 
-# Create aliases for changing to common directories for directories that exists.
+# Create aliases for common directories.
 aliasDir cde $userHome/Desktop
 aliasDir cdl $userHome/Downloads
 aliasDir cdoc $userHome/Documents
 aliasDir csh ~/.ssh
 aliasDir csr ~/src
+aliasDir css ~/Documents/screenshot $userHome/Pictures/Screenshots
 
 # If screenshot is organized by month, follow "current" symlink. Otherwise print
 # main screenshot directory.
@@ -241,10 +242,11 @@ function ssdir {
 	if [[ -e $current ]]; then
 		readlink $current
 	else
-		echo ~/Documents/screenshot
+		css
+		pwd
+		cm
 	fi
 }
-alias css='cd "$(ssdir)"'
 
 function viargs {
 	for file in "$@"; do
