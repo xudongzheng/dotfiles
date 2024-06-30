@@ -194,7 +194,7 @@ alias mv="mv -i"
 function unmv {
 	# If destination is a file, swap arguments to undo.
 	if [[ -f "$2" ]]; then
-		mv "$2" "$1"
+		mv -v "$2" "$1"
 		return
 	fi
 
@@ -202,12 +202,23 @@ function unmv {
 	# certainty if the previous operation involved renaming or moving. For
 	# simplicity, assume move if the destination directory contains an entry
 	# matching the source.
-	dst="$2/$(basename $1)"
+	dst="$2/$(basename "$1")"
 	if [[ -e "$dst" ]]; then
-		mv "$dst" "$(dirname $1)"
+		mv -v "$dst" "$(dirname "$1")"
 	else
-		mv "$2" "$1"
+		mv -v "$2" "$1"
 	fi
+}
+
+# Define function to rename file based on modification time.
+function mvmod {
+	for src in "$@"; do
+		ext="${src##*.}"
+		dir=$(dirname "$src")
+		file=$(date -r "$src" "+%Y-%m-%d %H.%M.%S.$ext")
+		dst="$dir/$file"
+		mv -v "$src" "$dst"
+	done
 }
 
 # Create aliases for calculating size of directories and files. Use --summarize

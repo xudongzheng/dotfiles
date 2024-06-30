@@ -56,6 +56,7 @@ alias gl="git log --graph --decorate --stat --find-renames --date-order --show-s
 alias glb="gl --branches --remotes --tags"
 alias glf="gl --pretty=fuller"
 alias glo="git log --pretty=oneline --abbrev-commit"
+alias glov="glo | vid"
 
 alias gm="git merge"
 alias gma="gm --abort"

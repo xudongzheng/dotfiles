@@ -19,5 +19,6 @@ autocmd FileType c,cpp call AbbrevCSnippets()
 
 function! MapCSnippets()
 	xnoremap <leader>l csizeof()<esc>P
+	xnoremap <leader>L cARRAY_SIZE()<esc>P
 endfunction
-autocmd FileType go call MapCSnippets()
+autocmd FileType c,cpp call MapCSnippets()
