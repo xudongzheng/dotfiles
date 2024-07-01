@@ -235,8 +235,8 @@ function! AppendPrint(tpl, visual, separator)
 	execute "normal! o" . printf(a:tpl, l:randnum, l:varnames) . "\<esc>"
 endfunction
 function! DefinePrint(types, leader, tpl, separator)
-	execute "autocmd FileType " . a:types . " nnoremap <buffer> <leader>" . a:leader . ' :call AppendPrint("' . a:tpl . '", 0, "' . a:separator . '")<cr>'
-	execute "autocmd FileType " . a:types . " vnoremap <buffer> <leader>" . a:leader . ' :call AppendPrint("' . a:tpl . '", 1, "' . a:separator . '")<cr>'
+	execute "autocmd FileType " . a:types . " nnoremap <buffer> <leader>" . a:leader . ' :call AppendPrint("' . a:tpl . '", v:false, "' . a:separator . '")<cr>'
+	execute "autocmd FileType " . a:types . " vnoremap <buffer> <leader>" . a:leader . ' :call AppendPrint("' . a:tpl . '", v:true, "' . a:separator . '")<cr>'
 endfunction
 call DefinePrint("go", "p", "println(%d%s)", ", ")
 call DefinePrint("go", "P", "fmt.Println(%d%s)", ", ")
@@ -307,8 +307,12 @@ function! EnableCopilot()
 		return
 	endif
 
-	" Enable Copilot if plugin exists.
+	" Enable Copilot plugin if it exists.
 	if isdirectory(expand("~/.vim/pack/github/opt/copilot.vim"))
+		" Use Ctrl-N instead of Tab for accepting the Copilot suggestion.
+		let g:copilot_no_tab_map = v:true
+		inoremap <expr> <C-N> copilot#Accept("")
+
 		packadd copilot.vim
 	endif
 endfunction
@@ -326,7 +330,7 @@ function! SetTabWidth(tab_width, tab_indent, priority)
 	let b:tab_width_prio = a:priority
 
 	" Set settings based on whether tabs or spaces are used for indentation.
-	if a:tab_indent == 1
+	if a:tab_indent
 		setlocal noexpandtab softtabstop=0
 		execute "setlocal shiftwidth=" . a:tab_width
 		execute "setlocal tabstop=" . a:tab_width
@@ -342,8 +346,8 @@ endfunction
 " VimEnter is included alongside the buffer events so tab width is set when
 " reading from standard input. Projects can override the tab width with priority
 " 1. Files (such as YAML) can override project settings with priority 2.
-autocmd BufRead,BufNewFile,VimEnter * call SetTabWidth(4, 1, 0)
-autocmd FileType yaml call SetTabWidth(2, 0, 2)
+autocmd BufRead,BufNewFile,VimEnter * call SetTabWidth(4, v:true, 0)
+autocmd FileType yaml call SetTabWidth(2, v:false, 2)
 
 " Wrap long line even if the initial line is longer than textwidth. Per
 " https://goo.gl/3pws7z, we should not combine flags when removing.

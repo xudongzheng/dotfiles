@@ -25,8 +25,8 @@ function! OpenTerminal(newtab)
 	" Restore initial working directory.
 	execute "cd " . l:cwd
 endfunction
-nnoremap <leader>T :call OpenTerminal(0)<cr>
-nnoremap <leader><c-t> :call OpenTerminal(1)<cr>
+nnoremap <leader>T :call OpenTerminal(v:false)<cr>
+nnoremap <leader><c-t> :call OpenTerminal(v:true)<cr>
 
 " In terminal, use Ctrl-N to go to the next window. Define the same for normal
 " mode for consistency.

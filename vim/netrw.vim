@@ -4,7 +4,7 @@ autocmd FileType netrw mapclear <buffer>
 
 " Use t to enter a directory.
 function! NetrwBrowse(dest)
-	call netrw#LocalBrowseCheck(netrw#Call("NetrwBrowseChgDir", 1, a:dest))
+	call netrw#LocalBrowseCheck(netrw#Call("NetrwBrowseChgDir", v:true, a:dest))
 endfunction
 function! NetrwReturn()
 	call NetrwBrowse(netrw#Call("NetrwGetWord"))
@@ -37,7 +37,7 @@ autocmd FileType netrw nnoremap <buffer> ow :call NetrwBrowse(getcwd())<cr>
 " instead of m for creating a new directory since Netrw's NetrwBrowseChgDir
 " internally uses m for marking and redefining m would break NetrwBrowse().
 function! NetrwCreate()
-	call netrw#Call("NetrwOpenFile", 1)
+	call netrw#Call("NetrwOpenFile", v:true)
 endfunction
 function! NetrwMkdir()
 	call netrw#Call("NetrwMakeDir", "")
@@ -77,7 +77,7 @@ let g:netrw_sort_sequence = "[\/]"
 
 " Netrw by default maps gx. Disable mapping so gx can be used to navigate to the
 " x character.
-let g:netrw_nogx = 1
+let g:netrw_nogx = v:true
 
 " Hide the .DS_Store file, .git directory, the current directory, and the parent
 " directory. We do not have to exclude .swp files since those are stored in a
