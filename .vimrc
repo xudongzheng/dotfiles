@@ -311,7 +311,7 @@ function! EnableCopilot()
 	if isdirectory(expand("~/.vim/pack/github/opt/copilot.vim"))
 		" Use Ctrl-N instead of Tab for accepting the Copilot suggestion.
 		let g:copilot_no_tab_map = v:true
-		inoremap <expr> <C-N> copilot#Accept("")
+		inoremap <expr> <c-n> copilot#Accept("")
 
 		packadd copilot.vim
 	endif

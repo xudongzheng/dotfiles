@@ -65,13 +65,14 @@ function vi {
 
 # Define ping function wrapper to lookup SSH host before pinging.
 function ping {
-	# Look up host using "ssh" command. The last argument is host to look up.
+	# Look up host using "ssh" command with the last argument being the host.
 	addr="${@: -1}"
 	addr=$(ssh -G "$addr" | grep "^hostname " | awk '{print $2}')
 
-	# Call "ping" with the given arguments. The last argument is replace with
-	# the lookup result.
-	command ping "${@:1:$#-1}" "$addr"
+	# Call "ping" with the lookup result replacing the last argument.
+	args=("$@")
+	args[-1]="$addr"
+	command ping "${args[@]}"
 }
 
 # The ls command is different on Linux and macOS. Set color scheme for macOS
