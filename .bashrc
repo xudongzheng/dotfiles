@@ -52,14 +52,25 @@ if [[ $uname == "Darwin" ]]; then
 	alias sha512sum="shasum -a 512"
 fi
 
-# Define function to prevent Vim from piped to another program. This can happen
-# when I'm working with large amounts of text and using Vim as a pager. This
-# comes from https://bit.ly/3FG7m65.
+# Define function to prevent piping to Vim or piping Vim to somewhere. This can
+# happen accidentally when working with large amounts of text and using Vim as a
+# pager. This comes from https://bit.ly/3FG7m65.
 function vi {
-	if [[ -t 1 ]]; then
-		command vi "$@"
-	else
+	if [[ ! -t 1 ]]; then
 		echo "Vim must run with TTY as standard output" >&2
+	elif [[ ! -t 0 ]]; then
+		echo "Vim must run with TTY as standard input"
+	else
+		command vi "$@"
+	fi
+}
+
+# Define function for piping to Vim.
+function vid {
+	if [[ -t 0 ]]; then
+		echo "Vim expecting pipe as standard input"
+	else
+		command vi -
 	fi
 }
 
@@ -83,6 +94,15 @@ if [[ $uname == "Darwin" ]]; then
 	alias l="ls"
 else
 	alias l="LC_ALL=C.UTF-8 ls --group-directories-first --color=auto"
+fi
+
+# Set environment variables for using Vim as man pager.
+if command -v man > /dev/null; then
+	export MANWIDTH=80
+	if [[ $uname != "Darwin" ]]; then
+		export MANOPT="--no-hyphenation --no-justification"
+	fi
+	export MANPAGER="sh -c 'col -bx | vi - -c set\ filetype=man'"
 fi
 
 # Define aliases for top.
@@ -122,7 +142,6 @@ alias ng="n | ep"
 alias pwdc="pwd | xc"
 alias tm="touch -m"
 alias usm="useradd -s /bin/bash -m"
-alias vid="vi -"
 alias vidi="vimdiff"
 alias vie="vi -c Explore"
 alias vrc="vi .vimrc"
@@ -181,9 +200,9 @@ alias sinsr="sins -l root"
 # archives are extracted to a location accessible to other users so prevent this
 # with --no-same-permissions. As root tar also defaults to maintaining file
 # ownership when extracting. This is disabled with --no-same-owner.
-alias tarcf="tar cf"
-alias tarzcf="tar zcf"
-alias tarxf="tar --no-same-permissions --no-same-owner -xf"
+alias tarcf="tar --create --file"
+alias tarzcf="tar --gzip --create --file"
+alias tarxf="tar --keep-old-files --no-same-permissions --no-same-owner --extract --file"
 
 # Create an alias for cp and mv as to prompt before overwriting existing files.
 alias cp="cp -i"
