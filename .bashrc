@@ -157,10 +157,7 @@ if [[ $uname == "Darwin" ]]; then
 fi
 
 alias rp="realpath"
-
-function rpc {
-	rp "$@" | xc
-}
+function rpc { rp "$@" | xc; }
 
 # Define aliases for file listing. When sorting by time, default to newest files
 # at the end as they are most likely the relevant ones.

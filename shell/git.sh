@@ -46,8 +46,8 @@ function ge {
 }
 
 alias gf="git fetch"
-
-alias gg="git fetch && git reset --hard @{u}"
+alias gft="gf --tags -f"
+alias gfr="gf && git reset --hard @{u}"
 
 alias gian="git update-index --no-assume-unchanged"
 alias giau="git update-index --assume-unchanged"
@@ -56,7 +56,7 @@ alias gl="git log --graph --decorate --stat --find-renames --date-order --show-s
 alias glb="gl --branches --remotes --tags"
 alias glf="gl --pretty=fuller"
 alias glo="git log --pretty=oneline --abbrev-commit"
-alias glov="glo | vid"
+function glov { glo "$@" | vid; }
 
 alias gm="git merge"
 alias gma="gm --abort"
