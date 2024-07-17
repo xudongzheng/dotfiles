@@ -82,7 +82,7 @@ let g:netrw_nogx = v:true
 " Hide the .DS_Store file, .git directory, the current directory, and the parent
 " directory. We do not have to exclude .swp files since those are stored in a
 " separate directory.
-let g:netrw_list_hide = "^\\.DS_Store,\\.git/,^\\./,^\\.\\./"
+let g:netrw_list_hide = "^\\.DS_Store,^\\.git/,^\\./,^\\.\\./"
 
 " Use <leader>e to open Netrw in the current window. Use <leader>E to open Netrw
 " in a new tab.

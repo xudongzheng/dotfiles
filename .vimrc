@@ -169,9 +169,22 @@ autocmd BufEnter * call HighlightTrailingWS()
 nnoremap <leader>W :%s/ \+$//<cr>
 xnoremap <leader>W :s/ \+$//<cr>
 
-" Use <leader>l to search without changing the search pattern. This is useful
-" for locating a file in Netrw before continuing the same search.
+" A standalone period is often used as a placeholder when writing. Use <leader>.
+" to go to the next placeholder. The search should match a period at the start
+" of a new line or in the middle of a line following a space.
+nnoremap <leader>. /\(^\.\\| \zs\.\ze\)<cr>
+
+" In normal mode, use <leader>l to search without changing the search pattern.
+" This is useful in Netrw for locating a file before continuing the previous
+" search.
 nnoremap <leader>/ :keeppatterns /
+
+" Define visual mode mapping to search the selected text. This is based on
+" https://bit.ly/3KU5Dgf. The selection is first yanked to the default register.
+" Use \V to enable 'very nomagic' searching so special characters are searched
+" as is. The search character and backslash still need special escaping.
+vnoremap <leader>/ y/\V<c-r>=escape(@",'/\')<cr><cr>
+vnoremap <leader>? y?\V<c-r>=escape(@",'?\')<cr><cr>
 
 " By default, set the spell checker language to English. Use <leader>l and
 " <leader>L to change to Spanish and English respectively. For both, ignore
@@ -501,7 +514,12 @@ endfunction
 function! SaveSession()
 	try
 		execute "mksession " . GetSessionFile()
-		quitall
+		try
+			silent quitall
+		catch
+			call delete(GetSessionFile())
+			echoerr "Unable to quit Vim with unsaved files"
+		endtry
 	endtry
 endfunction
 nnoremap <leader>q :call SaveSession()<cr>
@@ -645,13 +663,6 @@ function! SourceVim(path)
 	let l:script_path = g:dotfiles_dir .. a:path
 	execute "source " .. l:script_path
 endfunction
-
-" Define mapping to search the selected text. This is based on
-" https://bit.ly/3KU5Dgf. The selection is first yanked to the default register.
-" Use \V to enable 'very nomagic' searching so special characters are searched
-" as is. The search character and backslash still need special escaping.
-vnoremap / y/\V<c-r>=escape(@",'/\')<cr><cr>
-vnoremap ? y?\V<c-r>=escape(@",'?\')<cr><cr>
 
 call SourceVim("vim/abbrev-c.vim")
 call SourceVim("vim/abbrev-go.vim")
