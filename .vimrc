@@ -174,7 +174,7 @@ xnoremap <leader>W :s/ \+$//<cr>
 " of a new line or in the middle of a line following a space.
 nnoremap <leader>. /\(^\.\\| \zs\.\ze\)<cr>
 
-" In normal mode, use <leader>l to search without changing the search pattern.
+" In normal mode, use <leader>/ to search without changing the search pattern.
 " This is useful in Netrw for locating a file before continuing the previous
 " search.
 nnoremap <leader>/ :keeppatterns /
@@ -503,9 +503,14 @@ nnoremap <f12> :noh<cr>
 " Treat all .tex files as LaTeX.
 let g:tex_flavor = "latex"
 
+" Kconfig syntax highlighting breaks in large files. Once https://bit.ly/4bQb3DN
+" is merged, this workaround will no longer be necessary.
+let g:kconfig_syntax_heavy = v:true
+
 " Use <leader>q to save Vim session to file and use <leader>Q to load Vim
 " session from file. All session files are stored in ~/.vim/session so it's easy
-" to locate every session that can be restored.
+" to enumerate every session that can be restored. The session file is deleted
+" if unable to quit Vim due to unsaved open files.
 set sessionoptions=tabpages
 function! GetSessionFile()
 	let l:session_file = substitute(getcwd(), "/", "_", "g")
