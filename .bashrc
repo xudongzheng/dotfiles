@@ -276,6 +276,8 @@ function ssdir {
 	fi
 }
 
+function csd { cd $(ssdir); }
+
 function viargs {
 	for file in "$@"; do
 		if [[ -e "$file" ]]; then
@@ -334,14 +336,20 @@ function ndc {
 	vi "${files[@]}"
 }
 
-# Use dotc to print and copy the command for setting up dotfiles on a new server
+function dotcommit { git -C "$dotDir" rev-parse master; }
+
+# Use dotc to copy the dotfiles commit hash. This is useful for pulling changes
+# on machines that lack GPG.
+alias dotc="dotcommit | xc"
+
+# Use dotC to print and copy the command for setting up dotfiles on a new server
 # or user.
-function dotc {
+function dotC {
 	cmd=""
 	if [[ "$1" == "apt" ]]; then
 		cmd="apt update && apt install -y git vim tmux && "
 	fi
-	commit=$(git -C "$dotDir" rev-parse master)
+	commit=$(dotcommit)
 	cmd+="git clone https://github.com/xudongzheng/dotfiles.git dot && cd dot && git checkout $commit && git branch -f master HEAD && bash setup.sh && exit"
 	echo $cmd | xc
 }
@@ -355,12 +363,12 @@ function pub {
 	cat ~/.ssh/id_ed25519.pub
 }
 
-# Use pubxc to print and copy the local SSH public key.
-alias pubxc="pub | xc"
+# Use pubc to print and copy the local SSH public key.
+alias pubc="pub | xc"
 
-# Use pubc to print and copy command for adding the local SSH public key to
+# Use pubC to print and copy command for adding the local SSH public key to
 # .ssh/authorized_keys.
-function pubc {
+function pubC {
 	cmd='mkdir -p ~/.ssh && echo "'$(pub)'" >> ~/.ssh/authorized_keys'
 	echo $cmd | xc
 }

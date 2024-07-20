@@ -503,9 +503,11 @@ nnoremap <f12> :noh<cr>
 " Treat all .tex files as LaTeX.
 let g:tex_flavor = "latex"
 
-" Kconfig syntax highlighting breaks in large files. Once https://bit.ly/4bQb3DN
-" is merged, this workaround will no longer be necessary.
-let g:kconfig_syntax_heavy = v:true
+" Kconfig syntax highlighting breaks in large files. See https://bit.ly/4dahHWI
+" for details.
+if !has("patch-9.1.608")
+	let g:kconfig_syntax_heavy = v:true
+endif
 
 " Use <leader>q to save Vim session to file and use <leader>Q to load Vim
 " session from file. All session files are stored in ~/.vim/session so it's easy
