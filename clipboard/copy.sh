@@ -18,7 +18,7 @@ function echo_input { echo -n "$input"; }
 function copy_os {
 	if command -v xclip > /dev/null; then
 		# Use nohup to keep xclip running until the clipboard content is replaced.
-		echo_input | xclip -sel clip > /dev/null 2>&1
+		echo_input | nohup xclip -sel clip > /dev/null 2>&1
 	elif command -v pbcopy > /dev/null; then
 		echo_input | pbcopy
 	elif command -v clip.exe > /dev/null; then

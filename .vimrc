@@ -129,6 +129,12 @@ else
 	set backspace=indent,eol,start
 endif
 
+" Allow Vim to automatically select regular expression engine. For some reason,
+" it defaults to the old engine on macOS. This is necessary for syntax
+" highlighting to work correctly in reStructuredText files. See
+" https://bit.ly/4bO02mF for details.
+set regexpengine=0
+
 " When running in binary mode (with -b flag), make EOL characters visible. Tabs
 " should be displayed normally.
 if &binary
