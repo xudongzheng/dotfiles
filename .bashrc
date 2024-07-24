@@ -162,8 +162,8 @@ function rpc { rp "$@" | xc; }
 # Define aliases for file listing. When sorting by time, default to newest files
 # at the end as they are most likely the relevant ones.
 alias ll="l -hlA"
-alias llrt="ll -t"
-alias llt="ll -rt"
+alias ltr="ll -t"
+alias lt="ll -rt"
 
 # Define alias for cutting words. Use "tr" to squeeze multiple consecutive
 # spaces into one. "cutw n" prints the n-th word on every line. "cutw n-" prints

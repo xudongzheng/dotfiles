@@ -30,9 +30,14 @@ function copy_os {
 
 function copy_tmux {
 	if command -v tmux > /dev/null; then
-		# When copying to tmux clipboard, wrap text in escape sequence for
-		# bracketed paste.
-		(echo -en "\e[200~" && echo_input && echo -en "\e[201~") | tmux load-buffer -
+		# Prior to tmux 3.4, text must be manually wrapped in escape sequence
+		# for bracketed paste.
+		version=$(tmux -V)
+		if [[ "$version" < "tmux 3.4" ]]; then
+			(echo -en "\e[200~" && echo_input && echo -en "\e[201~") | tmux load-buffer -
+		else
+			echo_input | tmux load-buffer -
+		fi
 	else
 		return 1
 	fi
