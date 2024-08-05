@@ -239,10 +239,10 @@ function mvmod {
 }
 
 # Create aliases for calculating size of directories and files. Use --summarize
-# (-s) subdirectories are not calculated separately. Use the -b flag to consider
-# the size of the file contents rather than the size used on disk.
-alias dubh="du -sbh"
-alias duh="du -sh"
+# so subdirectories are not calculated separately. Use --bytes to consider the
+# size of the file contents rather than the size used on disk.
+alias duh="du --summarize --human-readable"
+alias duhb="du --summarize --bytes --human-readable"
 
 # Create alias for parsing x509 certificate.
 alias osx509="openssl x509 -text -noout -in"
@@ -316,7 +316,12 @@ function cu {
 # used for editing the current command. This is preferred over fc as that
 # requires two consecutive presses with the same finger.
 function xe {
-	builtin fc
+	fc
+}
+
+# Define xv to rerun the last command and pipe the output to Vim.
+function xv {
+	fc -s | vid
 }
 
 # Use cdn to go to the directory containing a given file. This is helpful when

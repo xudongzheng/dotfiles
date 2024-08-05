@@ -135,6 +135,9 @@ endif
 " https://bit.ly/4bO02mF for details.
 set regexpengine=0
 
+" Always show status line regardless of the number of windows.
+set laststatus=2
+
 " When running in binary mode (with -b flag), make EOL characters visible. Tabs
 " should be displayed normally.
 if &binary
