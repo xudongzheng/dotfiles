@@ -391,7 +391,7 @@ function lsort {
 	else
 		dir="$1"
 	fi
-	find "$dir" -mindepth 1 -maxdepth 1 | xargs du -sh | sort -h
+	find "$dir" -mindepth 1 -maxdepth 1 | xargs du -sh | sort -h | column -t -s $'\t'
 }
 
 # Use s to run script to avoid accidentally using the incorrect interpreter or
@@ -491,7 +491,7 @@ function ipa {
 				echo -e "$ifce\t$addr"
 			fi
 		done
-	fi
+	fi | column -t
 }
 
 # If apt is available, define related aliases. Some are only necessary of the
