@@ -116,6 +116,10 @@ autocmd StdinReadPost * setlocal buftype=nofile
 autocmd FileType * setlocal textwidth=80
 set colorcolumn=81
 
+" Vim displays the Git commit summary line in a different color. Set width for
+" consistency with above.
+let g:gitcommit_summary_length = 80
+
 " Set scroll offset so the active line stays towards the center.
 set scrolloff=8
 
@@ -220,16 +224,13 @@ autocmd FileType markdown,text call MapText()
 " accounts for the Colemak mapping. There are obviously many missing filetypes
 " and they will be added as needed. While we don't use Groovy directly, we use
 " it through Gradle. We have xdefaults for the .Xresources file.
-autocmd FileType cfg,cmake,conf,config,crontab,debsources,dockerfile,gdb,gitconfig,gitrebase,kconfig,make,pamconf,perl,python,readline,ruby,bash,sshconfig,sshdconfig,tmux,yaml, noremap <buffer> <leader>c :normal U# <esc>
+autocmd FileType bash,cfg,cmake,conf,config,crontab,debsources,dockerfile,dosini,gdb,gitconfig,gitrebase,kconfig,make,pamconf,perl,python,readline,ruby,sshconfig,sshdconfig,tmux,yaml noremap <buffer> <leader>c :normal U# <esc>
 autocmd FileType arduino,c,cpp,cs,dts,go,groovy,java,javascript,objc,php,scala,swift,typescript noremap <buffer> <leader>c :normal U// <esc>
 autocmd FileType sql noremap <buffer> <leader>c :normal U-- <esc>
 autocmd FileType matlab,tex noremap <buffer> <leader>c :normal U% <esc>
 autocmd FileType vim noremap <buffer> <leader>c :normal U" <esc>
 autocmd FileType xdefaults noremap <buffer> <leader>c :normal U! <esc>
 autocmd FileType bindzone noremap <buffer> <leader>c :normal U; <esc>
-
-" Use <leader>c to comment .ssh/known_hosts.
-autocmd BufRead known_hosts noremap <buffer> <leader>c :normal U#<esc>
 
 " Define <leader>c for types like HTML and CSS that only support block comments.
 " For normal mode, append before prepend to prevent the comment line from being
@@ -401,7 +402,11 @@ autocmd FileType sh,zsh setlocal filetype=bash
 " different but are similar enough for most of syntax highlighting and
 " indentation to work. OCaml is another candidate for F# but it doesn't handle
 " braces well.
-autocmd BufRead,BufNewFile *.fs,*.kt setlocal filetype=scala
+if has("patch-9.0.1908")
+	autocmd BufRead,BufNewFile *.fs setlocal filetype=scala
+else
+	autocmd BufRead,BufNewFile *.fs,*.kt setlocal filetype=scala
+endif
 
 " Treat Zephyr overlay files and ZMK keymap files as DeviceTree.
 autocmd BufRead,BufNewFile *.keymap,*.overlay setlocal filetype=dts
@@ -411,6 +416,9 @@ autocmd BufRead,BufNewFile .config,*_defconfig setlocal filetype=conf
 
 " Set filetype for SSH configuration files that are included from the main file.
 autocmd BufRead,BufNewFile ~/.ssh/config-* setlocal filetype=sshconfig
+
+" Set filetype for SSH known_hosts so <leader>c can be used to comment lines.
+autocmd BufRead,BufNewFile ~/.ssh/known_hosts setlocal filetype=conf
 
 " Treat all unrecognized files as text files.
 autocmd BufRead,BufNewFile * if &filetype == "" | setlocal filetype=text | endif
