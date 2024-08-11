@@ -534,5 +534,5 @@ else
 	firefox=firefox
 fi
 if command -v $firefox > /dev/null; then
-	source "$dotDir/shell/firefox.sh"
+	source "$dotDir/shell/mozilla.sh"
 fi

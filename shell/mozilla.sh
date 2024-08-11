@@ -34,3 +34,15 @@ function fps {
 # Define alias for deleting most recent screenshot. Open in Firefox for
 # inspection and require confirmation to prevent accidental deletion.
 alias rmps='fps && rm -i -v "$(lps)"'
+
+# Occasionally the UI for Firefox or Thunderbird will use 100% CPU. Use this
+# function to identify the profile that is responsible. The fuser command writes
+# the path to standard error by default so pipe to standard output.
+function mozls {
+	uname=$(uname)
+	if [[ $uname == "Darwin" ]]; then
+		fuser ~/Library/Thunderbird/Profiles/*/key4.db ~/Library/Application\ Support/Firefox/Profiles/*/key4.db 2>&1
+	else
+		fuser ~/.thunderbird/*/key4.db ~/.mozilla/firefox/*/key4.db 2>&1
+	fi | sed 's/: */\t/' | column -t -s $'\t'
+}
