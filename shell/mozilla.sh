@@ -35,9 +35,10 @@ function fps {
 # inspection and require confirmation to prevent accidental deletion.
 alias rmps='fps && rm -i -v "$(lps)"'
 
-# Occasionally the UI for Firefox or Thunderbird will use 100% CPU. Use this
-# function to identify the profile that is responsible. The fuser command writes
-# the path to standard error by default so pipe to standard output.
+# Sometimes Firefox or Thunderbird will use 100% CPU. Define function to help
+# identify the profile that is responsible. The fuser command writes the path to
+# standard error by default so pipe to standard output. This makes the result
+# easier to grep.
 function mozls {
 	uname=$(uname)
 	if [[ $uname == "Darwin" ]]; then

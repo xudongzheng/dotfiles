@@ -238,11 +238,16 @@ function mvmod {
 	done
 }
 
-# Create aliases for calculating size of directories and files. Use --summarize
-# so subdirectories are not calculated separately. Use --bytes to consider the
-# size of the file contents rather than the size used on disk.
-alias duh="du --summarize --human-readable"
-alias duhb="du --summarize --bytes --human-readable"
+# Create aliases for calculating size of directories and files. Use -s so
+# subdirectories are not listed individually. The apparent size alias is useful
+# for showing the theoretical size of sparse files instead of the size on disk.
+# These are defined with short flags as long flags are not supported on macOS.
+alias duh="du -sh"
+if [[ $uname == "Darwin" ]]; then
+	alias duha="du -sAh"
+else
+	alias duha="du -sbh"
+fi
 
 # Create alias for parsing x509 certificate.
 alias osx509="openssl x509 -text -noout -in"

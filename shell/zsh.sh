@@ -27,6 +27,10 @@ setopt HIST_IGNORE_DUPS
 # Ignore commands starting with a space.
 setopt HIST_IGNORE_SPACE
 
+# Allow comments in interactive shell. This is useful for adding something to
+# the history without executing it.
+setopt INTERACTIVE_COMMENTS
+
 # Define custom function for editing the current command and bind Ctrl-X Ctrl-E.
 autoload -U edit-command-line
 function editCommandLine {
