@@ -84,7 +84,11 @@ let g:netrw_nogx = v:true
 " separate directory.
 let g:netrw_list_hide = "^\\.DS_Store,^\\.git/,^\\./,^\\.\\./"
 
-" Use <leader>e to open Netrw in the current window. Use <leader>E to open Netrw
-" in a new tab.
+" In normal mode, use <leader>e to open Netrw in the current window. Use
+" <leader>E to open Netrw in a new tab.
 nnoremap <leader>e :Explore<cr>
 nnoremap <leader>E :Texplore<cr>
+
+" In visual mode, use <leader>e to open the selected text as a file or directory
+" in a new tab.
+vnoremap <leader>e y:execute "tabnew " . escape(@", '"')<cr>

@@ -148,6 +148,10 @@ alias vrc="vi .vimrc"
 alias wl="wc -l"
 alias xc="bash $dotDir/clipboard/copy.sh"
 
+# The "reset" Bash command takes a full second. Use "tput reset" to achieve the
+# same functionality without the delay. See https://bit.ly/3An1bo2 for details.
+alias r="tput reset"
+
 # Define realpath function for converting relative path to absolute path. The
 # command exists natively in Linux but not macOS.
 if [[ $uname == "Darwin" ]]; then
