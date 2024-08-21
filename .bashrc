@@ -140,6 +140,7 @@ alias hig="history | ep"
 alias n="netstat -nlp"
 alias ng="n | ep"
 alias pwdc="pwd | xc"
+alias tf="tail -f"
 alias tm="touch -m"
 alias usm="useradd -s /bin/bash -m"
 alias vidi="vimdiff"
@@ -148,8 +149,9 @@ alias vrc="vi .vimrc"
 alias wl="wc -l"
 alias xc="bash $dotDir/clipboard/copy.sh"
 
-# The "reset" Bash command takes a full second. Use "tput reset" to achieve the
-# same functionality without the delay. See https://bit.ly/3An1bo2 for details.
+# The "reset" Bash command takes a full second to run. Use "tput reset" to
+# achieve the same functionality without the delay. See https://bit.ly/3An1bo2
+# for details.
 alias r="tput reset"
 
 # Define realpath function for converting relative path to absolute path. The

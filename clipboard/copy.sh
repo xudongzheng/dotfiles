@@ -30,10 +30,10 @@ function copy_os {
 
 function copy_tmux {
 	if command -v tmux > /dev/null; then
-		# Prior to tmux 3.4, text must be manually wrapped in escape sequence
+		# Prior to tmux 3.3a, text must be manually wrapped in escape sequence
 		# for bracketed paste.
 		version=$(tmux -V)
-		if [[ "$version" < "tmux 3.4" ]]; then
+		if [[ "$version" < "tmux 3.3a" ]]; then
 			(echo -en "\e[200~" && echo_input && echo -en "\e[201~") | tmux load-buffer -
 		else
 			echo_input | tmux load-buffer -

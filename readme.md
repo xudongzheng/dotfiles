@@ -9,6 +9,8 @@ includes:
 - Colemak keyboard layout
 - Git for version control
 - tmux for terminal multiplexing
+- Firefox for web browsing
+- Thunderbird for email
 
 # How to Use
 

@@ -8,7 +8,9 @@ alias gbD="gb -D"
 
 alias gc="git checkout"
 alias gcb="gc -b"
+alias gcb="gc -b"
 alias gcdd="gc --"
+alias gcfh="gc FETCH_HEAD"
 
 alias gC="git clone"
 
@@ -61,7 +63,8 @@ function glov { glo "$@" | vid; }
 alias gm="git merge"
 alias gma="gm --abort"
 
-alias gnfdx="git clean -f -d -x"
+alias gndxf="git clean -d -x -f"
+alias gndxn="git clean -d -x -n"
 
 alias gp="git push"
 alias gpf="gp --force"
