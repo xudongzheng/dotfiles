@@ -160,10 +160,12 @@ command S :Sexplore
 " When tmux is used, Vim can't detect that xterm bracketed paste is supported so
 " it must be configured manually. This snippet comes from https://bit.ly/3GZcaUG
 " and ':help xterm-bracketed-paste'.
-let &t_BE = "\e[?2004h"
-let &t_BD = "\e[?2004l"
-let &t_PS = "\e[200~"
-let &t_PE = "\e[201~"
+if has("patch-8.1.1401")
+	let &t_BE = "\e[?2004h"
+	let &t_BD = "\e[?2004l"
+	let &t_PS = "\e[200~"
+	let &t_PE = "\e[201~"
+endif
 
 " An abbrevation at the end of pasted text gets expanded but it shouldn't be.
 " See https://bit.ly/3RGkCwX for Vim issue. Breaking the undo sequence is a
@@ -400,7 +402,11 @@ autocmd FileType css setlocal formatoptions+=ro
 autocmd FileType * set iskeyword=@,48-57,_
 
 " Use Bash syntax for shell scripts.
-autocmd FileType sh,zsh setlocal filetype=bash
+if has("patch-8.2.2434")
+	autocmd FileType sh,zsh setlocal filetype=bash
+else
+	let g:is_bash = 1
+endif
 
 " Treat .fs (F#) and .kt (Kotlin) files as Scala files. They are obviously
 " different but are similar enough for most of syntax highlighting and
@@ -688,8 +694,8 @@ xnoremap ac :<c-u>call SelectQuotes("a")<cr>
 " Define function to source Vim files relative to this .vimrc.
 let g:dotfiles_dir = fnamemodify(expand("<sfile>:h"), ":p")
 function! SourceVim(path)
-	let l:script_path = g:dotfiles_dir .. a:path
-	execute "source " .. l:script_path
+	let l:script_path = g:dotfiles_dir . a:path
+	execute "source " . l:script_path
 endfunction
 
 call SourceVim("vim/abbrev-c.vim")
@@ -697,4 +703,7 @@ call SourceVim("vim/abbrev-go.vim")
 call SourceVim("vim/abbrev.vim")
 call SourceVim("vim/clipboard.vim")
 call SourceVim("vim/netrw.vim")
-call SourceVim("vim/terminal.vim")
+
+if has("patch-8.1.1401")
+	call SourceVim("vim/terminal.vim")
+endif
