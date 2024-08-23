@@ -192,6 +192,10 @@ nnoremap <leader>. /\(^\.\\| \zs\.\ze\)<cr>
 " search.
 nnoremap <leader>/ :keeppatterns /
 
+" Use <leader><space> to replace %20 with a whitespace character. This is useful
+" for working with screenshot URLs copied from Firefox.
+xnoremap <leader><space> :s/%20/ /g<cr>
+
 " Define visual mode mapping to search the selected text. This is based on
 " https://bit.ly/3KU5Dgf. The selection is first yanked to the default register.
 " Use \V to enable 'very nomagic' searching so special characters are searched

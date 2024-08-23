@@ -8,11 +8,13 @@ while getopts "q" opt; do
 	esac
 done
 
-# Read standard input until EOF. Suppress exit code as the "read" command will
-# exit with non-zero status when it encounters EOF.
-read -r -d "" input || true
+# Read standard input until EOF. Per https://bit.ly/47385eA, set IFS so leading
+# whitespaces are not stripped since they are often useful for indentation.
+# Suppress exit code as the "read" command will exit with non-zero status when
+# it encounters EOF.
+IFS= read -r -d "" input || true
 
-# Trim trailing newline before copying to clipboard.
+# Define function to print input without additional newline.
 function echo_input { echo -n "$input"; }
 
 function copy_os {
@@ -55,4 +57,4 @@ if ! copy_os; then
 fi
 
 # Print copied text if successful.
-echo "$input"
+echo_input
