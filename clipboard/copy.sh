@@ -14,6 +14,9 @@ done
 # it encounters EOF.
 IFS= read -r -d "" input || true
 
+# Trim trailing newline.
+input="${input%$'\n'}"
+
 # Define function to print input without additional newline.
 function echo_input { echo -n "$input"; }
 
@@ -57,4 +60,4 @@ if ! copy_os; then
 fi
 
 # Print copied text if successful.
-echo_input
+echo "$input"

@@ -102,6 +102,9 @@ set cursorline
 set cursorcolumn
 highlight CursorColumn ctermbg=lightcyan ctermfg=black
 
+" Use :H to open a help page in a new tab.
+command -nargs=* H :tab help <args>
+
 " Enable line number for help pages. Additionally, set conceallevel so concealed
 " characters do not break CursorColumn.
 autocmd FileType help setlocal number relativenumber conceallevel=0
@@ -703,7 +706,6 @@ call SourceVim("vim/abbrev-go.vim")
 call SourceVim("vim/abbrev.vim")
 call SourceVim("vim/clipboard.vim")
 call SourceVim("vim/netrw.vim")
-
 if has("patch-8.1.1401")
 	call SourceVim("vim/terminal.vim")
 endif
