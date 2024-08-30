@@ -35,12 +35,12 @@ noremap Y O
 " Use the desert color scheme starting with Vim 9. Use elflord if older and
 " slate in vimdiff since highlighted lines are hard to see in elflord.
 if has("patch-9.0.0")
-	colors desert
+	colorscheme desert
 else
 	if &diff
-		colors slate
+		colorscheme slate
 	else
-		colors elflord
+		colorscheme elflord
 	endif
 endif
 
@@ -186,6 +186,11 @@ autocmd BufEnter * call HighlightTrailingWS()
 " entire file. In visual mode, it's only applied to the selected lines.
 nnoremap <leader>W :%s/ \+$//<cr>
 xnoremap <leader>W :s/ \+$//<cr>
+
+" Use <leader>y and <leader>Y to add a blank line below and above but remain in
+" normal mode.
+nnoremap <leader>y o<esc>
+nnoremap <leader>Y O<esc>
 
 " A standalone period is often used as a placeholder when writing. Use <leader>.
 " to go to the next placeholder. The search should match a period at the start

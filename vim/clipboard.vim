@@ -68,8 +68,8 @@ endfunction
 nnoremap <leader>X :set operatorfunc=ClipboardReformatOperatorCut<cr>g@
 xnoremap <leader>X :<c-u>call ClipboardReformatOperatorCut(visualmode())<cr>
 
-" Use <leader>y and <leader>Y to copy the relative and absolute file/directory
+" Use <leader>r and <leader>R to copy the relative and absolute file/directory
 " path to clipboard. This comes from https://bit.ly/2TdYq0O. On remote systems
 " without a clipboard, the path is only copied to the default Vim register.
-nnoremap <leader>y :let @" = expand("%")<cr>:call ClipboardExternal("-q")<cr>
-nnoremap <leader>Y :let @" = expand("%:p")<cr>:call ClipboardExternal("-q")<cr>
+nnoremap <leader>r :let @" = expand("%")<cr>:call ClipboardExternal("-q")<cr>
+nnoremap <leader>R :let @" = expand("%:p")<cr>:call ClipboardExternal("-q")<cr>

@@ -63,8 +63,10 @@ function glov { glo "$@" | vid; }
 alias gm="git merge"
 alias gma="gm --abort"
 
-alias gndxf="git clean -d -x -f"
-alias gndxn="git clean -d -x -n"
+# Define alias for deleting untracked and ignored files. The first alias lists
+# the affected files and directories. The second alias does the deleting.
+alias gn="git clean -d -x -n"
+alias gnf="git clean -d -x -f"
 
 alias gp="git push"
 alias gpf="gp --force"
