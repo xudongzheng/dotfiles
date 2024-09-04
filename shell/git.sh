@@ -4,6 +4,7 @@ alias gap="ga -p"
 
 alias gb="git branch"
 alias gba="gb -a"
+alias gbav="gb -a | vid"
 alias gbD="gb -D"
 
 alias gc="git checkout"
@@ -58,7 +59,7 @@ alias gl="git log --graph --decorate --stat --find-renames --date-order --show-s
 alias glb="gl --branches --remotes --tags"
 alias glf="gl --pretty=fuller"
 alias glo="git log --pretty=oneline --abbrev-commit"
-function glov { glo "$@" | vid; }
+function glohv { glo "$@" | head | vid; }
 
 alias gm="git merge"
 alias gma="gm --abort"
@@ -77,6 +78,7 @@ alias gr="git rebase"
 alias gra="gr --abort"
 alias grc="gr --continue"
 alias gri="gr -i"
+alias grifh="gr -i FETCH_HEAD"
 alias grs="gr --skip"
 
 alias grh="git reset HEAD"

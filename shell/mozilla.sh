@@ -7,10 +7,13 @@ function ff {
 		args+=("--new-window")
 	fi
 
-	# For each file, convert path to absolute path. Relative path will not work
-	# on macOS.
-	for file in "$@"; do
-		args+=("$(realpath "$file")")
+	# Convert file path to absolute path. Relative path does not work on macOS.
+	for arg in "$@"; do
+		if [[ "$arg" =~ ^http:// ]] || [[ "$arg" =~ ^https:// ]]; then
+			args+=("$arg")
+		else
+			args+=("$(realpath "$arg")")
+		fi
 	done
 
 	$firefox "${args[@]}"

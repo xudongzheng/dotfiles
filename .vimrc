@@ -1,13 +1,13 @@
 " Map Colemak keys in alphabetical order.
 noremap d g
-noremap e k
+noremap e gk
 noremap f e
 noremap g t
 noremap i l
 noremap j y
 noremap k n
 noremap l u
-noremap n j
+noremap n gj
 noremap o p
 noremap p r
 noremap r s
