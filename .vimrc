@@ -578,8 +578,8 @@ nnoremap <leader>Q :call LoadSession()<cr>
 xnoremap <leader>q c""<esc>P
 xnoremap <leader>Q c''<esc>P
 
-" Use <leader>u to convert from standard base64 encoding to URL base64 encoding.
-nnoremap <leader>u :s/+/-/g<cr>:s/\//_/g<cr>
+" Use <leader>u to convert Unicode single and double quotes to ASCII.
+nnoremap <leader>u :%s/[\u2018\u2019]/'/ge<cr>:%s/[\u201c\u201d]/"/ge<cr>
 
 " Use <leader>w to close tab, similar to Ctrl-W in GUI programs.
 nnoremap <leader>w :tabclose<cr>

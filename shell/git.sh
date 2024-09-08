@@ -59,6 +59,7 @@ alias gl="git log --graph --decorate --stat --find-renames --date-order --show-s
 alias glb="gl --branches --remotes --tags"
 alias glf="gl --pretty=fuller"
 alias glo="git log --pretty=oneline --abbrev-commit"
+function glov { glo "$@" | vid; }
 function glohv { glo "$@" | head | vid; }
 
 alias gm="git merge"
