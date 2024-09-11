@@ -102,8 +102,9 @@ set cursorline
 set cursorcolumn
 highlight CursorColumn ctermbg=lightcyan ctermfg=black
 
-" Use :H to open a help page in a new tab.
-command -nargs=* H :tab help <args>
+" Use :H to open a help page in a new tab. This uses cnoremap instead of command
+" so tab autocompletion works.
+cnoremap <expr> H (getcmdpos() == 1 ? "tab help" : "H")
 
 " Enable line number for help pages. Additionally, set conceallevel so concealed
 " characters do not break CursorColumn.
@@ -638,67 +639,6 @@ nnoremap <tab> :tabp<cr>
 nnoremap <leader>' di"v<left>r'p
 nnoremap <leader>" di'v<left>r"p
 
-function! SelectQuotes(command)
-	" Define variables for tracking which quote character is the nearest.
-	let l:best_char = ''
-	let l:best_length = -1
-
-	" Iterate over the quote characters to find the nearest pair.
-	for l:char in ['"', "'", "`"]
-		" Search for nearest character. The c flag includes the character under
-		" the cursor. The n flag maintains the current cursor position. The W
-		" flag prevents wrapping around the beginning and end of the file.
-		let l:back_pos = searchpos(l:char, "bcnW")
-		let l:forward_pos = searchpos(l:char, "cnW")
-
-		" Skip if either back or forward search not found.
-		if l:back_pos[0] == 0 || l:forward_pos[0] == 0
-			continue
-		endif
-
-		" Use length between pair to determine which is the closest.
-		let l:back_byte = line2byte(l:back_pos[0]) + l:back_pos[1]
-		let l:forward_byte = line2byte(l:forward_pos[0]) + l:forward_pos[1]
-		let l:quote_length = l:forward_byte - l:back_byte
-		if l:best_length == -1 || l:quote_length < l:best_length
-			let l:best_char = l:char
-			let l:best_length = l:quote_length
-		endif
-	endfor
-
-	if l:best_char != ""
-		" If character under the cursor is the matched quote character, use Vim
-		" builtin selection functionality. This edge case is not easy to handle
-		" manually. The builtin functionality is not used universally as it
-		" cannot select across multiple lines.
-		let l:current_char = getline(".")[col(".") - 1]
-		if l:best_char == l:current_char
-			execute "normal! v" . a:command . l:best_char
-			return
-		endif
-
-		" Select text by searching backwards and forwards.
-		if a:command == "i"
-			let l:back_suffix = "\<space>"
-			let l:forward_suffix = "\<bs>"
-		else
-			let l:back_suffix = ""
-			let l:forward_suffix = ""
-		endif
-		execute "normal! ?" . l:best_char . "\<cr>" . l:back_suffix
-		normal! v
-		execute "normal! /" . l:best_char . "\<cr>" . l:forward_suffix
-	endif
-endfunction
-
-" Define text object that work around multiple quote characters. This uses c
-" (for comilla) instead of q since ac is easier to type than aq. This exists for
-" convenience and isn't expected to handle all edge cases.
-onoremap uc :<c-u>call SelectQuotes("i")<cr>
-xnoremap uc :<c-u>call SelectQuotes("i")<cr>
-onoremap ac :<c-u>call SelectQuotes("a")<cr>
-xnoremap ac :<c-u>call SelectQuotes("a")<cr>
-
 " Define function to source Vim files relative to this .vimrc.
 let g:dotfiles_dir = fnamemodify(expand("<sfile>:h"), ":p")
 function! SourceVim(path)
@@ -714,3 +654,4 @@ call SourceVim("vim/netrw.vim")
 if has("patch-8.1.1401")
 	call SourceVim("vim/terminal.vim")
 endif
+call SourceVim("vim/text-object.vim")
