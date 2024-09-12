@@ -35,17 +35,17 @@ function! SelectTextObject(charsets, command)
 
 	if l:best_before_char != ""
 		" If character under the cursor matches, use Vim's builtin selection
-		" mechanism. This edge case not easy to handle manually. The builtin
-		" selection is not used universally since it cannot select quotes (where
-		" the before and after delimiters are identical) across multiple lines.
-		" See https://bit.ly/4go5xvw for details.
+		" mechanism; this edge case not easy to handle manually. Also use
+		" builtin mechanism if the before and after delimiters are different.
+		" This is not used universally for quotes since it cannot select across
+		" multiple lines. See https://bit.ly/4go5xvw for details.
 		let l:current_char = getline(".")[col(".") - 1]
-		if l:best_before_char == l:current_char || l:best_after_char == l:current_char
-			execute "normal! v" . a:command . l:current_char
+		if l:best_before_char != l:best_after_char || l:best_before_char == l:current_char || l:best_after_char == l:current_char
+			execute "normal! v" . a:command . l:best_before_char
 			return
 		endif
 
-		" Select text by searching backwards and forwards.
+		" Select quotes by searching backwards and forwards.
 		if a:command == "i"
 			let l:back_suffix = "\<space>"
 			let l:forward_suffix = "\<bs>"
@@ -65,7 +65,7 @@ function! SelectQuotes(command)
 endfunction
 
 function! SelectBlocks(command)
-	let l:charsets = [["(", ")"], ["[", "]"], ["<", ">"]]
+	let l:charsets = [["(", ")"], ["{", "}"], ["[", "]"], ["<", ">"]]
 	call SelectTextObject(l:charsets, a:command)
 endfunction
 
@@ -76,8 +76,8 @@ xnoremap uc :<c-u>call SelectQuotes("i")<cr>
 onoremap ac :<c-u>call SelectQuotes("a")<cr>
 xnoremap ac :<c-u>call SelectQuotes("a")<cr>
 
-" Redefine the block text object to work with parentheses, square brackets, and
-" angle brackets.
+" Redefine the block text object to work with parentheses, braces, square
+" brackets, and angle brackets.
 onoremap ub :<c-u>call SelectBlocks("i")<cr>
 xnoremap ub :<c-u>call SelectBlocks("i")<cr>
 onoremap ab :<c-u>call SelectBlocks("a")<cr>

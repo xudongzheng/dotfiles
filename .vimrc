@@ -161,6 +161,11 @@ set nrformats+=alpha nrformats-=octal
 command V :Vexplore
 command S :Sexplore
 
+" Define commands for grep and grep inverse. Using :g and :v with /d is
+" confusing to reason about.
+command -nargs=1 G execute "v/" . <q-args> . "/d"
+command -nargs=1 Gi execute "g/" . <q-args> . "/d"
+
 " When tmux is used, Vim can't detect that xterm bracketed paste is supported so
 " it must be configured manually. This snippet comes from https://bit.ly/3GZcaUG
 " and ':help xterm-bracketed-paste'.
