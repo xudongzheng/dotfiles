@@ -37,7 +37,7 @@ aliasDir cdot "$dotDir"
 # Set less configuration. A couple arguments are specified using the short form
 # rather than long form due to how i3-sensible-pager strips -E and -F
 # https://bit.ly/4ekPUmM.
-export LESS="-FRN --chop-long-lines --use-color --shift 20 --tabs 4 --MOUSE"
+export LESS="-FNRX --chop-long-lines --shift 20 --tabs 4"
 export LESSKEYIN=$dotDir/.lesskeyin
 
 # Load shell specific code.
