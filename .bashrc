@@ -34,7 +34,8 @@ fi
 dotDir=$(dirname "${BASH_SOURCE[0]:-${(%):-%x}}")
 aliasDir cdot "$dotDir"
 
-# Set path to less configuration file.
+# Set less configuration.
+export LESS="--RAW-CONTROL-CHARS --LINE-NUMBERS --chop-long-lines --use-color --shift 20 --tabs 4"
 export LESSKEYIN=$dotDir/.lesskeyin
 
 # Load shell specific code.

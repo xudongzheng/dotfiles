@@ -1,6 +1,3 @@
-[core]
-	pager = less --LINE-NUMBERS --chop-long-lines --use-color --shift 20 --tabs 4
-
 [init]
 	defaultBranch = main
 
