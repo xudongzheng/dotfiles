@@ -103,8 +103,9 @@ set cursorcolumn
 highlight CursorColumn ctermbg=lightcyan ctermfg=black
 
 " Use :H to open a help page in a new tab. This uses cnoremap instead of command
-" so tab autocompletion works.
-cnoremap <expr> H (getcmdpos() == 1 ? "tab help" : "H")
+" so tab autocompletion works. Use getcmdtype() to ensure replacement doesn't
+" happen when searching.
+cnoremap <expr> H (getcmdpos() == 1 && getcmdtype() == ':' ? "tab help" : "H")
 
 " Enable line number for help pages. Additionally, set conceallevel so concealed
 " characters do not break CursorColumn.
