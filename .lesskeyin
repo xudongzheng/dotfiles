@@ -10,19 +10,28 @@
 8 digit
 9 digit
 
-? back-search
-d forw-scroll
 D goto-end
-e back-line
-/ forw-search
+d forw-scroll
 g goto-line
-h left-scroll
-i right-scroll
-k repeat-search
-K reverse-search
-n forw-line
 q quit
 u back-scroll
+
+\kl left-scroll
+\kd forw-line
+\ku back-line
+\kr right-scroll
+h left-scroll
+n forw-line
+e back-line
+i right-scroll
+
+/ forw-search
+? back-search
+k repeat-search
+K reverse-search
+
+# Define key for toggling line wrapping.
+w toggle-option S
 
 # Ignore all default commands.
 #stop
