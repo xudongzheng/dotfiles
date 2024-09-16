@@ -1,0 +1,28 @@
+#command
+0 digit
+1 digit
+2 digit
+3 digit
+4 digit
+5 digit
+6 digit
+7 digit
+8 digit
+9 digit
+
+? back-search
+d forw-scroll
+D goto-end
+e back-line
+/ forw-search
+g goto-line
+h left-scroll
+i right-scroll
+k repeat-search
+K reverse-search
+n forw-line
+q quit
+u back-scroll
+
+# Ignore all default commands.
+#stop

@@ -34,6 +34,9 @@ fi
 dotDir=$(dirname "${BASH_SOURCE[0]:-${(%):-%x}}")
 aliasDir cdot "$dotDir"
 
+# Set path to less configuration file.
+export LESSKEYIN=$dotDir/.lesskeyin
+
 # Load shell specific code.
 if [[ $SHELL == "/bin/bash" ]]; then
 	source "$dotDir/shell/bash.sh"
@@ -127,7 +130,6 @@ alias c="cd"
 alias cm="c - > /dev/null"
 alias crt="crontab -e"
 alias dfh="df -h"
-alias dr="date --rfc-3339=seconds"
 alias ep="grep --color"
 alias epi="ep -i"
 alias epr="ep -Rn"
@@ -332,12 +334,18 @@ function xe {
 
 # Define xv to rerun the last command and pipe the output to Vim.
 function xv {
-	fc -s | vid
+	# Both standard input and standard output must be TTY and not a pipe.
+	# Otherwise display error. This prevents xv from calling xv recursively.
+	if [[ -t 1 ]] && [[ -t 0 ]]; then
+		fc -s | vid
+	else
+		echo "xv cannot be used with a pipe"
+	fi
 }
 
-# Use cdn to go to the directory containing a given file. This is helpful when
-# using recursive grep as one can double click the path (assuming it does not
-# contain spaces) and use this to change to the directory containing the file.
+# Use cdn to go to the directory containing a given file. This makes it easy to
+# double click a path in grep output (assuming it does not contain spaces) and
+# navigate to the folder containing it.
 function cdn {
 	cd $(dirname "$1")
 }

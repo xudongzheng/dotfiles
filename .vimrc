@@ -161,6 +161,11 @@ set nrformats+=alpha nrformats-=octal
 command V :Vexplore
 command S :Sexplore
 
+" Define :E to open a file. Anything after the colon is discarded. This makes it
+" easy to double click a path in grep output (assuming it does not contain
+" spaces) and open it..
+command -nargs=1 E execute "e" fnameescape(split(<q-args>, ":")[0])
+
 " Define commands for grep and grep inverse. Using :g and :v with /d is
 " confusing to reason about.
 command -nargs=1 G execute "v/" . <q-args> . "/d"
