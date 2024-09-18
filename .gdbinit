@@ -30,3 +30,15 @@ define mc
 	mon reset halt
 	continue
 end
+
+# Define function to enter bootloader mode with the Adafruit UF2 bootloader.
+define bootl_nrf52
+	set {char} 0x4000051c = 0x57
+	mon reset
+end
+
+# Define function to enter bootloader mode on RP2040.
+define bootl_rp2040
+	mon halt
+	call ((void (*)(uint32_t, uint32_t)) 0x00002591)(0, 0)
+end

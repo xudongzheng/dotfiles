@@ -590,8 +590,13 @@ nnoremap <leader>Q :call LoadSession()<cr>
 xnoremap <leader>q c""<esc>P
 xnoremap <leader>Q c''<esc>P
 
-" Use <leader>u to convert Unicode single and double quotes to ASCII.
+" Use <leader>u in normal mode to convert Unicode quotes (single and double) to
+" ASCII.
 nnoremap <leader>u :%s/[\u2018\u2019]/'/ge<cr>:%s/[\u201c\u201d]/"/ge<cr>
+
+" Use <leader>u in visual mode to run text through uniq. Use <leader>U to count.
+xnoremap <leader>u ! uniq<cr>
+xnoremap <leader>U ! uniq -c<cr>
 
 " Use <leader>w to close tab, similar to Ctrl-W in GUI programs.
 nnoremap <leader>w :tabclose<cr>
