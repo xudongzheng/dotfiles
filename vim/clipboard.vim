@@ -36,19 +36,10 @@ nnoremap <leader>x :set operatorfunc=ClipboardOperatorCut<cr>g@
 xnoremap <leader>x :<c-u>call ClipboardOperatorCut(visualmode())<cr>
 
 function! ClipboardReformatOperator(type, suffix)
-	setlocal textwidth=1000
-	if a:type ==# "line"
-		execute "normal! `[V`]gq"
-	else
-		execute "normal! gvgqgv"
-	endif
 	call ClipboardOperator(a:type, a:suffix)
-	setlocal textwidth=80
-	if a:type ==# "line"
-		execute "normal! `[V`]gq"
-	else
-		execute "normal! gvgq"
-	endif
+	let l:formatted = system("python3 " . g:dotfiles_dir . "shell/format-md.py", getreg('"'))
+	call setreg('"', l:formatted)
+	call ClipboardExternal("")
 endfunction
 
 " Use <leader>J to reformat selection with arbitrary width and copy to

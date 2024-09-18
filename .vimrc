@@ -1,3 +1,6 @@
+" Define path to dotfiles directory, which is needed for numerous scripts.
+let g:dotfiles_dir = fnamemodify(expand("<sfile>:h"), ":p")
+
 " Map Colemak keys in alphabetical order.
 noremap d g
 noremap e gk
@@ -162,6 +165,9 @@ set nrformats+=alpha nrformats-=octal
 command V :Vexplore
 command S :Sexplore
 
+" Use :F to format file, save, and close.
+command F execute "%! python3 " . g:dotfiles_dir . "shell/format-md.py" | x
+
 " Define :E to open a file. Anything after the colon is discarded. This makes it
 " easy to double click a path in grep output (assuming it does not contain
 " spaces) and open it..
@@ -246,17 +252,16 @@ endfunction
 autocmd FileType markdown,text call MapText()
 
 " Use <leader>c to comment code. This should work in normal mode (for the active
-" line) and in visual line mode. We use U instead of I since the :normal command
-" accounts for the Colemak mapping. There are obviously many missing filetypes
-" and they will be added as needed. While we don't use Groovy directly, we use
-" it through Gradle. We have xdefaults for the .Xresources file.
-autocmd FileType bash,cfg,cmake,conf,config,crontab,debsources,dockerfile,dosini,gdb,gitconfig,gitrebase,i3config,kconfig,make,pamconf,perl,python,readline,ruby,sshconfig,sshdconfig,tmux,yaml noremap <buffer> <leader>c :normal U# <esc>
-autocmd FileType arduino,c,cpp,cs,dts,go,groovy,java,javascript,objc,php,scala,swift,typescript noremap <buffer> <leader>c :normal U// <esc>
-autocmd FileType sql noremap <buffer> <leader>c :normal U-- <esc>
-autocmd FileType matlab,tex noremap <buffer> <leader>c :normal U% <esc>
-autocmd FileType vim noremap <buffer> <leader>c :normal U" <esc>
-autocmd FileType xdefaults noremap <buffer> <leader>c :normal U! <esc>
-autocmd FileType bindzone noremap <buffer> <leader>c :normal U; <esc>
+" line) and in visual line mode. New filetypes will be added as needed. While we
+" don't use Groovy directly, we use it through Gradle. We have xdefaults for the
+" .Xresources file.
+autocmd FileType bash,cfg,cmake,conf,config,crontab,debsources,dockerfile,dosini,gdb,gitconfig,gitrebase,i3config,kconfig,make,pamconf,perl,python,readline,ruby,sshconfig,sshdconfig,tmux,yaml noremap <buffer> <leader>c :normal! I# <esc>
+autocmd FileType arduino,c,cpp,cs,dts,go,groovy,java,javascript,objc,php,scala,swift,typescript noremap <buffer> <leader>c :normal! I// <esc>
+autocmd FileType sql noremap <buffer> <leader>c :normal! I-- <esc>
+autocmd FileType matlab,tex noremap <buffer> <leader>c :normal! I% <esc>
+autocmd FileType vim noremap <buffer> <leader>c :normal! I" <esc>
+autocmd FileType xdefaults noremap <buffer> <leader>c :normal! I! <esc>
+autocmd FileType bindzone noremap <buffer> <leader>c :normal! I; <esc>
 
 " Define <leader>c for types like HTML and CSS that only support block comments.
 " For normal mode, append before prepend to prevent the comment line from being
@@ -655,8 +660,6 @@ nnoremap <tab> :tabp<cr>
 nnoremap <leader>' di"v<left>r'p
 nnoremap <leader>" di'v<left>r"p
 
-" Define function to source Vim files relative to this .vimrc.
-let g:dotfiles_dir = fnamemodify(expand("<sfile>:h"), ":p")
 function! SourceVim(path)
 	let l:script_path = g:dotfiles_dir . a:path
 	execute "source " . l:script_path
