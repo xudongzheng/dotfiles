@@ -140,10 +140,12 @@ alias epri="epr -i"
 alias eprtt="epr 'TODO TODO'"
 alias fep="find . | ep"
 alias fm="free -m"
+alias fmd="python3 $dotDir/shell/format-md.py"
 alias fms="fm -s 1"
 alias hig="history | ep"
 alias n="netstat -nlp"
 alias ng="n | ep"
+alias phttp="python3 -m http.server"
 alias pwdc="pwd | xc"
 alias tf="tail -f"
 alias tm="touch -m"
@@ -308,15 +310,6 @@ function viargs {
 alias src="viargs .bashrc .zshrc"
 alias vrm="viargs readme.* README.*"
 
-# Use dqap (like in Vim) to undo line wrapping in a file. This is very similar
-# to the "fmt" command. Per https://goo.gl/PfzvyS, the Linux "fmt" has a limit
-# of 2500 characters per line whereas the Perl command does not. The "fmt"
-# command also has some strange behavior with regards to lines that end with a
-# period, especially when they are indented. The Perl command has no such issue.
-function dqap {
-	perl -00ple 's/\s*\n\s*/ /g' "$@"
-}
-
 # Use cu to travel up multiple parent directories. If no arguments, go up one
 # directory.
 function cu {
@@ -457,21 +450,17 @@ function space2tab {
 	perl -pe 's/^( +)/"\t" x (length($1)\/'$width')/e'
 }
 
-if command -v python3 > /dev/null; then
-	# Define function to format JSON. Indent with tabs instead of spaces.
-	function jfmt {
-		python3 -m json.tool "$@" | space2tab
-	}
+# Define function to format JSON. Indent with tabs instead of spaces.
+function jfmt {
+	python3 -m json.tool "$@" | space2tab
+}
 
-	# Define function to format JSON and write output to file.
-	function jpretty {
-		for file in "$@"; do
-			jfmt "$file" > "${file%.json}.pretty.json"
-		done
-	}
-
-	alias phttp="python3 -m http.server"
-fi
+# Define function to format JSON and write output to file.
+function jpretty {
+	for file in "$@"; do
+		jfmt "$file" > "${file%.json}.pretty.json"
+	done
+}
 
 # Define alias for tmux or GNU Screen.
 if command -v tmux > /dev/null; then
