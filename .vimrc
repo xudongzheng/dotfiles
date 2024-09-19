@@ -627,6 +627,9 @@ xnoremap <leader>A ! LC_ALL=en_US.UTF-8 sort<cr>
 " Use <leader>r to reverse visually selected lines.
 xnoremap <leader>r ! tac<cr>
 
+" Use <leader>R to sort randomly.
+xnoremap <leader>R ! sort -R<cr>
+
 " Use <leader>t to search for triple TODO.
 nnoremap <leader>t /TODO TODO<cr>
 
