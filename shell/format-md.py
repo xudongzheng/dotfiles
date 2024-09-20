@@ -29,7 +29,7 @@ def format_file(file):
 			print(line, end = "")
 			continue
 		elif inside_bullet and line != "":
-			print(stripped, end = "")
+			print(" " + stripped, end = "")
 			continue
 
 		# Handle standard lines.
