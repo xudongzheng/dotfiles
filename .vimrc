@@ -108,7 +108,12 @@ highlight CursorColumn ctermbg=lightcyan ctermfg=black
 " Use :H to open a help page in a new tab. This uses cnoremap instead of command
 " so tab autocompletion works. Use getcmdtype() to ensure replacement doesn't
 " happen when searching.
-cnoremap <expr> H (getcmdpos() == 1 && getcmdtype() == ':' ? "tab help" : "H")
+cnoremap <expr> H (getcmdpos() == 1 && getcmdtype() == ':' ? "tab help " : "H")
+
+" Use :G for grep and :I for grep inverse. Using :g and :v with /d is confusing
+" to reason about.
+cnoremap <expr> G (getcmdpos() == 1 && getcmdtype() == ':' ? "v//d<left><left>" : "G")
+cnoremap <expr> I (getcmdpos() == 1 && getcmdtype() == ':' ? "g//d<left><left>" : "I")
 
 " Enable line number for help pages. Additionally, set conceallevel so concealed
 " characters do not break CursorColumn.
@@ -172,11 +177,6 @@ command F execute "%! python3 " . g:dotfiles_dir . "shell/format-md.py" | x
 " easy to double click a path in grep output (assuming it does not contain
 " spaces) and open it..
 command -nargs=1 E execute "e" fnameescape(split(<q-args>, ":")[0])
-
-" Define commands for grep and grep inverse. Using :g and :v with /d is
-" confusing to reason about.
-command -nargs=1 G execute "v/" . <q-args> . "/d"
-command -nargs=1 Gi execute "g/" . <q-args> . "/d"
 
 " When tmux is used, Vim can't detect that xterm bracketed paste is supported so
 " it must be configured manually. This snippet comes from https://bit.ly/3GZcaUG

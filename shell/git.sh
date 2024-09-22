@@ -56,7 +56,7 @@ alias gian="git update-index --no-assume-unchanged"
 alias giau="git update-index --assume-unchanged"
 
 alias gl="git log --graph --decorate --stat --find-renames --date-order --show-signature"
-alias glb="gl --branches --remotes --tags"
+alias gla="gl --branches --remotes --tags"
 alias glf="gl --pretty=fuller"
 alias glo="git log --pretty=oneline --abbrev-commit"
 function glohv { glo "$@" | head | vid; }
@@ -98,7 +98,7 @@ alias gtp="gt -p"
 alias gT="git tag"
 alias gTd="git tag -d"
 
-alias gu="git pull -p"
+alias gu="git pull --prune --tags"
 
 alias gx="git commit"
 alias gxa="gx -a"

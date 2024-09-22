@@ -1,3 +1,4 @@
+import re
 import sys
 
 def format_file(file):
@@ -21,7 +22,7 @@ def format_file(file):
 
 		# Handle bullets.
 		stripped = line.lstrip()
-		if stripped.startswith("- "):
+		if stripped.startswith("- ") or re.match(r"^[0-9]+\.", stripped):
 			inside_bullet = True
 			if not start_of_paragraph:
 				print()
