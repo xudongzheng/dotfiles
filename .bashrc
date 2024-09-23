@@ -22,12 +22,6 @@ fi
 # this with Vim but not Vi.
 export EDITOR=vi
 
-# Python pip can install packages without root into ~/.local/bin. If such
-# directory exists, add it to $PATH.
-if [[ -d ~/.local/bin ]]; then
-	export PATH=~/.local/bin:$PATH
-fi
-
 # Define alias for changing to the dotfiles directory. The logic for getting the
 # current file path comes from https://bit.ly/33OR2Lh. This works with both Bash
 # and Zsh.
@@ -46,6 +40,15 @@ if [[ $SHELL == "/bin/bash" ]]; then
 elif [[ $SHELL == "/bin/zsh" ]]; then
 	source "$dotDir/shell/zsh.sh"
 fi
+
+# Python pip can install packages without root into ~/.local/bin on Linux and
+# ~/Library/Python/*/bin on macOS. If directory exists, add to $PATH.
+pythonBins=(~/.local/bin ~/Library/Python/*/bin)
+for dir in "${pythonBins[@]}"; do
+	if [[ -d $dir ]]; then
+		export PATH=$dir:$PATH
+	fi
+done
 
 # Define aliases for checksums on macOS to match the commands on Linux.
 uname=$(uname)

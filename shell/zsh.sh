@@ -31,6 +31,10 @@ setopt HIST_IGNORE_SPACE
 # the history without executing it.
 setopt INTERACTIVE_COMMENTS
 
+# If a glob pattern has no match, leave pattern as is without generating an
+# error to be consistent with Bash.
+setopt NO_NOMATCH
+
 # Define custom function for editing the current command and bind Ctrl-X Ctrl-E.
 autoload -U edit-command-line
 function editCommandLine {
