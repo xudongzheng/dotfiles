@@ -47,8 +47,9 @@ def format_file(file):
 
 	print()
 
-if len(sys.argv) > 1:
-	with open(sys.argv[1], "r") as file:
-		format_file(file)
-else:
-	format_file(sys.stdin)
+if __name__ == "__main__":
+	if len(sys.argv) > 1:
+		with open(sys.argv[1], "r") as file:
+			format_file(file)
+	else:
+		format_file(sys.stdin)

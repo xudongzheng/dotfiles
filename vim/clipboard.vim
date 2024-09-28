@@ -37,7 +37,7 @@ xnoremap <leader>x :<c-u>call ClipboardOperatorCut(visualmode())<cr>
 
 function! ClipboardReformatOperator(type, suffix)
 	call ClipboardOperator(a:type, a:suffix)
-	let l:formatted = system("python3 " . g:dotfiles_dir . "shell/format-md.py", getreg('"'))
+	let l:formatted = system("python3 " . g:dotfiles_dir . "python/format_md.py", getreg('"'))
 	call setreg('"', l:formatted)
 	call ClipboardExternal("")
 endfunction

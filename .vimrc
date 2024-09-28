@@ -105,15 +105,23 @@ set cursorline
 set cursorcolumn
 highlight CursorColumn ctermbg=lightcyan ctermfg=black
 
+" Define helper function for cnoremap. Use cnoremap instead of command when the
+" command needs to be in a different format.
+function! IsCommandNotSearch()
+	return getcmdpos() == 1 && getcmdtype() == ':'
+endfunction
+
+" Use :C to count the number of occurrences in a file.
+cnoremap <expr> C (IsCommandNotSearch() ? "%s///ign<left><left><left><left><left>" : "C")
+
 " Use :H to open a help page in a new tab. This uses cnoremap instead of command
-" so tab autocompletion works. Use getcmdtype() to ensure replacement doesn't
-" happen when searching.
-cnoremap <expr> H (getcmdpos() == 1 && getcmdtype() == ':' ? "tab help " : "H")
+" so tab autocompletion works.
+cnoremap <expr> H (IsCommandNotSearch() ? "tab help " : "H")
 
 " Use :G for grep and :I for grep inverse. Using :g and :v with /d is confusing
 " to reason about.
-cnoremap <expr> G (getcmdpos() == 1 && getcmdtype() == ':' ? "v//d<left><left>" : "G")
-cnoremap <expr> I (getcmdpos() == 1 && getcmdtype() == ':' ? "g//d<left><left>" : "I")
+cnoremap <expr> G (IsCommandNotSearch() ? "v//d<left><left>" : "G")
+cnoremap <expr> I (IsCommandNotSearch() ? "g//d<left><left>" : "I")
 
 " Enable line number for help pages. Additionally, set conceallevel so concealed
 " characters do not break CursorColumn.
@@ -171,7 +179,7 @@ command V :Vexplore
 command S :Sexplore
 
 " Use :F to format file, save, and close.
-command F execute "%! python3 " . g:dotfiles_dir . "shell/format-md.py" | x
+command F execute "%! python3 " . g:dotfiles_dir . "python/format_md.py" | x
 
 " Define :E to open a file. Anything after the colon is discarded. This makes it
 " easy to double click a path in grep output (assuming it does not contain

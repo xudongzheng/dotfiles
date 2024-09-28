@@ -4,7 +4,7 @@ alias gap="ga -p"
 
 alias gb="git branch"
 alias gba="gb -a"
-alias gbav="gb -a | vid"
+alias gbav="gba | vid"
 alias gbD="gb -D"
 
 alias gc="git checkout"
@@ -97,6 +97,7 @@ alias gtp="gt -p"
 
 alias gT="git tag"
 alias gTd="git tag -d"
+alias gTv="gT | vid"
 
 alias gu="git pull --prune --tags"
 
@@ -133,7 +134,7 @@ function grom { git rebase origin/$(gitma); }
 # escaped. The flag changes the separator to \x00, which is fine since this is
 # designed for use with xargs. If Git LFS is installed, exclude tracked files.
 if command -v git-lfs > /dev/null; then
-	alias gL="git grep -z --cached -l '' | grep --null-data -vFf <(s $dotDir/shell/git-ls-lfs.py)"
+	alias gL="git grep -z --cached -l '' | grep --null-data -vFf <(s $dotDir/python/git_ls_lfs.py)"
 else
 	alias gL="git grep -z --cached -l ''"
 fi

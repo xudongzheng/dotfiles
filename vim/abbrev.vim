@@ -74,7 +74,6 @@ autocmd FileType * iab <buffer> kss k++
 iab trt TODO TODO TODO
 iab tst TODO
 
-" Define miscellaneous abbreviations.
+" Define abbreviations for quotes.
 iab dq ""
-iab mtrm <esc>3a-<esc>a
 iab sq ''
