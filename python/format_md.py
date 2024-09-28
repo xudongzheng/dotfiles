@@ -6,18 +6,19 @@ def format_file(file):
 	inside_code_block = False
 	inside_bullet = False
 
+	output = ""
 	for line in file:
 		line = line.rstrip("\n")
 
 		# Handle code block.
 		if line.startswith("```"):
 			inside_code_block = not inside_code_block
-			print(line, end = "")
+			output += line
 			if inside_code_block:
-				print()
+				output += "\n"
 			continue
 		if inside_code_block:
-			print(line)
+			output += line + "\n"
 			continue
 
 		# Handle bullets.
@@ -25,31 +26,30 @@ def format_file(file):
 		if stripped.startswith("- ") or re.match(r"^[0-9]+\.", stripped):
 			inside_bullet = True
 			if not start_of_paragraph:
-				print()
+				output += "\n"
 			start_of_paragraph = False
-			print(line, end = "")
+			output += line
 			continue
 		elif inside_bullet and line != "":
-			print(" " + stripped, end = "")
+			output += " " + stripped
 			continue
 
 		# Handle standard lines.
 		if line == "":
-			print()
-			print()
+			output += "\n\n"
 			start_of_paragraph = True
 			inside_bullet = False
 		else:
 			if not start_of_paragraph:
-				print(" ", end = "")
+				output += " "
 			start_of_paragraph = False
-			print(line, end = "")
+			output += line
 
-	print()
+	return output
 
 if __name__ == "__main__":
 	if len(sys.argv) > 1:
 		with open(sys.argv[1], "r") as file:
-			format_file(file)
+			print(format_file(file))
 	else:
-		format_file(sys.stdin)
+		print(format_file(sys.stdin))
