@@ -111,17 +111,24 @@ alias gxs="gx --signoff"
 
 alias gy="gu && gxar && gp"
 
+function gitbr {
+	for branch in "$@"; do
+		if git show-ref -q --heads "$branch"; then
+			echo "$branch"
+		fi
+	done
+}
+
+# Define aliases for checking out common branches.
+function gcd { git checkout $(gitbr develop dev); }
+function gcp { git checkout $(gitbr production prod); }
+function gcs { git checkout $(gitbr staging); }
+
 # Define functions for working with main/master depending on what is used by the
 # project.
-function gitma {
-	if git show-ref -q --heads main; then
-		echo "main"
-	else
-		echo "master"
-	fi
-}
-function gcm { git checkout $(gitma) "$@"; }
-function glm { gl $(gitma) "$@"; }
+alias gitma="gitbr main master"
+function gcm { git checkout $(gitma); }
+function glm { gl $(gitma); }
 function gmm { git merge $(gitma); }
 function grim { git rebase -i $(gitma); }
 function griom { git rebase -i origin/$(gitma); }

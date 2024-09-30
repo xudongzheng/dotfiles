@@ -677,8 +677,8 @@ function! SourceVim(path)
 	execute "source " . l:script_path
 endfunction
 
-call SourceVim("vim/abbrev-c.vim")
-call SourceVim("vim/abbrev-go.vim")
+call SourceVim("vim/abbrev_c.vim")
+call SourceVim("vim/abbrev_go.vim")
 call SourceVim("vim/abbrev.vim")
 call SourceVim("vim/clipboard.vim")
 call SourceVim("vim/netrw.vim")
@@ -686,4 +686,4 @@ call SourceVim("vim/termdebug.vim")
 if has("patch-8.1.1401")
 	call SourceVim("vim/terminal.vim")
 endif
-call SourceVim("vim/text-object.vim")
+call SourceVim("vim/text_object.vim")

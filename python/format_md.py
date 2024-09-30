@@ -43,7 +43,7 @@ def format_file(file):
 			if not start_of_paragraph:
 				output += " "
 			start_of_paragraph = False
-			output += line
+			output += stripped
 
 	return output
 
