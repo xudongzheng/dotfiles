@@ -135,7 +135,7 @@ alias autk="vi ~/.ssh/authorized_keys"
 alias c="cd"
 alias cm="c - > /dev/null"
 alias crt="crontab -e"
-alias dfh="df -h"
+alias df="df --human-readable --print-type"
 alias ep="grep --color"
 alias epi="ep -i"
 alias epr="ep -Rn"
@@ -252,6 +252,12 @@ function mvmod {
 		dst="$dir/$file"
 		mv -v "$src" "$dst"
 	done
+}
+
+# Define function to delete working directory. Require confirmation to avoid
+# accidental deletion.
+function rmpwd {
+	rm -rfiv $PWD && cd ..
 }
 
 # Create aliases for calculating size of directories and files. Use -s so

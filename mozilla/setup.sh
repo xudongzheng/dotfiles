@@ -27,6 +27,9 @@ function handleUserJS {
 		# Set display density to compact.
 		writePref "$userDir" mail.uidensity 0
 	elif [[ "$application" == "firefox" ]]; then
+		# Open previous windows and tabs.
+		writePref "$userDir" browser.startup.page 3
+
 		# Configure Firefox home page.
 		writePref "$userDir" browser.newtabpage.activity-stream.feeds.section.topstories false
 		writePref "$userDir" browser.newtabpage.activity-stream.showSponsoredTopSites false
