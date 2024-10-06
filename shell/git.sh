@@ -52,6 +52,12 @@ alias gf="git fetch"
 alias gft="gf --tags -f"
 alias gfr="gf && git reset --hard @{u}"
 
+# Define function for fetching a GitHub branch from the URL.
+function gfg {
+	repo=$(sed 's/\/tree\//.git /' <<< $1)
+	gf $repo
+}
+
 alias gian="git update-index --no-assume-unchanged"
 alias giau="git update-index --assume-unchanged"
 

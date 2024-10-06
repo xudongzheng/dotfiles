@@ -6,7 +6,7 @@ import sys
 import format_md
 
 def grep_replace_color(match):
-	return "\x1b[1m\x1b[31m" + match.group(0) + "\x1b[0m"
+	return "\x1b[1;31m" + match.group(0) + "\x1b[0m"
 
 def grep_markdown_file(file_path, file, query):
 	output = format_md.format_file(file)

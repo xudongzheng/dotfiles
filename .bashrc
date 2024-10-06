@@ -254,10 +254,14 @@ function mvmod {
 	done
 }
 
-# Define function to delete working directory. Require confirmation to avoid
-# accidental deletion.
+# Define function to delete working directory.
 function rmpwd {
-	rm -rfiv $PWD && cd ..
+	# Print directory and number of items in red as an additional precaution.
+	count=$(find . | wc -l)
+	echo -e "Directory is \e[1;31m$PWD\e[0m with \e[1;31m$count\e[0m items"
+
+	# Require confirmation before deletion.
+	rm -rfIv $PWD && cd ..
 }
 
 # Create aliases for calculating size of directories and files. Use -s so
