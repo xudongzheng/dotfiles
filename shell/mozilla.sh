@@ -19,6 +19,13 @@ function ff {
 	$firefox "${args[@]}"
 }
 
+# Define function to open index.html containing all images and videos in the
+# current directory. This is not defined as an alias to avoid accidentally
+# deleting files with "giff *".
+function giff {
+	gi && ff index.html && sleep 1 && rm index.html
+}
+
 # Define alias for getting most recent screenshots. Use "ps" suffix for "print
 # screen" instead of "ss" for "screenshot" to avoid same finger repetition.
 alias lps='find "$(ssdir)" -maxdepth 1 -type f | grep -w Screen | sort | tail -n 1'

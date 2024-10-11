@@ -15,11 +15,11 @@ def grep_markdown_file(file_path, file, query):
 		if re.search(query, line):
 			# Print without color if standard output is not a terminal.
 			if not sys.stdout.isatty():
-				print(file_path + ":" + line)
+				print(f"{file_path}:{line}")
 				continue
 
 			# Output with same colors as grep.
-			print("\x1b[35m" + file_path + "\x1b[0m", end = "")
+			print(f"\x1b[35m{file_path}\x1b[0m", end = "")
 			print("\x1b[36m:\x1b[0m", end = "")
 			print(re.sub(query, grep_replace_color, line))
 
