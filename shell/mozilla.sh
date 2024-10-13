@@ -20,10 +20,9 @@ function ff {
 }
 
 # Define function to open index.html containing all images and videos in the
-# current directory. This is not defined as an alias to avoid accidentally
-# deleting files with "giff *".
-function giff {
-	gi && ff index.html && sleep 1 && rm index.html
+# specified directory.
+function igff {
+	ig "$@" && ff index.html && sleep 1 && rm index.html
 }
 
 # Define alias for getting most recent screenshots. Use "ps" suffix for "print

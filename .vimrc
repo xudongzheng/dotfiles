@@ -411,6 +411,7 @@ endfunction
 " YAML can further override with priority 2.
 autocmd BufWinEnter,FileType * call SetTabWidth(4, v:true, 0)
 autocmd FileType yaml call SetTabWidth(2, v:false, 2)
+autocmd FileType help call SetTabWidth(8, v:true, 2)
 
 " Wrap long line even if the initial line is longer than textwidth. Per
 " https://goo.gl/3pws7z, we should not combine flags when removing.

@@ -14,23 +14,23 @@ def generate_index(output, dirs, sort):
 				sys.exit()
 
 	# Construct array of files.
-	all_files = []
+	file_tuples = []
 	for dir_path in dirs:
-		for root, _, filenames in os.walk(dir_path):
-			for filename in filenames:
-				file_path = os.path.join(root, filename)
+		for root, _, files in os.walk(dir_path):
+			for file_name in files:
+				file_path = os.path.join(root, file_name)
 				if sort == "size":
 					file_size = os.path.getsize(file_path)
-					all_files.append((file_path, file_size))
+					file_tuples.append((file_path, file_size))
 				elif sort == "date":
 					mod_time = os.path.getmtime(file_path)
-					all_files.append((file_path, mod_time))
+					file_tuples.append((file_path, mod_time))
 				elif sort == "name":
-					all_files.append((file_path, file_path))
+					file_tuples.append((file_path, file_path))
 
 	# Sort files based on the sorting parameter.
-	all_files.sort(key=lambda x: x[1])
-	sorted_files = [file_path[0] for file_path in all_files]
+	file_tuples.sort(key=lambda x: x[1])
+	sorted_files = [file_tuple[0] for file_tuple in file_tuples]
 
 	with open(output, "w") as file:
 		file.write(f"{magic}\n")

@@ -7,7 +7,11 @@ function! NetrwBrowse(dest)
 	call netrw#LocalBrowseCheck(netrw#Call("NetrwBrowseChgDir", v:true, a:dest))
 endfunction
 function! NetrwReturn()
-	call NetrwBrowse(netrw#Call("NetrwGetWord"))
+	" When the cursor is in the banner area, the Netrw default behavior should
+	" be skipped. Navigate if cursor is within file listing area.
+	if getline(".")[0] != '"'
+		call NetrwBrowse(netrw#Call("NetrwGetWord"))
+	endif
 endfunction
 autocmd FileType netrw nnoremap <buffer> t :call NetrwReturn()<cr>
 
