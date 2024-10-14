@@ -223,19 +223,20 @@ nnoremap <leader>Y O<esc>
 " of a new line or in the middle of a line following a space.
 nnoremap <leader>. /\(^\.\\| \zs\.\ze\)<cr>
 
-" In normal mode, use <leader>/ to search without changing the search pattern.
-" This is useful in Netrw for locating a file before continuing the previous
-" search.
-nnoremap <leader>/ :keeppatterns /
-
 " Use <leader><space> to replace %20 with a whitespace character. This is useful
 " for working with screenshot URLs copied from Firefox.
 xnoremap <leader><space> :s/%20/ /g<cr>
 
-" Define visual mode mapping to search the selected text. This is based on
-" https://bit.ly/3KU5Dgf. The selection is first yanked to the default register.
-" Use \V to enable 'very nomagic' searching so special characters are searched
-" as is. The search character and backslash still need special escaping.
+" In normal mode, use <leader>/ and <leader>? to search in 'very nomagic` mode.
+" This allows characters regularly used for regular expressions to be searched
+" without escaping.
+nnoremap <leader>/ /\V
+nnoremap <leader>? ?\V
+
+" In visual mode, use <leader>/ and <leader>? to search the selected text. This
+" is based on https://bit.ly/3KU5Dgf. The selection is first yanked to the
+" default register. In 'very nomagic' mode, the search character and backslash
+" still need escaping.
 vnoremap <leader>/ y/\V<c-r>=escape(@",'/\')<cr><cr>
 vnoremap <leader>? y?\V<c-r>=escape(@",'?\')<cr><cr>
 
