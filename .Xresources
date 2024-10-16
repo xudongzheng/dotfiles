@@ -12,6 +12,10 @@ Xft.hintstyle: hintslight
 ! Configure xterm to use the system clipboard.
 XTerm.vt100.selectToClipboard: true
 
+! Enable OSC 52 per https://bit.ly/4dOY8mJ. This excludes SetSelection, which is
+! used for copying to clipboard, from the default value.
+XTerm.vt100.disallowedWindowOps: 20,21,SetXprop
+
 ! Configure double click selection behavior per https://goo.gl/pBSEHp.
 XTerm.vt100.charClass: 33:48,35:48,37-38:48,43-47:48,58:48,61:48,63-64:48,95:48,126:48
 

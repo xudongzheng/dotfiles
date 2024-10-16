@@ -1,11 +1,11 @@
-function! ClipboardExternal(suffix)
-	call system("bash " . g:dotfiles_dir . "clipboard/copy.sh " . a:suffix, getreg('"'))
-	if v:shell_error
-		echoerr "Unable to copy to clipboard"
-	endif
+function! ClipboardExternal()
+	let l:output = system("bash " . g:dotfiles_dir . "clipboard/copy.sh -q", getreg('"'))
+
+	" Print OSC 52 payload. This is based on https://bit.ly/406xTVG.
+	call writefile([l:output], '/dev/fd/2', 'b')
 endfunction
 
-function! ClipboardOperator(type, suffix)
+function! ClipboardOperatorInternal(type, suffix)
 	" Copy to default register. The first case is for character motion (such as
 	" yanking some words), the second is for line motion (such as yanking some
 	" lines), and the last is for visual mode.
@@ -16,8 +16,11 @@ function! ClipboardOperator(type, suffix)
 	else
 		execute "normal! gv" . a:suffix
 	endif
+endfunction
 
-	call ClipboardExternal("")
+function! ClipboardOperator(type, suffix)
+	call ClipboardOperatorInternal(a:type, a:suffix)
+	call ClipboardExternal()
 endfunction
 
 " Use <leader>j to copy to system clipboard. In normal mode, it triggers an
@@ -36,10 +39,13 @@ nnoremap <leader>x :set operatorfunc=ClipboardOperatorCut<cr>g@
 xnoremap <leader>x :<c-u>call ClipboardOperatorCut(visualmode())<cr>
 
 function! ClipboardReformatOperator(type, suffix)
-	call ClipboardOperator(a:type, a:suffix)
+	" Copy to default register.
+	call ClipboardOperatorInternal(a:type, a:suffix)
+
+	" Reformat and copy to clipboard.
 	let l:formatted = system("python3 " . g:dotfiles_dir . "python/format_md.py", getreg('"'))
 	call setreg('"', l:formatted)
-	call ClipboardExternal("")
+	call ClipboardExternal()
 endfunction
 
 " Use <leader>J to reformat selection with arbitrary width and copy to
@@ -60,7 +66,6 @@ nnoremap <leader>X :set operatorfunc=ClipboardReformatOperatorCut<cr>g@
 xnoremap <leader>X :<c-u>call ClipboardReformatOperatorCut(visualmode())<cr>
 
 " Use <leader>r and <leader>R to copy the relative and absolute file/directory
-" path to clipboard. This comes from https://bit.ly/2TdYq0O. On remote systems
-" without a clipboard, the path is only copied to the default Vim register.
-nnoremap <leader>r :let @" = expand("%")<cr>:call ClipboardExternal("-q")<cr>
-nnoremap <leader>R :let @" = expand("%:p")<cr>:call ClipboardExternal("-q")<cr>
+" path to clipboard. This comes from https://bit.ly/2TdYq0O.
+nnoremap <leader>r :let @" = expand("%")<cr>:call ClipboardExternal()<cr>
+nnoremap <leader>R :let @" = expand("%:p")<cr>:call ClipboardExternal()<cr>

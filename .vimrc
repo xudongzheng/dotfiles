@@ -632,8 +632,8 @@ nnoremap <leader>A /[^\t -~]<cr>
 " Use <leader>a in visual mode to sort the selected lines. By default, sort
 " using binary per https://goo.gl/HuZ6KL. Use <leader>A to sort with en_US,
 " which is useful for case-insensitive sorting.
-xnoremap <leader>a ! LC_ALL=C sort<cr>
-xnoremap <leader>A ! LC_ALL=en_US.UTF-8 sort<cr>
+xnoremap <leader>a ! LC_ALL=C sort -n<cr>
+xnoremap <leader>A ! LC_ALL=en_US.UTF-8 sort -n<cr>
 
 " Use <leader>r to reverse visually selected lines.
 xnoremap <leader>r ! tac<cr>

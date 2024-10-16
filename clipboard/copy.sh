@@ -28,36 +28,17 @@ function copy_os {
 		echo_input | pbcopy
 	elif command -v clip.exe > /dev/null; then
 		echo_input | clip.exe
-	else
-		return 1
 	fi
 }
 
-function copy_tmux {
-	if command -v tmux > /dev/null; then
-		# Prior to tmux 3.3a, text must be manually wrapped in escape sequence
-		# for bracketed paste.
-		version=$(tmux -V)
-		if [[ "$version" < "tmux 3.3a" ]]; then
-			(echo -en "\e[200~" && echo_input && echo -en "\e[201~") | tmux load-buffer -
-		else
-			echo_input | tmux load-buffer -
-		fi
-	else
-		return 1
-	fi
-}
+# Attempt to copy to operating system clipboard. Suppress error, which may
+# happen if xterm is present but terminal is active over SSH.
+copy_os || true
 
-# Attempt to copy to operating system clipboard. If that fails, copy to tmux
-# clipboard.
-if ! copy_os; then
-	if ! copy_tmux; then
-		if [[ "$quiet" == "" ]]; then
-			echo "Unable to copy to clipboard"
-			exit 1
-		fi
-	fi
+# Print copied text.
+if [[ "$quiet" == "" ]]; then
+	echo "$input"
 fi
 
-# Print copied text if successful.
-echo "$input"
+# Copy to clipboard with OSC 52.
+printf '\e]52;c;%s\x07' $(echo_input | base64 -w 0)
