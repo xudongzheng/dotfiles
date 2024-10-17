@@ -36,7 +36,7 @@ function copy_os {
 copy_os || true
 
 # Print copied text.
-if [[ "$quiet" == "" ]]; then
+if [[ ! $quiet ]]; then
 	echo "$input"
 fi
 

@@ -208,10 +208,10 @@ function! HighlightTrailingWS()
 endfunction
 autocmd BufEnter * call HighlightTrailingWS()
 
-" Use <leader>W to delete trailing spaces. In normal mode, it's applied to the
-" entire file. In visual mode, it's only applied to the selected lines.
-nnoremap <leader>W :%s/ \+$//<cr>
-xnoremap <leader>W :s/ \+$//<cr>
+" Use <leader>W to delete trailing spaces/tabs. In normal mode, it's applied to
+" the entire file. In visual mode, it's only applied to the selected lines.
+nnoremap <leader>W :%s/[ \t]\+$//<cr>
+xnoremap <leader>W :s/[ \t]\+$//<cr>
 
 " Use <leader>y and <leader>Y to add a blank line below and above but remain in
 " normal mode.

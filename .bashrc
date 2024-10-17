@@ -328,7 +328,7 @@ alias vrm="viargs readme.* README.*"
 # directory.
 function cu {
 	count="$1"
-	if [[ $count == "" ]]; then
+	if [[ ! $count ]]; then
 		count=1
 	fi
 	str=$(seq -f "..%g" -s / $count | sed "s/[0-9]//g")
@@ -415,10 +415,10 @@ function mkc {
 
 # Define function to sort directory from smallest to largest.
 function lsort {
-	if [[ "$1" == "" ]]; then
-		dir="."
-	else
+	if [[ $1 ]]; then
 		dir="$1"
+	else
+		dir="."
 	fi
 	find "$dir" -mindepth 1 -maxdepth 1 | xargs du -sh | sort -h | column -t -s $'\t'
 }
@@ -458,7 +458,7 @@ tabs -4
 # Define function for converting spaces to tabs.
 function space2tab {
 	width=$1
-	if [[ "$width" == "" ]]; then
+	if [[ ! $width ]]; then
 		width=4
 	fi
 	perl -pe 's/^( +)/"\t" x (length($1)\/'$width')/e'
@@ -504,7 +504,7 @@ function ipa {
 	if [[ $uname == "Darwin" ]]; then
 		ifconfig | grep -o "^[a-z0-9]\+:" | sed "s/://" | while read ifce; do
 			addr=$(ifconfig "$ifce" | grep -w inet | awk '{print $2}')
-			if [[ "$addr" != "" ]]; then
+			if [[ $addr ]]; then
 				echo -e "$ifce\t$addr"
 			fi
 		done
@@ -512,7 +512,7 @@ function ipa {
 		ip -brief addr | while read line; do
 			ifce=$(awk '{print $1}' <<< "$line")
 			addr=$(awk '{print $3}' <<< "$line" | awk -F / '{print $1}')
-			if [[ "$addr" != "" ]]; then
+			if [[ $addr ]]; then
 				echo -e "$ifce\t$addr"
 			fi
 		done

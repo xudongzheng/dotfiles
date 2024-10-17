@@ -7,7 +7,7 @@ git fetch
 
 # If a commit was specified, merge the specified commit. Otherwise merge the
 # remote master branch if signed by the correct key.
-if [[ $1 != "" ]]; then
+if [[ $1 ]]; then
 	git merge "$1"
 elif ! command -v gpg > /dev/null; then
 	echo "Unable to verify commit without GPG"

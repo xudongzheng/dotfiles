@@ -185,7 +185,7 @@ function ghh {
 # HEAD as the second argument to process all branch commits.
 function gfb {
 	list="$2"
-	if [[ $2 == "" ]]; then
+	if [[ ! $2 ]]; then
 		list="HEAD~20...HEAD"
 	fi
 	FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch --env-filter "$1" -f "$list"

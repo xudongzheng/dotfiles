@@ -32,8 +32,8 @@ alias lps='find "$(ssdir)" -maxdepth 1 -type f | grep -w Screen | sort | tail -n
 # Define alias for opening most recent screenshot.
 function fps {
 	file=$(lps)
-	if [[ "$file" == "" ]]; then
-		echo "screenshot not found"
+	if [[ ! $file ]]; then
+		echo "Screenshot not found"
 		return 1
 	else
 		ff "$file"
