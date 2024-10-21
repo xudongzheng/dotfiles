@@ -111,8 +111,8 @@ function! IsCommandNotSearch()
 	return getcmdpos() == 1 && getcmdtype() == ':'
 endfunction
 
-" Use :C to count the number of occurrences in a file.
-cnoremap <expr> C (IsCommandNotSearch() ? "%s///ign<left><left><left><left><left>" : "C")
+" Use :N to count the number of occurrences in a file.
+cnoremap <expr> N (IsCommandNotSearch() ? "%s///ign<left><left><left><left><left>" : "C")
 
 " Use :H to open a help page in a new tab. This uses cnoremap instead of command
 " so tab autocompletion works.
@@ -421,7 +421,7 @@ autocmd FileType * setlocal formatoptions-=b formatoptions-=l
 " Do not automatically wrap code except in text files, where text is treated as
 " code. Automatic wrapping will still occur in comments.
 autocmd FileType * setlocal formatoptions-=t
-autocmd FileType gitcommit,markdown,tex,text setlocal formatoptions+=t
+autocmd FileType gitcommit,markdown,rst,tex,text setlocal formatoptions+=t
 
 " Enable autoindent for Markdown and text files. Without this a lot of
 " formatting doesn't work correctly such as when using dqap to format a bullet

@@ -308,7 +308,10 @@ function ssdir {
 	fi
 }
 
-function csd { cd $(ssdir); }
+function lsd {
+	cd $(ssdir)
+	ll
+}
 
 function viargs {
 	for file in "$@"; do

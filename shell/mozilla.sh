@@ -44,6 +44,12 @@ function fps {
 # inspection and require confirmation to prevent accidental deletion.
 alias rmps='fps && rm -i -v "$(lps)"'
 
+# Define function for deleting file, such as screenshot, with URL copied from
+# Firefox.
+function rmfile {
+	rm -i -v "$(echo $1 | sed "s/^file:\/\///" | sed "s/%20/ /g")"
+}
+
 # Sometimes Firefox or Thunderbird will use 100% CPU. Define function to help
 # identify the profile that is responsible. The fuser command writes the path to
 # standard error by default so pipe to standard output. This makes the result

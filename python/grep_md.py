@@ -34,7 +34,7 @@ if __name__ == "__main__":
 	if query == "":
 		sys.exit(0)
 	if args.word_regexp:
-		query = r"\b" + re.escape(query) + r"\b"
+		query = r"\b" + query + r"\b"
 	if args.ignore_case:
 		query = "(?i)" + query
 
