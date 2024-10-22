@@ -22,7 +22,8 @@ function echo_input { echo -n "$input"; }
 
 function copy_os {
 	if command -v xclip > /dev/null; then
-		# Use nohup to keep xclip running until the clipboard content is replaced.
+		# Use nohup to keep xclip running until the clipboard content is
+		# overwritten.
 		echo_input | nohup xclip -sel clip > /dev/null 2>&1
 	elif command -v pbcopy > /dev/null; then
 		echo_input | pbcopy
@@ -31,13 +32,17 @@ function copy_os {
 	fi
 }
 
-# Attempt to copy to operating system clipboard. Suppress error, which may
-# happen if xterm is present but terminal is active over SSH.
-copy_os || true
-
 # Print copied text.
 if [[ ! $quiet ]]; then
 	echo "$input"
+fi
+
+# Exit if successfully copied to operating system clipboard, session is not over
+# SSH, and session is not through tmux.
+if copy_os; then
+	if [[ ! $SSH_TTY ]] && [[ ! $TMUX ]]; then
+		exit
+	fi
 fi
 
 # Copy to clipboard with OSC 52. On Linux, disable breaking base64 output into

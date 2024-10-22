@@ -141,28 +141,35 @@ function griom { git rebase -i origin/$(gitma); }
 function grm { git rebase $(gitma); }
 function grom { git rebase origin/$(gitma); }
 
-# Define alias for listing repository files. Use "git grep" instead of "git
-# ls-files" since the latter includes submodules. which should be excluded. See
-# https://goo.gl/DLz58m for details. Use -z so Unicode filenames are not
-# escaped. The flag changes the separator to \x00, which is fine since this is
-# designed for use with xargs. If Git LFS is installed, exclude tracked files.
-if command -v git-lfs > /dev/null; then
-	alias gL="git grep -z --cached -l '' | grep --null-data -vFf <(s $dotDir/python/git_ls_lfs.py)"
-else
-	alias gL="git grep -z --cached -l ''"
-fi
+# Define function for listing repository files for searching. Use "git grep"
+# instead of "git ls-files" since the latter includes submodules. which should
+# be excluded. See https://goo.gl/DLz58m for details. Use -z so Unicode
+# filenames are not escaped. The flag changes the separator to \x00, which is
+# fine since this is designed for use with xargs. If Git LFS is installed,
+# exclude tracked files.
+function gL0 {
+	if command -v git-lfs > /dev/null; then
+		git grep -z --cached -l "" | grep --null-data -vFf <(s $dotDir/python/git_ls_lfs.py)
+	else
+		git grep -z --cached -l ""
+	fi
+}
+
+# Define alias for listing repository files for viewing or manually processing.
+# This does not use gL0 since "git grep" excludes empty files.
+alias gL="git ls-files"
 
 # Define aliases for searching a Git repository. The flag also changes the separator to \x00, which is fine since
 # xargs is an alias that already expects it.
 function lg {
-	gL | xargs grep --color -n "$@" --
+	gL0 | xargs grep --color -n "$@" --
 }
 alias lgi="lg -i"
 alias lgt="lg TODO"
 alias lgtt="lg 'TODO TODO'"
 
 # Define aliases for counting lines in a Git repository.
-alias gw="gL | xargs cat | wc -l"
+alias gw="gL0 | xargs cat | wc -l"
 
 # Define alias for searching filenames in a Git repository. Use -z so Unicode
 # names are not escaped. As that also changes the separator to 0x00, convert
