@@ -44,7 +44,12 @@ function edit-command-line-execute {
 	zle accept-line
 }
 zle -N edit-command-line-execute
-bindkey '^x^e' edit-command-line-execute
+bindkey '^x' edit-command-line-execute
+
+# There are other builtin mappings with Ctrl-X as prefix so set timeout to 10ms
+# to ignore those. The default value is 40, which corresponds to 400ms per the
+# zshzle man page.
+KEYTIMEOUT=1
 
 # Use Alt and Ctrl with left and right arrows to navigate by words. This comes
 # from https://bit.ly/3NJvfhJ.

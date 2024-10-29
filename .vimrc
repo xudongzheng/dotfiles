@@ -354,7 +354,7 @@ function! GitCommitDiff()
 		new
 	endif
 	read ! git diff --cached
-	setlocal filetype=diff
+	setfiletype diff
 
 	" Delete empty first line.
 	1delete
@@ -436,51 +436,6 @@ autocmd FileType css setlocal formatoptions+=ro
 
 " Use the same word boundary for all file types.
 autocmd FileType * set iskeyword=@,48-57,_
-
-" Use Bash syntax for shell scripts.
-if has("patch-8.2.2434")
-	autocmd FileType sh,zsh setlocal filetype=bash
-else
-	let g:is_bash = 1
-endif
-
-" Treat .fs (F#) and .kt (Kotlin) files as Scala files. They are obviously
-" different but are similar enough for most of syntax highlighting and
-" indentation to work. OCaml is another candidate for F# but it doesn't handle
-" braces well.
-if has("patch-9.0.1908")
-	autocmd BufRead,BufNewFile *.fs setlocal filetype=scala
-else
-	autocmd BufRead,BufNewFile *.fs,*.kt setlocal filetype=scala
-endif
-
-" Treat Zephyr overlay files and ZMK keymap files as DeviceTree.
-autocmd BufRead,BufNewFile *.keymap,*.overlay setlocal filetype=dts
-
-" Treat Zephyr config files as regular configuration files.
-autocmd BufRead,BufNewFile .config,*_defconfig setlocal filetype=conf
-
-" Set filetype for SSH configuration files that are included from the main file.
-autocmd BufRead,BufNewFile ~/.ssh/config-* setlocal filetype=sshconfig
-
-" Set filetype for SSH known_hosts so <leader>c can be used to comment lines.
-autocmd BufRead,BufNewFile ~/.ssh/known_hosts setlocal filetype=conf
-
-" Treat all unrecognized files as text files.
-autocmd BufRead,BufNewFile * if &filetype == "" | setlocal filetype=text | endif
-
-" Enable spell checker automatically for text files. This is done after the
-" filetype detection above so they do not get the spell checker enabled. Since
-" 'spell' is 'local to window' rather than 'local to buffer', it is necessary to
-" use BufRead and BufNewFile instead of FileType. This combination ensures that
-" the setting takes effect in every window that opens the buffer. With FileType,
-" it would only take effect in the first window that opens the buffer.
-function! EnableSpell()
-	if index(["gitcommit", "markdown", "tex", "text"], &filetype) >= 0
-		setlocal spell
-	endif
-endfunction
-autocmd BufRead,BufNewFile * call EnableSpell()
 
 " Sometimes the spell checker does not work correctly in large TeX files. This
 " seems to resolve most of the issue per https://goo.gl/dtuJSk. See
@@ -683,6 +638,7 @@ call SourceVim("vim/abbrev_c.vim")
 call SourceVim("vim/abbrev_go.vim")
 call SourceVim("vim/abbrev.vim")
 call SourceVim("vim/clipboard.vim")
+call SourceVim("vim/filetype.vim")
 call SourceVim("vim/netrw.vim")
 call SourceVim("vim/termdebug.vim")
 if has("patch-8.1.1401")

@@ -1,1 +1,8 @@
 set enable-bracketed-paste on
+
+# Use Ctrl-X to edit command in Vim.
+"\C-x": edit-and-execute-command
+
+# There are other builtin mappings with Ctrl-X as prefix so set timeout to 10ms
+# to ignore those.
+set keyseq-timeout 10
