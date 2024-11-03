@@ -308,10 +308,8 @@ function ssdir {
 	fi
 }
 
-function lsd {
-	cd $(ssdir)
-	ll
-}
+alias csd='c "$(ssdir)"'
+alias lsd="csd && ll"
 
 function viargs {
 	for file in "$@"; do

@@ -5,6 +5,7 @@ def format_file(file):
 	start_of_paragraph = True
 	inside_code_block = False
 	inside_bullet = False
+	inside_quote = False
 
 	output = ""
 	for line in file:
@@ -33,6 +34,18 @@ def format_file(file):
 		elif inside_bullet and line != "":
 			output += " " + stripped
 			continue
+
+		# Handle quotes
+		if line.startswith(">"):
+			if inside_quote:
+				output += " " + stripped.removeprefix("> ")
+			else:
+				output += stripped
+				inside_quote = True
+			continue
+		else:
+			inside_quote = False
+
 
 		# Handle standard lines.
 		if line == "":

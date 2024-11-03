@@ -10,15 +10,18 @@ endfunction
 " Use augroup to implement custom file type detection logic. See
 " https://bit.ly/4f8pgyE for more information.
 augroup filetypedetect
-	" Use Bash syntax for shell scripts.
+	" Use Bash syntax for shell scripts. This does not use 'setfiletype' like
+	" the others since this needs to override Vim automatic detection.
 	if has("patch-8.2.2434")
-		autocmd FileType sh,zsh setfiletype bash
+		autocmd FileType sh,zsh set filetype=bash
 	else
 		let g:is_bash = 1
 	endif
 
 	" Treat Zephyr overlay files and ZMK keymap files as DeviceTree.
-	autocmd BufRead,BufNewFile *.keymap,*.overlay setfiletype dts
+	if !has("patch-9.1.823")
+		autocmd BufRead,BufNewFile *.keymap,*.overlay setfiletype dts
+	endif
 
 	" Treat .fs (F#) and .kt (Kotlin) files as Scala files. They are obviously
 	" different but are similar enough for most of syntax highlighting and
