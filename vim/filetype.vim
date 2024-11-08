@@ -18,6 +18,12 @@ augroup filetypedetect
 		let g:is_bash = 1
 	endif
 
+	" For standard input, Vim will attempt to detect the file type and
+	" occasionally do it incorrectly. Override with empty file type for
+	" consistency. This is not set to text since I do not want automatic line
+	" wrapping to be active.
+	autocmd StdinReadPost * set filetype=
+
 	" Treat Zephyr overlay files and ZMK keymap files as DeviceTree.
 	if !has("patch-9.1.823")
 		autocmd BufRead,BufNewFile *.keymap,*.overlay setfiletype dts
@@ -36,10 +42,12 @@ augroup filetypedetect
 	" Treat Zephyr config files as regular configuration files.
 	autocmd BufRead,BufNewFile .config,*_defconfig setfiletype conf
 
-	" Set filetype for SSH configuration files that are included from the main file.
+	" Set file type for SSH configuration files that are included from the main
+	" file.
 	autocmd BufRead,BufNewFile ~/.ssh/config-* setfiletype sshconfig
 
-	" Set filetype for SSH known_hosts so <leader>c can be used to comment lines.
+	" Set file type for SSH known hosts. This is primarily so <leader>c can be
+	" used to comment lines.
 	autocmd BufRead,BufNewFile ~/.ssh/known_hosts setfiletype conf
 
 	" Treat all unrecognized files as text files. Additionally, enable spell

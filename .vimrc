@@ -131,9 +131,9 @@ autocmd FileType help setlocal number relativenumber conceallevel=0
 " wasn't saved.
 autocmd StdinReadPost * setlocal buftype=nofile
 
-" Set the text width to 80 and create a vertical bar in 81st column. Some
-" filetypes such as gitcommit have a custom width defined and we use autocmd
-" here so our textwidth value takes precedence.
+" Set the text width to 80 and create a vertical bar in 81st column. Some file
+" types such as gitcommit have a custom width defined and we use autocmd here to
+" override it.
 autocmd FileType * setlocal textwidth=80
 set colorcolumn=81
 
@@ -261,9 +261,9 @@ endfunction
 autocmd FileType markdown,text call MapText()
 
 " Use <leader>c to comment code. This should work in normal mode (for the active
-" line) and in visual line mode. New filetypes will be added as needed. While we
-" don't use Groovy directly, we use it through Gradle. We have xdefaults for the
-" .Xresources file.
+" line) and in visual line mode. New file types will be added as needed. While
+" we don't use Groovy directly, we use it through Gradle. We have xdefaults for
+" the .Xresources file.
 autocmd FileType bash,cfg,cmake,conf,config,crontab,debsources,dockerfile,dosini,gdb,gitconfig,gitrebase,i3config,kconfig,make,pamconf,perl,python,readline,ruby,sshconfig,sshdconfig,tmux,yaml noremap <buffer> <leader>c :normal! I# <esc>
 autocmd FileType arduino,c,cpp,cs,dts,go,groovy,java,javascript,objc,php,scala,swift,typescript noremap <buffer> <leader>c :normal! I// <esc>
 autocmd FileType sql noremap <buffer> <leader>c :normal! I-- <esc>
@@ -634,9 +634,9 @@ function! SourceVim(path)
 	execute "source " . l:script_path
 endfunction
 
+call SourceVim("vim/abbrev.vim")
 call SourceVim("vim/abbrev_c.vim")
 call SourceVim("vim/abbrev_go.vim")
-call SourceVim("vim/abbrev.vim")
 call SourceVim("vim/clipboard.vim")
 call SourceVim("vim/filetype.vim")
 call SourceVim("vim/netrw.vim")

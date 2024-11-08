@@ -44,11 +44,13 @@ def generate_index(output, dirs, sort):
 			elif file_ext in [".mov", ".mp4", ".webm"]:
 				file.write(f"<video width='600' controls loop muted><source src='{html_path}' type='video/mp4'></video>\n")
 
-if __name__ == "__main__":
+def main():
 	parser = argparse.ArgumentParser()
 	parser.add_argument("dirs", nargs="*", default=["."])
 	parser.add_argument("-o", "--output", type=str, default="index.html")
 	parser.add_argument("-s", "--sort", type=str, choices=["size", "name", "date"], default="name")
 	args = parser.parse_args()
-
 	generate_index(args.output, args.dirs, args.sort)
+
+if __name__ == "__main__":
+	main()

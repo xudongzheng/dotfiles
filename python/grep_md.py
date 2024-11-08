@@ -23,7 +23,7 @@ def grep_markdown_file(file_path, file, query):
 			print("\x1b[36m:\x1b[0m", end = "")
 			print(re.sub(query, grep_replace_color, line))
 
-if __name__ == "__main__":
+def main():
 	parser = argparse.ArgumentParser()
 	parser.add_argument("query", nargs="*")
 	parser.add_argument("-i", "--ignore-case", action="store_true")
@@ -42,3 +42,6 @@ if __name__ == "__main__":
 	for file_path in files:
 		with open(file_path, "r") as file:
 			grep_markdown_file(file_path, file, query)
+
+if __name__ == "__main__":
+	main()

@@ -6,7 +6,7 @@ import subprocess
 def run_command(command):
 	return subprocess.run(command.split(), capture_output=True, text=True).stdout.strip()
 
-if __name__ == "__main__":
+def main():
 	lfs_files = run_command("git lfs ls-files -n")
 
 	# Handle LFS file list only if not empty. This additional if statement is
@@ -17,3 +17,6 @@ if __name__ == "__main__":
 		for file in lfs_files.split("\n"):
 			if file.startswith(prefix):
 				print(file[len(prefix):])
+
+if __name__ == "__main__":
+	main()

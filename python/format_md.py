@@ -60,9 +60,12 @@ def format_file(file):
 
 	return output
 
-if __name__ == "__main__":
+def main():
 	if len(sys.argv) > 1:
 		with open(sys.argv[1], "r") as file:
 			print(format_file(file))
 	else:
 		print(format_file(sys.stdin))
+
+if __name__ == "__main__":
+	main()
