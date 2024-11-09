@@ -81,3 +81,11 @@ mkdir -p ~/.vim/{session,swap,undo}
 # message. This behavior is preferred regardless as it's easier to open a new
 # tab and run commands without first having to check the working directory.
 touch ~/.hushlogin
+
+# Build binary for IME integration.
+uname=$(uname)
+if [[ $uname == "Darwin" ]]; then
+	if [[ -w vim ]] && [[ ! -e vim/mac_ime ]]; then
+		swiftc -o vim/mac_ime vim/mac_ime.swift
+	fi
+fi

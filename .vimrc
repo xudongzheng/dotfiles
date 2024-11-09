@@ -61,6 +61,10 @@ let mapleader = " "
 set notimeout
 set ttimeout
 
+" Set Escape key timeout. This is necessary for IME integration to ensure that
+" the keyboard layout reverts to Colemak quickly after upon leaving insert mode.
+set ttimeoutlen=10
+
 " Store temporary files in .vim to keep the working directories clean. The
 " double trailing slash is so that the swap filename is constructed using the
 " full file path.
@@ -639,6 +643,7 @@ call SourceVim("vim/abbrev_c.vim")
 call SourceVim("vim/abbrev_go.vim")
 call SourceVim("vim/clipboard.vim")
 call SourceVim("vim/filetype.vim")
+call SourceVim("vim/ime.vim")
 call SourceVim("vim/netrw.vim")
 call SourceVim("vim/termdebug.vim")
 if has("patch-8.1.1401")

@@ -1,9 +1,15 @@
-function! EnableTextSpell()
+function! EnableTextFeatures()
 	if &filetype == ""
 		setfiletype text
 	endif
 	if index(["gitcommit", "markdown", "tex", "text"], &filetype) >= 0
+		" Enable spell check.
 		setlocal spell
+
+		" Enable IME integration.
+		if filereadable(g:mac_ime_bin)
+			setlocal iminsert=2
+		endif
 	endif
 endfunction
 
@@ -51,10 +57,10 @@ augroup filetypedetect
 	autocmd BufRead,BufNewFile ~/.ssh/known_hosts setfiletype conf
 
 	" Treat all unrecognized files as text files. Additionally, enable spell
-	" checking in all text files. Since 'spell' is 'local to window' rather than
-	" 'local to buffer', it is necessary to use BufRead and BufNewFile instead
-	" of FileType. This combination ensures that the setting takes effect in
-	" every window that opens the buffer. With FileType, it would only take
-	" effect in the first window that opens the buffer.
-	autocmd BufRead,BufNewFile * call EnableTextSpell()
+	" checking and IME integration in all text files. Since 'spell' is 'local to
+	" window' rather than 'local to buffer', it is necessary to use BufRead and
+	" BufNewFile instead of FileType. This combination ensures that the setting
+	" takes effect in every window that opens the buffer. With FileType, it
+	" would only take effect in the first window that opens the buffer.
+	autocmd BufRead,BufNewFile * call EnableTextFeatures()
 augroup END
