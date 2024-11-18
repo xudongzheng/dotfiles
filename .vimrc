@@ -116,7 +116,7 @@ function! IsCommandNotSearch()
 endfunction
 
 " Use :N to count the number of occurrences in a file.
-cnoremap <expr> N (IsCommandNotSearch() ? "%s///ign<left><left><left><left><left>" : "C")
+cnoremap <expr> N (IsCommandNotSearch() ? "%s///ign<left><left><left><left><left>" : "N")
 
 " Use :H to open a help page in a new tab. This uses cnoremap instead of command
 " so tab autocompletion works.
@@ -565,9 +565,13 @@ nnoremap <leader>Q :call LoadSession()<cr>
 xnoremap <leader>q c""<esc>P
 xnoremap <leader>Q c''<esc>P
 
-" Use <leader>u in normal mode to convert Unicode quotes (single and double) to
-" ASCII.
-nnoremap <leader>u :%s/[\u2018\u2019]/'/ge<cr>:%s/[\u201c\u201d]/"/ge<cr>
+" Use <leader>u in normal mode to convert various Unicode characters to ASCII.
+function! ConvertUnicode()
+	%s/[\u2013\u2014]/-/ge
+	%s/[\u2018\u2019]/'/ge
+	%s/[\u201c\u201d]/"/ge
+endfunction
+nnoremap <leader>u :call ConvertUnicode()<cr>
 
 " Use <leader>u in visual mode to run text through uniq. Use <leader>U to count.
 xnoremap <leader>u ! uniq<cr>
@@ -580,7 +584,7 @@ nnoremap <leader>w :tabclose<cr>
 nnoremap <leader>f ve~
 
 " Use <leader>g to jump to the next Git conflict marker.
-nnoremap <leader>g /=======<cr>
+nnoremap <leader>g /^=======$<cr>
 
 " Use <leader>a in normal mode to select everything.
 nnoremap <leader>a ggVG

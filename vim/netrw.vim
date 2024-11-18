@@ -94,5 +94,5 @@ nnoremap <leader>e :Explore<cr>
 nnoremap <leader>E :Texplore<cr>
 
 " In visual mode, use <leader>e to open the selected text as a file or directory
-" in a new tab.
-vnoremap <leader>e y:execute "tabnew " . escape(@", '"')<cr>
+" in a new tab. Anything after the colon is discarded like the :E command.
+vnoremap <leader>e y:execute "tabnew " . fnameescape(split(@", ":")[0])<cr>

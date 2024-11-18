@@ -3,7 +3,7 @@ let g:mac_ime_bin = g:dotfiles_dir . "vim/mac_ime"
 " Track whether Chinese IME was active when last leaving insert mode.
 let g:chinese_active = v:false
 
-function ImActivateFunc(active)
+function! ImActivateFunc(active)
 	if a:active
 		" If Chinese was last used in insert mode, reenable Chinese IME.
 		if g:chinese_active
