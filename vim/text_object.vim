@@ -47,8 +47,8 @@ function! SelectTextObject(charsets, command)
 
 		" Select quotes by searching backwards and forwards.
 		if a:command == "i"
-			let l:back_suffix = "\<space>"
-			let l:forward_suffix = "\<bs>"
+			let l:back_suffix = "l"
+			let l:forward_suffix = "h"
 		else
 			let l:back_suffix = ""
 			let l:forward_suffix = ""

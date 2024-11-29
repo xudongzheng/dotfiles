@@ -24,7 +24,7 @@ def format_file(file):
 
 		# Handle bullets.
 		stripped = line.lstrip()
-		if stripped.startswith("- ") or re.match(r"^[0-9]+\.", stripped):
+		if stripped.startswith("- ") or re.match(r"^[0-9]+\. ", stripped):
 			inside_bullet = True
 			if not start_of_paragraph:
 				output += "\n"

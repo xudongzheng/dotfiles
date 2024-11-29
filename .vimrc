@@ -158,6 +158,9 @@ else
 	set backspace=indent,eol,start
 endif
 
+" Allow h/i and left/right arrow keys to wrap from one line to another.
+set whichwrap+=<,>,h,l,[,]
+
 " Allow Vim to automatically select regular expression engine. For some reason,
 " it defaults to the old engine on macOS. This is necessary for syntax
 " highlighting to work correctly in reStructuredText files. See

@@ -4,7 +4,11 @@ autocmd FileType netrw mapclear <buffer>
 
 " Use t to enter a directory.
 function! NetrwBrowse(dest)
-	call netrw#LocalBrowseCheck(netrw#Call("NetrwBrowseChgDir", v:true, a:dest))
+	if has("patch-9.1.846")
+		call netrw#LocalBrowseCheck(netrw#Call("NetrwBrowseChgDir", v:true, a:dest, 0))
+	else
+		call netrw#LocalBrowseCheck(netrw#Call("NetrwBrowseChgDir", v:true, a:dest))
+	endif
 endfunction
 function! NetrwReturn()
 	" When the cursor is in the banner area, the Netrw default behavior should
