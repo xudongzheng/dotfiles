@@ -148,8 +148,6 @@ alias fmd="python3 $dotDir/python/format_md.py"
 alias fms="fm -s 1"
 alias hig="history | ep"
 alias ig="python3 $dotDir/python/gen_index.py"
-alias n="netstat -nlp"
-alias ng="n | ep"
 alias phttp="python3 -m http.server"
 alias pwdc="pwd | xc"
 alias tf="tail -f"
@@ -176,6 +174,13 @@ fi
 
 alias rp="realpath"
 function rpc { rp "$@" | xc; }
+
+# Define alias for listing ports that are in use.
+if [[ $uname == "Darwin" ]]; then
+	alias n="lsof -i -n -P -s TCP:LISTEN"
+elif command -v netstat > /dev/null; then
+	alias n="netstat -nlp"
+fi
 
 # Define aliases for file listing. When sorting by time, default to newest files
 # at the end as they are most likely the relevant ones.
@@ -454,8 +459,9 @@ function s {
 	esac
 }
 
-# Set tab width to 4 spaces.
-tabs -4
+# Set tab width to 8 spaces. While I generally prefer 4 spaces, "time" output is
+# a bit nicer with this set to 8.
+tabs -8
 
 # Define function for converting spaces to tabs.
 function space2tab {

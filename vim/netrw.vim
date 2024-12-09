@@ -61,18 +61,35 @@ autocmd FileType netrw nnoremap <buffer> M :call NetrwMkdir()<cr>
 autocmd FileType netrw nnoremap <buffer> r :call NetrwRename()<cr>
 autocmd FileType netrw nnoremap <buffer> x :call NetrwRemove()<cr>
 
-" Display file size and modification time in Netrw. Use dot instead of hyphen as
-" date separator to make searching easier since hyphen is frequently used in
-" dated filenames. A subset of Vim 9 is excluded due to a bug in how it handles
-" long filenames. See https://bit.ly/45Q14gd for details.
+" Display filename with size and modification time in Netrw.
+let g:netrw_liststyle = 1
+
+" The size and time format will differ slightly based on the Vim version. For
+" the date, use dot instead of hyphen as separator to make searching easier
+" since hyphen is often found in filenames.
 if has("patch-9.0.2121")
-	let g:netrw_liststyle = 1
+	let g:netrw_maxfilenamelen = 38
+	let g:netrw_timefmt = "%Y.%m.%dT%H:%M:%S%z"
+elseif has("patch-9.0.0")
+	" This subset of Vim has a slight bug with regards to alignment. It's
+	" necessary to insert \t and align manually.
+	let g:netrw_timefmt = "\t%Y.%m.%dT%H:%M:%S%z"
+
+	" Set additional settings needed for alignment.
+	let g:netrw_sizestyle = "H"
+	let g:netrw_maxfilenamelen = 49
+
+	" Netrw sets the tab width each time a directory is loaded. The tab width
+	" must be overwritten using a timer.
+	autocmd FileType netrw call timer_start(0, { -> SetTabWidth(8, v:true, 2) })
+
+	" By default, Netrw refreshes the listing on autocmd FocusGained. That
+	" results in the tab width being set and reset all over again. Disable
+	" automatic refresh.
+	let g:netrw_fastbrowse = 2
+else
 	let g:netrw_maxfilenamelen = 39
-	let g:netrw_timefmt = "%Y.%m.%d %H:%M:%S %Z"
-elseif !has("patch-9.0.0")
-	let g:netrw_liststyle = 1
-	let g:netrw_maxfilenamelen = 40
-	let g:netrw_timefmt = "%Y.%m.%d %H:%M:%S %Z"
+	let g:netrw_timefmt = "%Y.%m.%dT%H:%M:%S%z"
 endif
 
 " Netrw hides line numbers by default. Show relative line numbers in netrw. The
