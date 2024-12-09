@@ -170,6 +170,7 @@ alias lgtt="lg 'TODO TODO'"
 
 # Define aliases for counting lines in a Git repository.
 alias gw="gL0 | xargs cat | wc -l"
+alias gW="gL0 | xargs cat | grep -v ^$ | wc -l"
 
 # Define alias for searching filenames in a Git repository. Use -z so Unicode
 # names are not escaped. As that also changes the separator to 0x00, convert

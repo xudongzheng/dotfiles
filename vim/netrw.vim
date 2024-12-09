@@ -81,7 +81,7 @@ elseif has("patch-9.0.0")
 
 	" Netrw sets the tab width each time a directory is loaded. The tab width
 	" must be overwritten using a timer.
-	autocmd FileType netrw call timer_start(0, { -> SetTabWidth(8, v:true, 2) })
+	autocmd FileType netrw call timer_start(0, { -> SetTabWidth(8, v:true, 0) })
 
 	" By default, Netrw refreshes the listing on autocmd FocusGained. That
 	" results in the tab width being set and reset all over again. Disable

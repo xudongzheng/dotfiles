@@ -76,7 +76,9 @@ function vi {
 
 # Define function for piping to Vim.
 function vid {
-	if [[ -t 0 ]]; then
+	if [[ ! -t 1 ]]; then
+		echo "Vim must run with TTY as standard output" >&2
+	elif [[ -t 0 ]]; then
 		echo "Vim expecting pipe as standard input"
 	else
 		command vi -
