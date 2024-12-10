@@ -461,8 +461,8 @@ function s {
 	esac
 }
 
-# Set tab width to 8 spaces. While I generally prefer 4 spaces, "time" output is
-# a bit nicer with this set to 8.
+# Explicitly set tab width to 8 spaces. While I generally prefer 4 spaces, many
+# commands such as "time" and "lsb_release" assume that the tab width is 8.
 tabs -8
 
 # Define function for converting spaces to tabs.
@@ -527,6 +527,16 @@ function ipa {
 			fi
 		done
 	fi | column -t
+}
+
+function osver {
+	if [[ $uname == "Darwin" ]]; then
+		sw_vers
+	elif command -v lsb_release > /dev/null; then
+		lsb_release -a
+	else
+		cat /etc/debian_version
+	fi
 }
 
 # If apt is available, define related aliases. Some are only necessary of the
