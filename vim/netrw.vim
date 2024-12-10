@@ -64,6 +64,19 @@ autocmd FileType netrw nnoremap <buffer> x :call NetrwRemove()<cr>
 " Display filename with size and modification time in Netrw.
 let g:netrw_liststyle = 1
 
+function! SetNetrwTabWidth()
+	" The file type must be checked to avoid modifying the tab width for a file
+	" that's been opened.
+	if &filetype == "netrw"
+		call SetTabWidth(8, v:true, 2)
+	endif
+endfunction
+
+function! SetNetrwMaxLen(delta)
+	let g:netrw_maxfilenamelen += a:delta
+	call NetrwBrowse("")
+endfunction
+
 " The size and time format will differ slightly based on the Vim version. For
 " the date, use dot instead of hyphen as separator to make searching easier
 " since hyphen is often found in filenames.
@@ -81,12 +94,17 @@ elseif has("patch-9.0.0")
 
 	" Netrw sets the tab width each time a directory is loaded. The tab width
 	" must be overwritten using a timer.
-	autocmd FileType netrw call timer_start(0, { -> SetTabWidth(8, v:true, 0) })
+	autocmd FileType netrw call timer_start(0, { -> SetNetrwTabWidth() })
 
-	" By default, Netrw refreshes the listing on autocmd FocusGained. That
-	" results in the tab width being set and reset all over again. Disable
-	" automatic refresh.
-	let g:netrw_fastbrowse = 2
+	" By default, Netrw refreshes the listing on FocusGained. That causes the
+	" tab width being set and reset all over again. Disable automatic refresh.
+	autocmd FileType netrw autocmd! AuNetrwEvent FocusGained *
+
+	" Netrw doesn't correctly display names that exceed the maximum length.
+	" Define mapping for temporarily changing the maximum. See
+	" https://bit.ly/45Q14gd for details.
+	autocmd FileType netrw nnoremap <buffer> + :call SetNetrwMaxLen(8)<cr>
+	autocmd FileType netrw nnoremap <buffer> - :call SetNetrwMaxLen(-8)<cr>
 else
 	let g:netrw_maxfilenamelen = 39
 	let g:netrw_timefmt = "%Y.%m.%dT%H:%M:%S%z"
