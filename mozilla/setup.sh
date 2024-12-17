@@ -73,6 +73,9 @@ function handleUserJS {
 		# an entire phrase or sentence. Text segmentation makes it more
 		# difficult to select names, among other things.
 		writePref "$userDir" intl.icu4x.segmenter.enabled false
+
+		# Manage updates manually.
+		writePref "$userDir" app.update.auto false
 	fi
 }
 

@@ -24,7 +24,9 @@ setopt EXTENDED_HISTORY
 # Ignore consecutive duplicate commands.
 setopt HIST_IGNORE_DUPS
 
-# Ignore commands starting with a space.
+# Exclude commands that start with a space from history. The command will
+# temporarily remain in the shell's internal history until the next command so
+# it can be reused.
 setopt HIST_IGNORE_SPACE
 
 # Allow comments in interactive shell. This is useful for adding something to

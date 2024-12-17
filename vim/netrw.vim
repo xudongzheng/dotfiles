@@ -84,13 +84,19 @@ if has("patch-9.0.2121")
 	let g:netrw_maxfilenamelen = 38
 	let g:netrw_timefmt = "%Y.%m.%dT%H:%M:%S%z"
 elseif has("patch-9.0.0")
-	" This subset of Vim has a slight bug with regards to alignment. It's
-	" necessary to insert \t and align manually.
+	" This subset of Vim has a slight issue with alignment. It's necessary to
+	" insert \t and align manually.
 	let g:netrw_timefmt = "\t%Y.%m.%dT%H:%M:%S%z"
 
-	" Set additional settings needed for alignment.
+	" Display size in human format so there's minimal variance from line to
+	" line. It can be up to 5 characters plus a space. Files with size 9999 for
+	" example are rounded to 10.0k.
 	let g:netrw_sizestyle = "H"
-	let g:netrw_maxfilenamelen = 49
+	if has("patch-9.0.1991")
+		let g:netrw_maxfilenamelen = 47
+	else
+		let g:netrw_maxfilenamelen = 48
+	endif
 
 	" Netrw sets the tab width each time a directory is loaded. The tab width
 	" must be overwritten using a timer.

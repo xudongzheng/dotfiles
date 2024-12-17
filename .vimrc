@@ -616,9 +616,6 @@ nnoremap <leader>z z=1<cr><cr>
 " Use <leader>b to show the current buffer number.
 nnoremap <leader>b :echo bufnr("%")<cr>
 
-" Use <leader>i to make id uppercase.
-nnoremap <leader>i :s/id\>/ID/g<cr>
-
 " Define mappings to convert spaces to tabs. Use <leader>2, <leader>4, and
 " <leader>8 for indentation with 2/4/8 spaces respectively. In normal mode, this
 " applies to the entire file. In visual mode, this applies to the selected
