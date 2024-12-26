@@ -116,12 +116,11 @@ if command -v man > /dev/null; then
 	export MANPAGER="sh -c 'col -bx | vi - -c set\ filetype=man'"
 fi
 
-# Define aliases for top.
+# Define alias for df. Display human-readable size and show filesystem type.
 if [[ $uname == "Darwin" ]]; then
-	alias tom="top -o mem"
+	alias df="df -h -Y"
 else
-	alias top="top -E m -e m -o %CPU"
-	alias tom="top -E m -e m -o %MEM"
+	alias df="df --human-readable --print-type"
 fi
 
 # Define alias for ps.
@@ -133,11 +132,18 @@ fi
 alias pg="ps aux | ep"
 alias pim="p | vid"
 
+# Define aliases for top.
+if [[ $uname == "Darwin" ]]; then
+	alias tom="top -o mem"
+else
+	alias top="top -E m -e m -o %CPU"
+	alias tom="top -E m -e m -o %MEM"
+fi
+
 alias autk="vi ~/.ssh/authorized_keys"
 alias c="cd"
 alias cm="c - > /dev/null"
 alias crt="crontab -e"
-alias df="df --human-readable --print-type"
 alias di="date -Iseconds"
 alias ep="grep --color"
 alias epi="ep -i"
