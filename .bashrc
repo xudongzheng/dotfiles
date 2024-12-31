@@ -394,13 +394,26 @@ alias dotc="dotcommit | xc"
 # Use dotC to print and copy the command for setting up dotfiles on a new server
 # or user.
 function dotC {
-	cmd=""
+	cmds=()
 	if [[ "$1" == "apt" ]]; then
-		cmd="apt update && apt install -y git vim tmux && "
+		cmds+=("apt update")
+		cmds+=("apt install -y git vim tmux")
 	fi
-	commit=$(dotcommit)
-	cmd+="git clone https://github.com/xudongzheng/dotfiles.git dot && cd dot && git checkout $commit && git branch -f master HEAD && bash setup.sh && exit"
-	echo $cmd | xc
+	cmds+=("git init dot")
+	cmds+=("cd dot")
+	cmds+=("git remote add origin https://github.com/xudongzheng/dotfiles.git")
+	cmds+=("git fetch origin")
+	cmds+=("git checkout $(dotcommit)")
+	cmds+=("bash setup.sh")
+	cmds+=("exit")
+	combined=""
+	for cmd in "${cmds[@]}"; do
+		if [[ $combined ]]; then
+			combined+=" && "
+		fi
+		combined+="$cmd"
+	done
+	echo $combined | xc
 }
 
 # Use pub to print Ed25519 public key. It will generate a new key if one does
