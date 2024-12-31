@@ -7,11 +7,6 @@ cd "$(dirname "$0")"
 # between multiple users or multiple containers.
 base=$(pwd)
 if [[ -w "$base" ]]; then
-	# Unset master branch upstream so running "git pull" directly has no effect.
-	# Updates should be pulled using pull.sh. If branch upstream has already
-	# been unset, suppress error to allow script to continue running.
-	git branch --unset-upstream master || true
-
 	# If GPG is installed, import the signing public key. If the user has the
 	# corresponding secret key, sign commits in repository.
 	if command -v gpg > /dev/null; then

@@ -12,15 +12,20 @@ includes:
 - Firefox for web browsing
 - Thunderbird for email
 
-# How to Use
-
-I run the following command to setup my dotfiles on a new system.
+# Environment Setup
 
 ```
-git clone https://github.com/xudongzheng/dotfiles.git dot && bash dot/setup.sh && exit
+git init dot
+cd dot
+git remote add origin https://github.com/xudongzheng/dotfiles.git
+git fetch origin
+git checkout xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+bash setup.sh
+exit
 ```
 
-The `setup.sh` script will untrack the master branch from remote. Rather than
-doing `git pull`, the `pull.sh` script is used to pull the changes from GitHub.
-That script checks that the latest remote commit is signed using my private PGP
-key before merging.
+# Pulling Updates
+
+```
+cdot && s pull.sh
+```

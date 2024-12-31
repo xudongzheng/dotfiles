@@ -63,6 +63,7 @@ alias giau="git update-index --assume-unchanged"
 
 alias gl="git log --graph --decorate --stat --find-renames --date-order --show-signature"
 alias gla="gl --branches --remotes --tags"
+alias glc="git rev-parse HEAD | xc"
 alias glf="gl --pretty=fuller"
 alias glo="git log --pretty=oneline --abbrev-commit"
 function glohv { glo "$@" | head | vid; }
