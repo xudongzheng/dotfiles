@@ -76,6 +76,13 @@ function handleUserJS {
 
 		# Manage updates manually.
 		writePref "$userDir" app.update.auto false
+
+		# Restrict browser fingerprinting. Without this, it's possible for
+		# websites to indirectly determine the operating system keyboard layout.
+		writePref "$userDir" privacy.resistFingerprinting true
+
+		# Increase Developer Tools font size.
+		writePref "$userDir" devtools.toolbox.zoomValue '"1.5"'
 	fi
 }
 
