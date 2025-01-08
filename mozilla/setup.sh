@@ -79,6 +79,9 @@ function handleUserJS {
 
 		# Increase Developer Tools font size.
 		writePref "$userDir" devtools.toolbox.zoomValue '"1.5"'
+
+		# Warn when closing a window with multiple tabs.
+		writePref "$userDir" browser.tabs.warnOnClose true
 	fi
 }
 

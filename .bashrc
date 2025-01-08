@@ -290,8 +290,16 @@ else
 	alias duha="du -sbh"
 fi
 
-# Create alias for parsing x509 certificate.
-alias osx509="openssl x509 -text -noout -in"
+# Define function for looking up the SSL certificate information for a domain.
+function sslinfo {
+	hostname=$1
+	port=$2
+	if [[ ! $port ]]; then
+		port=443
+	fi
+	connect="$hostname:$port"
+	openssl s_client -connect "$connect" < /dev/null | openssl x509 -noout -text
+}
 
 # In WSL2, determine path to native home directory.
 if command -v powershell.exe > /dev/null; then
