@@ -143,7 +143,9 @@ set colorcolumn=81
 
 " Vim displays the Git commit summary line in a different color. Set width for
 " consistency with above.
-let g:gitcommit_summary_length = 80
+if has("patch-9.0.2189")
+	let g:gitcommit_summary_length = 80
+endif
 
 " Set scroll offset so the active line stays towards the center.
 set scrolloff=8
@@ -402,13 +404,13 @@ function! SetTabWidth(tab_width, tab_indent, priority)
 	" Set settings based on whether tabs or spaces are used for indentation.
 	if a:tab_indent
 		setlocal noexpandtab softtabstop=0
-		execute "setlocal shiftwidth=" . a:tab_width
-		execute "setlocal tabstop=" . a:tab_width
+		let &l:shiftwidth = a:tab_width
+		let &l:tabstop = a:tab_width
 	else
 		setlocal expandtab
-		execute "setlocal shiftwidth=" . a:tab_width
-		execute "setlocal tabstop=" . a:tab_width
-		execute "setlocal softtabstop=" . a:tab_width
+		let &l:shiftwidth = a:tab_width
+		let &l:tabstop = a:tab_width
+		let &l:softtabstop = a:tab_width
 	endif
 endfunction
 
@@ -616,13 +618,13 @@ nnoremap <leader>z z=1<cr><cr>
 " Use <leader>b to show the current buffer number.
 nnoremap <leader>b :echo bufnr("%")<cr>
 
-" Define mappings to convert spaces to tabs. Use <leader>2, <leader>4, and
-" <leader>8 for indentation with 2/4/8 spaces respectively. In normal mode, this
-" applies to the entire file. In visual mode, this applies to the selected
-" lines. Running retab will update tabstop so it must be manually returned to 4.
-noremap <leader>2 :retab! 2<cr>:setlocal tabstop=4<cr>
-noremap <leader>4 :retab! 4<cr>
-noremap <leader>8 :retab! 8<cr>:setlocal tabstop=4<cr>
+" Define mappings to convert spaces to tabs. In normal mode, this applies to the
+" entire file. In visual mode, this applies to the selected lines. Running retab
+" will update tabstop so it must be manually reverted to the previous value. The
+" tabstop value is copied from shiftwidth since retab does not touch that.
+noremap <leader>2 :retab! 2<cr>:let &l:tabstop=&l:shiftwidth<cr>
+noremap <leader>4 :retab! 4<cr>:let &l:tabstop=&l:shiftwidth<cr>
+noremap <leader>8 :retab! 8<cr>:let &l:tabstop=&l:shiftwidth<cr>
 
 " Use <leader>$ to go to the last tab.
 nnoremap <leader>$ :tablast<cr>
