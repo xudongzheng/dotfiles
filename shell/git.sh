@@ -4,7 +4,6 @@ alias gap="ga -p"
 
 alias gb="git branch"
 alias gba="gb -a"
-alias gbav="gba | vid"
 alias gbD="gb -D"
 
 alias gc="git checkout"
@@ -61,13 +60,18 @@ function gfg {
 alias gian="git update-index --no-assume-unchanged"
 alias giau="git update-index --assume-unchanged"
 
-alias gl="git log --graph --decorate --stat --find-renames --date-order --show-signature"
-alias gla="gl --branches --remotes --tags"
+# Define alias for copying the HEAD commit hash.
 alias glc="git rev-parse HEAD | xc"
-alias glf="gl --pretty=fuller"
-alias glo="git log --pretty=oneline --abbrev-commit"
-function glohv { glo "$@" | head | vid; }
-function glov { glo "$@" | vid; }
+
+# Define aliases for the long form of "git log".
+alias gl0="git log --graph --decorate --stat --find-renames --date-order --show-signature --pretty=fuller"
+alias gl1="gl0 -1"
+alias gl="gl0 --max-count=50"
+alias gla="gl --branches --remotes --tags"
+
+# Define aliases for the single-line form of "git log".
+alias glo0="git log --pretty=oneline --abbrev-commit"
+alias glo="glo0 --max-count=1000"
 
 alias gm="git merge"
 alias gma="gm --abort"
@@ -104,7 +108,6 @@ alias gtp="gt -p"
 
 alias gT="git tag"
 alias gTd="git tag -d"
-alias gTv="gT | vid"
 
 alias gu="git pull --prune --tags"
 

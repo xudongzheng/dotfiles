@@ -15,24 +15,16 @@ if [[ $- != *i* ]]; then
 	return
 fi
 
-# Set default editor. On most platforms, Vi and Vim both refer to the same
-# editor. When using Ctrl-X Ctrl-E, Zsh's edit-command-line tries to advance the
-# cursor to the same position as it was in terminal, which is not the behavior
-# that we want since Bash doesn't do that. Per https://bit.ly/2PZ3iVn, Zsh does
-# this with Vim but not Vi.
-export EDITOR=vi
-
 # Define alias for changing to the dotfiles directory. The logic for getting the
 # current file path comes from https://bit.ly/33OR2Lh. This works with both Bash
 # and Zsh.
 dotDir=$(dirname "${BASH_SOURCE[0]:-${(%):-%x}}")
 aliasDir cdot "$dotDir"
 
-# Set less configuration. A couple arguments are specified using the short form
-# rather than long form due to how i3-sensible-pager strips -E and -F
-# https://bit.ly/4ekPUmM.
-export LESS="-FNRX --chop-long-lines --shift 20 --tabs 4"
-export LESSKEYIN=$dotDir/.lesskeyin
+# Use Vim as editor and pager.
+export EDITOR=vim
+export PAGER="$dotDir/python/pager.py"
+source "$dotDir/shell/vim.sh"
 
 # Load shell specific code.
 if [[ $SHELL == "/bin/bash" ]]; then
@@ -61,30 +53,6 @@ if [[ $uname == "Darwin" ]]; then
 	alias sha512sum="shasum -a 512"
 fi
 
-# Define function to prevent piping to Vim or piping Vim to somewhere. This can
-# happen accidentally when working with large amounts of text and using Vim as a
-# pager. This comes from https://bit.ly/3FG7m65.
-function vi {
-	if [[ ! -t 1 ]]; then
-		echo "Vim must run with TTY as standard output" >&2
-	elif [[ ! -t 0 ]]; then
-		echo "Vim must run with TTY as standard input"
-	else
-		command vi "$@"
-	fi
-}
-
-# Define function for piping to Vim.
-function vid {
-	if [[ ! -t 1 ]]; then
-		echo "Vim must run with TTY as standard output" >&2
-	elif [[ -t 0 ]]; then
-		echo "Vim expecting pipe as standard input"
-	else
-		command vi -
-	fi
-}
-
 # Define ping function wrapper to lookup SSH host before pinging.
 function ping {
 	# Look up host using "ssh" command with the last argument being the host.
@@ -96,25 +64,6 @@ function ping {
 	args[-1]="$addr"
 	command ping "${args[@]}"
 }
-
-# The ls command is different on Linux and macOS. Set color scheme for macOS
-# per https://goo.gl/1ps44T.
-if [[ $uname == "Darwin" ]]; then
-	export CLICOLOR=1
-	export LSCOLORS=ExGxBxDxCxEgEdxbxgxcxd
-	alias l="ls"
-else
-	alias l="LC_ALL=C.UTF-8 ls --group-directories-first --color=auto"
-fi
-
-# Set environment variables for using Vim as man pager.
-if command -v man > /dev/null; then
-	export MANWIDTH=80
-	if [[ $uname != "Darwin" ]]; then
-		export MANOPT="--no-hyphenation --no-justification"
-	fi
-	export MANPAGER="sh -c 'col -bx | vi - -c set\ filetype=man'"
-fi
 
 # Define alias for df. Display human-readable size and show filesystem type.
 if [[ $uname == "Darwin" ]]; then
@@ -130,7 +79,7 @@ else
 	alias p="ps auxf"
 fi
 alias pg="ps aux | ep"
-alias pim="p | vid"
+alias pim="p | vis"
 
 # Define aliases for top.
 if [[ $uname == "Darwin" ]]; then
@@ -161,9 +110,6 @@ alias pwdc="pwd | xc"
 alias tf="tail -f"
 alias tm="touch -m"
 alias usm="useradd -s /bin/bash -m"
-alias vidi="vimdiff"
-alias vie="vi -c Explore"
-alias vrc="vi .vimrc"
 alias wl="wc -l"
 alias xc="bash $dotDir/clipboard/copy.sh"
 
@@ -190,11 +136,24 @@ elif command -v netstat > /dev/null; then
 	alias n="netstat -nlp"
 fi
 
+if [[ $uname == "Darwin" ]]; then
+	# On macOS, display with Linux colors. See https://goo.gl/1ps44T.
+	export CLICOLOR=1
+	export LSCOLORS=ExGxBxDxCxEgEdxbxgxcxd
+	alias l="ls"
+else
+	# On Linux, set LC_ALL to sort in binary order. The default is case
+	# insensitive and dependent on the locale.
+	alias l="LC_ALL=C ls --group-directories-first --color=auto"
+fi
+
 # Define aliases for file listing. When sorting by time, default to newest files
 # at the end as they are most likely the relevant ones.
+alias lv="l --color=always | $PAGER"
 alias ll="l -hlA"
-alias ltr="ll -t"
+alias llv="ll --color=always | $PAGER"
 alias lt="ll -rt"
+alias ltr="ll -t"
 
 # Define alias for cutting words. Use "tr" to squeeze multiple consecutive
 # spaces into one. "cutw n" prints the n-th word on every line. "cutw n-" prints
@@ -370,7 +329,7 @@ function xv {
 	# Both standard input and standard output must be TTY and not a pipe.
 	# Otherwise display error. This prevents xv from calling xv recursively.
 	if [[ -t 1 ]] && [[ -t 0 ]]; then
-		fc -s | vid
+		fc -s | vis
 	else
 		echo "xv cannot be used with a pipe"
 	fi
@@ -563,6 +522,13 @@ function osver {
 		lsb_release -a
 	else
 		cat /etc/debian_version
+	fi
+
+	# If running on WSL2, show Windows version information as well. Change to a
+	# Windows directory first since cmd.exe will warn when executed from a WSL2
+	# directory.
+	if command -v cmd.exe > /dev/null; then
+		cw && cmd.exe /c ver && cm
 	fi
 }
 

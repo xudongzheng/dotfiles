@@ -373,6 +373,15 @@ function! GitCommitDiff()
 endfunction
 autocmd FileType gitcommit nnoremap <buffer> <leader>d :call GitCommitDiff()<cr>
 
+" Use <leader>D to duplicate the buffer into a new temporary buffer.
+function! DuplicateBuffer()
+	execute "normal! ggVGy"
+	execute "tabnew"
+	execute "normal! Vp"
+	setlocal buftype=nofile
+endfunction
+nnoremap <leader>D :call DuplicateBuffer()<cr>
+
 function! EnableCopilot()
 	" Skip if file is for editing shell command.
 	if match(expand("%:p"), "^/tmp/bash-fc") == 0 || match(expand("%:p"), "^/private/tmp/") == 0
@@ -651,6 +660,7 @@ call SourceVim("vim/clipboard.vim")
 call SourceVim("vim/filetype.vim")
 call SourceVim("vim/ime.vim")
 call SourceVim("vim/netrw.vim")
+call SourceVim("vim/pager.vim")
 call SourceVim("vim/termdebug.vim")
 if has("patch-8.1.1401")
 	call SourceVim("vim/terminal.vim")
