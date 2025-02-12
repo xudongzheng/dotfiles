@@ -5,9 +5,5 @@ function! LoadPager(path)
 	let l:options["hidden"] = 1
 	let l:options["term_finish"] = "open"
 	let l:options["term_opencmd"] = "buffer %d"
-
-	" Set a high number of columns to prevent text from being wrapped.
-	let l:options["term_cols"] = 1000
-
 	call term_start("cat " . a:path, l:options)
 endfunction

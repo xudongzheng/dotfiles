@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 
+# This file is executable because that is necessary for it to work with
+# i3-sensible-pager.
+
 import argparse
 import os
 import sys

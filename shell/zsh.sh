@@ -37,11 +37,11 @@ setopt INTERACTIVE_COMMENTS
 # error to be consistent with Bash.
 setopt NO_NOMATCH
 
-# Define mapping for editing the current command and bind Ctrl-X Ctrl-E. The
-# first line opens the buffer in a text editor. The second line executes it,
-# which is the Bash behavior.
+# Use Ctrl-X to edit the current command in Vim. Move the cursor to start of the
+# line to be consistent with Bash as Zsh keeps the cursor position by default.
 autoload -U edit-command-line
 function edit-command-line-execute {
+	zle beginning-of-line
 	edit-command-line
 	zle accept-line
 }

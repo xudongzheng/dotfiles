@@ -8,9 +8,14 @@ function! OpenTerminal(newtab)
 	" Store initial working directory.
 	let l:cwd = getcwd()
 
+	" If buffer is a normal buffer, change to directory containing file. Skip if
+	" Vim is used as a pager for example.
+	if &l:buftype == ""
+		let l:fileDir = expand("%:p:h")
+		execute "cd " . l:fileDir
+	endif
+
 	" Open in vertical split if window is wide enough.
-	let l:fileDir = expand("%:p:h")
-	execute "cd " . l:fileDir
 	if a:newtab
 		tabnew
 		terminal ++curwin
@@ -22,7 +27,7 @@ function! OpenTerminal(newtab)
 		endif
 	endif
 
-	" Restore initial working directory.
+	" Restore initial working directory if needed.
 	execute "cd " . l:cwd
 endfunction
 nnoremap <leader>T :call OpenTerminal(v:false)<cr>
