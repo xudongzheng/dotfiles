@@ -273,7 +273,7 @@ autocmd FileType markdown,text call MapText()
 " line) and in visual line mode. New file types will be added as needed. While
 " we don't use Groovy directly, we use it through Gradle. We have xdefaults for
 " the .Xresources file.
-autocmd FileType bash,cfg,cmake,conf,config,crontab,debsources,dockerfile,dosini,gdb,gitconfig,gitrebase,i3config,kconfig,make,pamconf,perl,python,readline,ruby,sshconfig,sshdconfig,tmux,yaml noremap <buffer> <leader>c :normal! I# <esc>
+autocmd FileType bash,cfg,cmake,conf,config,crontab,debsources,dockerfile,dosini,gdb,gitconfig,gitrebase,i3config,kconfig,make,pamconf,perl,python,readline,ruby,screen,sshconfig,sshdconfig,tmux,yaml noremap <buffer> <leader>c :normal! I# <esc>
 autocmd FileType arduino,c,cpp,cs,dts,go,groovy,java,javascript,objc,php,scala,swift,typescript noremap <buffer> <leader>c :normal! I// <esc>
 autocmd FileType sql noremap <buffer> <leader>c :normal! I-- <esc>
 autocmd FileType matlab,tex noremap <buffer> <leader>c :normal! I% <esc>

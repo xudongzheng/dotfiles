@@ -1,5 +1,10 @@
-# Use Ctrl-B instead of Ctrl-A to be consistent with tmux.
+# Use Ctrl-B as the escape sequence. Ctrl-A is used for navigating to the start
+# of a line. Sometimes GNU Screen will run within tmux when used for accessing
+# TTY devices, in which case Ctrl-B must be pressed twice to send one through.
 escape ^Bb
+
+# Use x to kill the current window.
+bind x kill
 
 # Use . to renumber the current window and ' to navigate to a window to be
 # consistent with tmux.
