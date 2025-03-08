@@ -519,9 +519,14 @@ nnoremap di <c-w><c-l>
 inoremap <f4> <c-o>:setlocal spell!<cr>
 nnoremap <f4> :setlocal spell!<cr>
 
-" Use F5 to refresh a file from disk.
-inoremap <f5> <c-o>:e<cr>
-nnoremap <f5> :e<cr>
+" Use F5 to refresh a file or directory from disk. Skip if Vim is used as a
+" pager or if the buffer is not associated with a file.
+function! RefreshBuffer()
+	if &l:buftype == "" && expand("%:p") != ""
+		edit
+	endif
+endfunction
+nnoremap <f5> :call RefreshBuffer()<cr>
 
 " Use F6 to wrap/unwrap text.
 set nowrap
