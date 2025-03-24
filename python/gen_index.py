@@ -39,7 +39,7 @@ def generate_index(output, dirs, sort):
 		for file_path in sorted_files:
 			html_path = urllib.parse.quote(file_path)
 			_, file_ext = os.path.splitext(file_path)
-			if file_ext in [".gif", ".jpg", ".jpeg", ".png", ".svg", ".webp"]:
+			if file_ext.lower() in [".gif", ".jpg", ".jpeg", ".png", ".svg", ".webp"]:
 				file.write(f"<a href='{html_path}' target='_blank'><img src='{html_path}' width='600'></a>\n")
 			elif file_ext in [".mov", ".mp4", ".webm"]:
 				file.write(f"<video width='600' controls loop muted><source src='{html_path}' type='video/mp4'></video>\n")

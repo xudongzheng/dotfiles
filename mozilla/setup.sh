@@ -27,6 +27,9 @@ function handleUserJS {
 		# Set display density to compact.
 		writePref "$userDir" mail.uidensity 0
 	elif [[ "$application" == "firefox" ]]; then
+		# Suppress about:config page warning.
+		writePref "$userDir" browser.aboutConfig.showWarning false
+
 		# Open previous windows and tabs.
 		writePref "$userDir" browser.startup.page 3
 
