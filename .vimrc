@@ -190,10 +190,24 @@ command S :Sexplore
 " Use :F to format file, save, and close.
 command F execute "%! python3 " . g:dotfiles_dir . "python/format_md.py" | x
 
-" Define :E to open a file. Anything after the colon is discarded. This makes it
-" easy to double click a path in grep output (assuming it does not contain
-" spaces) and open it..
-command -nargs=1 E execute "e" fnameescape(split(<q-args>, ":")[0])
+" Define :E for opening a file or directory.
+function! OpenPath(path)
+	" If path contains a colon, discard everything after it. This makes it
+	" possible to double click a path in grep output (assuming it does not
+	" contain spaces) and open it quickly.
+	let l:path = split(a:path, ":")[0]
+
+	" If path is an absolute path, open directly. Otherwise, resolve it relative
+	" to the open file or directory. This is often preferred over using :e
+	" directly, which resolves paths relative to the working directory.
+	if l:path[0] == "/"
+		execute "e" fnameescape(l:path)
+	else
+		let l:dir = expand("%:p:h")
+		execute "e" fnameescape(fnamemodify(l:dir . "/" . l:path, ":p"))
+	endif
+endfunction
+command -nargs=1 E call OpenPath(<q-args>)
 
 " When tmux is used, Vim can't detect that xterm bracketed paste is supported so
 " it must be configured manually. This snippet comes from https://bit.ly/3GZcaUG
