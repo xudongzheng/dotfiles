@@ -13,7 +13,6 @@ function! AbbrevCSnippets()
 	iab <buffer> lxinf LOG_HEXDUMP_INF(, , ");<left><left><left>
 	iab <buffer> lxwrn LOG_HEXDUMP_WRN(, , ");<left><left><left>
 	iab <buffer> lxerr LOG_HEXDUMP_ERR(, , ");<left><left><left>
-
 endfunction
 autocmd FileType c,cpp call AbbrevCSnippets()
 

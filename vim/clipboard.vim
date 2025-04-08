@@ -38,11 +38,7 @@ endfunction
 nnoremap <leader>x :set operatorfunc=ClipboardOperatorCut<cr>g@
 xnoremap <leader>x :<c-u>call ClipboardOperatorCut(visualmode())<cr>
 
-function! ClipboardReformatOperator(type, suffix)
-	" Copy to default register.
-	call ClipboardOperatorInternal(a:type, a:suffix)
-
-	" Reformat and copy to clipboard.
+function! ClipboardReformatCopy()
 	let l:formatted = system("python3 " . g:dotfiles_dir . "python/format_md.py", getreg('"'))
 	call setreg('"', l:formatted)
 	call ClipboardExternal()
@@ -53,14 +49,16 @@ endfunction
 " external application. The operator function does not handle the char type
 " since reformatting makes no sense in that context.
 function! ClipboardReformatOperatorCopy(type)
-	call ClipboardReformatOperator(a:type, "y")
+	call ClipboardOperatorInternal(a:type, "y")
+	call ClipboardReformatCopy()
 endfunction
 nnoremap <leader>J :set operatorfunc=ClipboardReformatOperatorCopy<cr>g@
 xnoremap <leader>J :<c-u>call ClipboardReformatOperatorCopy(visualmode())<cr>
 
 " Define <leader>X, the cut version of <leader>J.
 function! ClipboardReformatOperatorCut(type)
-	call ClipboardReformatOperator(a:type, "x")
+	call ClipboardOperatorInternal(a:type, "x")
+	call ClipboardReformatCopy()
 endfunction
 nnoremap <leader>X :set operatorfunc=ClipboardReformatOperatorCut<cr>g@
 xnoremap <leader>X :<c-u>call ClipboardReformatOperatorCut(visualmode())<cr>

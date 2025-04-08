@@ -2,14 +2,25 @@ function! EnableTextFeatures()
 	if &filetype == ""
 		setfiletype text
 	endif
-	if index(["gitcommit", "markdown", "tex", "text"], &filetype) >= 0
-		" Enable spell check.
-		setlocal spell
+	if index(["gitcommit", "markdown", "tex", "text"], &filetype) < 0
+		return
+	endif
 
-		" Enable IME integration.
-		if filereadable(g:mac_ime_bin)
-			setlocal iminsert=2
-		endif
+	" Enable spell check.
+	setlocal spell
+
+	" Enable autoindent. Without this, a lot of formatting doesn't work
+	" correctly. One example is when using dqap to format a bullet list where a
+	" bullet item has 3 or more lines.
+	setlocal autoindent
+
+	" Use <leader>d to insert the date in the American format. This code comes
+	" from https://bit.ly/2UWmveA.
+	nnoremap <buffer> <leader>d "=strftime("%B %-d, %Y")<cr>p
+
+	" Enable IME integration.
+	if filereadable(g:mac_ime_bin)
+		setlocal iminsert=2
 	endif
 endfunction
 

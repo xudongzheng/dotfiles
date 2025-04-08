@@ -273,16 +273,6 @@ nnoremap <leader>L :setlocal spelllang=en,cjk<cr>
 " Use <leader>s in normal mode to automatically format Go source code.
 autocmd FileType go nnoremap <buffer> <leader>s :! gofmt -w=true -s %<cr>:e<cr>
 
-function! MapText()
-	" In text files, use <leader>d to insert the date in the American format.
-	" This code comes from https://bit.ly/2UWmveA.
-	nnoremap <buffer> <leader>d "=strftime("%B %-d, %Y")<cr>p
-
-	" Use <leader>c for checking and unchecking a checkbox.
-	nnoremap <buffer> <leader>c :s/\[x\]/[_]/e<cr>:s/\[ \]/[x]/e<cr>:s/\[_\]/[ ]/e<cr>
-endfunction
-autocmd FileType markdown,text call MapText()
-
 " Use <leader>c to comment code. This should work in normal mode (for the active
 " line) and in visual line mode. New file types will be added as needed. While
 " we don't use Groovy directly, we use it through Gradle. We have xdefaults for
@@ -335,26 +325,6 @@ call DefinePrint("bash", "p", "echo %d%s", " $")
 " When editing a diff file using 'git add -p', use <leader>p to exclude the
 " visual selection.
 autocmd BufRead addp-hunk-edit.diff xnoremap <buffer> <leader>p :s/^-/ /e<cr>gv:g/^+/d<cr>
-
-function! MapMarkdownSnippets()
-	" In Markdown, use <leader><cr>1 through <leader><cr>6 for making a line
-	" into a heading.
-	nnoremap <buffer> <leader><cr>1 I# <esc>
-	nnoremap <buffer> <leader><cr>2 I## <esc>
-	nnoremap <buffer> <leader><cr>3 I### <esc>
-	nnoremap <buffer> <leader><cr>4 I#### <esc>
-	nnoremap <buffer> <leader><cr>5 I##### <esc>
-	nnoremap <buffer> <leader><cr>6 I###### <esc>
-
-	" Use <leader><c-b> to make the selected text bold. Use <leader><c-i> for
-	" italics.
-	xnoremap <buffer> <leader><c-b> c****<esc><left>P
-	xnoremap <buffer> <leader><c-i> c**<esc>P
-
-	" Use <leader><c-l> to make the selected text a link.
-	xnoremap <buffer> <leader><c-l> c[]<esc>P<right>a()<esc>
-endfunction
-autocmd FileType markdown call MapMarkdownSnippets()
 
 " When modifying crontab, use <leader>* as a shortcut for defining a cron that
 " runs every minute.
@@ -454,11 +424,6 @@ autocmd FileType * setlocal formatoptions-=b formatoptions-=l
 " code. Automatic wrapping will still occur in comments.
 autocmd FileType * setlocal formatoptions-=t
 autocmd FileType gitcommit,markdown,rst,tex,text setlocal formatoptions+=t
-
-" Enable autoindent for Markdown and text files. Without this a lot of
-" formatting doesn't work correctly such as when using dqap to format a bullet
-" list where a bullet item has 3 or more lines.
-autocmd FileType markdown,text setlocal autoindent
 
 " Hitting enter on a commented line should not create another comment line. Make
 " an exception for CSS since the standard is block comments as opposed to line
@@ -675,6 +640,7 @@ endfunction
 call SourceVim("vim/abbrev.vim")
 call SourceVim("vim/abbrev_c.vim")
 call SourceVim("vim/abbrev_go.vim")
+call SourceVim("vim/abbrev_md.vim")
 call SourceVim("vim/clipboard.vim")
 call SourceVim("vim/filetype.vim")
 call SourceVim("vim/ime.vim")
