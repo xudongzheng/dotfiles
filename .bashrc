@@ -146,7 +146,7 @@ if [[ $uname == "Darwin" ]]; then
 else
 	# On Linux, set LC_ALL to sort in binary order. The default is case
 	# insensitive and dependent on the locale.
-	alias l="LC_ALL=C ls --group-directories-first --color=auto"
+    alias l="LC_ALL=C.UTF-8 ls --group-directories-first --color=auto"
 fi
 
 # Define aliases for file listing. When sorting by time, default to newest files
@@ -165,7 +165,7 @@ alias cutw="tr -s ' ' | cut -d ' ' -f"
 # Define aliases for sorting. By default, sort using binary. Sorting with
 # English locale is useful when the result should be case insensitive. The
 # second alias uses "command" so it doesn't call into the first alias.
-alias sort="LC_ALL=C sort"
+alias sort="LC_ALL=C.UTF-8 sort"
 alias sorten="LC_ALL=en_US.UTF-8 command sort"
 
 # Define alias for xargs. This replaces \n with \x00 so filenames containing

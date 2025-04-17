@@ -290,8 +290,8 @@ autocmd FileType bindzone noremap <buffer> <leader>c :normal! I; <esc>
 " wrapped into multiple lines.
 autocmd FileType html,svg,xml nnoremap <buffer> <leader>c A --><esc>I<!-- <esc>
 autocmd FileType html,svg,xml xnoremap <buffer> <leader>c c<!--<cr>--><esc>P
-autocmd FileType css nnoremap <buffer> <leader>c A */<esc>I/* <esc>
-autocmd FileType css xnoremap <buffer> <leader>c c/*<cr><bs><bs><bs>*/<esc>P
+autocmd FileType css,ld nnoremap <buffer> <leader>c A */<esc>I/* <esc>
+autocmd FileType css,ld xnoremap <buffer> <leader>c c/*<cr><bs><bs><bs>*/<esc>P
 
 " In a code file, use <leader>p and <leader>P to add a print statement with a
 " random number. In visual mode, the selected variables are printed as well.
@@ -593,7 +593,7 @@ nnoremap <leader>A /[^\t -~]<cr>
 " Use <leader>a in visual mode to sort the selected lines. By default, sort
 " using binary per https://goo.gl/HuZ6KL. Use <leader>A to sort with en_US,
 " which is useful for case-insensitive sorting.
-xnoremap <leader>a ! LC_ALL=C sort -n<cr>
+xnoremap <leader>a ! LC_ALL=C.UTF-8 sort -n<cr>
 xnoremap <leader>A ! LC_ALL=en_US.UTF-8 sort -n<cr>
 
 " Use <leader>r to reverse visually selected lines.
