@@ -357,7 +357,7 @@ function! GitCommitDiff()
 endfunction
 autocmd FileType gitcommit nnoremap <buffer> <leader>d :call GitCommitDiff()<cr>
 
-" Use <leader>D to duplicate the buffer into a new temporary buffer.
+" Use <leader>D to duplicate the buffer into a new scratch buffer tab.
 function! DuplicateBuffer()
 	execute "normal! ggVGy"
 	execute "tabnew"
@@ -365,6 +365,13 @@ function! DuplicateBuffer()
 	setlocal buftype=nofile
 endfunction
 nnoremap <leader>D :call DuplicateBuffer()<cr>
+
+" Use <leader>S to create a new scratch buffer tab.
+function! CreateScratchBuffer()
+	execute "tabnew"
+	setlocal buftype=nofile
+endfunction
+nnoremap <leader>S :call CreateScratchBuffer()<cr>
 
 function! EnableCopilot()
 	" Skip if file is for editing shell command.
