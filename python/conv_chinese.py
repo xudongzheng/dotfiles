@@ -14,8 +14,8 @@ def main():
 			pieces = line.strip().split("\t")
 			if len(pieces) != 2:
 				raise Exception("failed to parse lookup table")
-			trad, simp = pieces
-			lookup_table[trad] = simp.split()[0]
+			traditional, simplified = pieces
+			lookup_table[traditional] = simplified.split()[0]
 
 	input_text = sys.stdin.read()
 	output_text = "".join(lookup_table.get(char, char) for char in input_text)

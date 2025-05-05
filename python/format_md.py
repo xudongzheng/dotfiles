@@ -9,7 +9,7 @@ def format_file(file):
 
 	output = ""
 	for line in file:
-		line = line.rstrip("\n")
+		line = line.rstrip(" \n")
 
 		# Handle code block.
 		if line.startswith("```"):

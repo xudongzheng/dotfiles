@@ -33,6 +33,7 @@ augroup filetypedetect
 		autocmd FileType sh,zsh set filetype=bash
 	else
 		let g:is_bash = 1
+		autocmd FileType sh noremap <buffer> <leader>c :normal! I# <esc>
 	endif
 
 	" For standard input, Vim will attempt to detect the file type and
