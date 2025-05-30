@@ -26,6 +26,9 @@ function handleUserJS {
 
 		# Set display density to compact.
 		writePref "$userDir" mail.uidensity 0
+
+		# Set user interface font size.
+		writePref "$userDir" mail.uifontsize 14
 	elif [[ "$application" == "firefox" ]]; then
 		# Suppress about:config page warning.
 		writePref "$userDir" browser.aboutConfig.showWarning false
