@@ -18,10 +18,17 @@ function! EnableTextFeatures()
 	" from https://bit.ly/2UWmveA.
 	nnoremap <buffer> <leader>d "=strftime("%B %-d, %Y")<cr>p
 
+	" Use <leader><cr>d to insert date with time and timezone.
+	nnoremap <buffer> <leader><cr>d "=strftime("%Y-%m-%d %H:%M:%S%z")<cr>p
+
 	" Enable IME integration.
 	if filereadable(g:mac_ime_bin)
 		setlocal iminsert=2
 	endif
+
+	" Use :F to format file, save, and close. The command is only defined for
+	" buffer to prevent formatting other file types unintentionally.
+	command -buffer F execute "%! python3 " . g:dotfiles_dir . "python/format_md.py" | x
 endfunction
 
 " Use augroup to implement custom file type detection logic. See

@@ -187,9 +187,6 @@ set nrformats+=alpha nrformats-=octal
 command V :Vexplore
 command S :Sexplore
 
-" Use :F to format file, save, and close.
-command F execute "%! python3 " . g:dotfiles_dir . "python/format_md.py" | x
-
 " Define :E for opening a file or directory.
 function! OpenPath(path)
 	" If path contains a colon, discard everything after it. This makes it

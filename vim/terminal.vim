@@ -33,12 +33,10 @@ endfunction
 nnoremap <leader>T :call OpenTerminal(v:false)<cr>
 nnoremap <leader><c-t> :call OpenTerminal(v:true)<cr>
 
-" In terminal, use Ctrl-N to go to the next window and Ctrl-E to go to the
-" previous window. Define the same for normal mode for consistency.
+" In terminal, use Ctrl-N to go to the next window. This is set for normal mode
+" as well to have one single combination for cycling between windows.
 tnoremap <c-n> <f11>w
 nnoremap <c-n> <c-w>w
-tnoremap <c-e> <f11>W
-nnoremap <c-e> <c-w>W
 
 " In terminal, use Ctrl-O to paste from the default Vim register.
 tnoremap <c-o> <f11>""
