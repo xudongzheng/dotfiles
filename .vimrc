@@ -187,6 +187,17 @@ set nrformats+=alpha nrformats-=octal
 command V :Vexplore
 command S :Sexplore
 
+" Use :F to format a text file, save, and close. The command should not do
+" anything if executed from a non-text file.
+function! FormatMarkdown()
+	if IsTextFileType(&filetype)
+		execute "%! python3 " . g:dotfiles_dir . "python/format_md.py" | x
+	else
+		echoerr "Unable to format non-text file"
+	endif
+endfunction
+command F call FormatMarkdown()
+
 " Define :E for opening a file or directory.
 function! OpenPath(path)
 	" If path contains a colon, discard everything after it. This makes it

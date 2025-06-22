@@ -1,8 +1,12 @@
+function! IsTextFileType(ft)
+	return index(['gitcommit', 'markdown', 'tex', 'text'], a:ft) >= 0
+endfunction
+
 function! EnableTextFeatures()
 	if &filetype == ""
 		setfiletype text
 	endif
-	if index(["gitcommit", "markdown", "tex", "text"], &filetype) < 0
+	if !IsTextFileType(&filetype)
 		return
 	endif
 
@@ -25,10 +29,6 @@ function! EnableTextFeatures()
 	if filereadable(g:mac_ime_bin)
 		setlocal iminsert=2
 	endif
-
-	" Use :F to format file, save, and close. The command is only defined for
-	" buffer to prevent formatting other file types unintentionally.
-	command -buffer F execute "%! python3 " . g:dotfiles_dir . "python/format_md.py" | x
 endfunction
 
 " Use augroup to implement custom file type detection logic. See
