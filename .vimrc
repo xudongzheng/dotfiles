@@ -281,26 +281,6 @@ nnoremap <leader>L :setlocal spelllang=en,cjk<cr>
 " Use <leader>s in normal mode to automatically format Go source code.
 autocmd FileType go nnoremap <buffer> <leader>s :! gofmt -w=true -s %<cr>:e<cr>
 
-" Use <leader>c to comment code. This should work in normal mode (for the active
-" line) and in visual line mode. New file types will be added as needed. While
-" we don't use Groovy directly, we use it through Gradle. We have xdefaults for
-" the .Xresources file.
-autocmd FileType bash,cfg,cmake,conf,config,crontab,debsources,dockerfile,dosini,gdb,gitconfig,gitrebase,i3config,kconfig,make,pamconf,perl,python,readline,ruby,screen,sshconfig,sshdconfig,tmux,yaml noremap <buffer> <leader>c :normal! I# <esc>
-autocmd FileType arduino,c,cpp,cs,dts,go,groovy,java,javascript,objc,php,scala,swift,typescript noremap <buffer> <leader>c :normal! I// <esc>
-autocmd FileType sql noremap <buffer> <leader>c :normal! I-- <esc>
-autocmd FileType matlab,tex noremap <buffer> <leader>c :normal! I% <esc>
-autocmd FileType vim noremap <buffer> <leader>c :normal! I" <esc>
-autocmd FileType xdefaults noremap <buffer> <leader>c :normal! I! <esc>
-autocmd FileType bindzone noremap <buffer> <leader>c :normal! I; <esc>
-
-" Define <leader>c for types like HTML and CSS that only support block comments.
-" For normal mode, append before prepend to prevent the comment line from being
-" wrapped into multiple lines.
-autocmd FileType html,svg,xml nnoremap <buffer> <leader>c A --><esc>I<!-- <esc>
-autocmd FileType html,svg,xml xnoremap <buffer> <leader>c c<!--<cr>--><esc>P
-autocmd FileType css,ld nnoremap <buffer> <leader>c A */<esc>I/* <esc>
-autocmd FileType css,ld xnoremap <buffer> <leader>c c/*<cr><bs><bs><bs>*/<esc>P
-
 " In a code file, use <leader>p and <leader>P to add a print statement with a
 " random number. In visual mode, the selected variables are printed as well.
 function! AppendPrint(tpl, visual, separator)
@@ -657,6 +637,7 @@ call SourceVim("vim/abbrev_c.vim")
 call SourceVim("vim/abbrev_go.vim")
 call SourceVim("vim/abbrev_md.vim")
 call SourceVim("vim/clipboard.vim")
+call SourceVim("vim/comment.vim")
 call SourceVim("vim/filetype.vim")
 call SourceVim("vim/ime.vim")
 call SourceVim("vim/netrw.vim")
