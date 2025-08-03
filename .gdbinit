@@ -37,8 +37,11 @@ define bootl_nrf52
 	mon reset
 end
 
-# Define function to enter bootloader mode on RP2040.
+# Define function to enter bootloader mode on RP2040. See http://bit.ly/4mhgIJn.
 define bootl_rp2040
 	mon halt
-	call ((void (*)(uint32_t, uint32_t)) 0x00002591)(0, 0)
+	set $pc = 0x2591
+	set $r0 = 0
+	set $r1 = 0
+	continue
 end
