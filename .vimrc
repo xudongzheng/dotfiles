@@ -258,7 +258,7 @@ nnoremap <leader>. /\(^\.\\| \zs\.\ze\)<cr>
 " for working with screenshot URLs copied from Firefox.
 xnoremap <leader><space> :s/%20/ /g<cr>
 
-" In normal mode, use <leader>/ and <leader>? to search in 'very nomagic` mode.
+" In normal mode, use <leader>/ and <leader>? to search in 'very nomagic' mode.
 " This allows characters regularly used for regular expressions to be searched
 " without escaping.
 nnoremap <leader>/ /\V
@@ -553,10 +553,16 @@ function! LoadSession()
 endfunction
 nnoremap <leader>Q :call LoadSession()<cr>
 
-" In visual mode, use <leader>q and <leader>Q to place the selected text in
-" double and single quotes respectively.
+" In visual mode, use <leader>q, <leader>Q, and <leader>` to place the selected
+" text within quotes.
 xnoremap <leader>q c""<esc>P
 xnoremap <leader>Q c''<esc>P
+xnoremap <leader>` c``<esc>P
+
+" Use <leader>' to convert the surrounding double quotes to single quotes.
+" Similarly use <leader>" to convert from single quotes to double quotes.
+nnoremap <leader>' di"v<left>r'p
+nnoremap <leader>" di'v<left>r"p
 
 " Use <leader>u in normal mode to convert various Unicode characters to ASCII.
 function! ConvertUnicode()
@@ -620,12 +626,6 @@ nnoremap <leader>$ :tablast<cr>
 " Use \ to go to next tab and <tab> to go to previous tab.
 nnoremap \ :tabn<cr>
 nnoremap <tab> :tabp<cr>
-
-" Use <leader>' to convert the surrounding double quotes to single quotes.
-" Similarly use <leader>" to convert from single quotes to double quotes. Both
-" use `` to return to the previous cursor location after replacing a quote.
-nnoremap <leader>' di"v<left>r'p
-nnoremap <leader>" di'v<left>r"p
 
 function! SourceVim(path)
 	let l:script_path = g:dotfiles_dir . a:path
