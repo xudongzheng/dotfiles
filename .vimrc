@@ -378,39 +378,6 @@ function! EnableCopilot()
 endfunction
 autocmd VimEnter * call EnableCopilot()
 
-" Define function for set tab settings.
-function! SetTabWidth(tab_width, tab_indent, priority)
-	" If priority is lower, ignore.
-	if !exists("b:tab_width_prio")
-		let b:tab_width_prio = 0
-	endif
-	if a:priority < b:tab_width_prio
-		return
-	endif
-	let b:tab_width_prio = a:priority
-
-	" Set settings based on whether tabs or spaces are used for indentation.
-	if a:tab_indent
-		setlocal noexpandtab softtabstop=0
-		let &l:shiftwidth = a:tab_width
-		let &l:tabstop = a:tab_width
-	else
-		setlocal expandtab
-		let &l:shiftwidth = a:tab_width
-		let &l:tabstop = a:tab_width
-		let &l:softtabstop = a:tab_width
-	endif
-endfunction
-
-" Define tab settings. By default (priority 0), use tabs for indentation.
-" BufWinEnter is needed for reading from standard input as well as buffers
-" created with :new. FileType is needed to override Vim defaults for types like
-" as Python. Projects can override tab settings with priority 1. Files such as
-" YAML can further override with priority 2.
-autocmd BufWinEnter,FileType * call SetTabWidth(4, v:true, 0)
-autocmd FileType yaml call SetTabWidth(2, v:false, 2)
-autocmd FileType help call SetTabWidth(8, v:true, 2)
-
 " Wrap long line even if the initial line is longer than textwidth. Per
 " https://goo.gl/3pws7z, we should not combine flags when removing.
 autocmd FileType * setlocal formatoptions-=b formatoptions-=l
@@ -612,14 +579,6 @@ nnoremap <leader>z z=1<cr><cr>
 " Use <leader>b to show the current buffer number.
 nnoremap <leader>b :echo bufnr("%")<cr>
 
-" Define mappings to convert spaces to tabs. In normal mode, this applies to the
-" entire file. In visual mode, this applies to the selected lines. Running retab
-" will update tabstop so it must be manually reverted to the previous value. The
-" tabstop value is copied from shiftwidth since retab does not touch that.
-noremap <leader>2 :retab! 2<cr>:let &l:tabstop=&l:shiftwidth<cr>
-noremap <leader>4 :retab! 4<cr>:let &l:tabstop=&l:shiftwidth<cr>
-noremap <leader>8 :retab! 8<cr>:let &l:tabstop=&l:shiftwidth<cr>
-
 " Use <leader>$ to go to the last tab.
 nnoremap <leader>$ :tablast<cr>
 
@@ -642,6 +601,7 @@ call SourceVim("vim/filetype.vim")
 call SourceVim("vim/ime.vim")
 call SourceVim("vim/netrw.vim")
 call SourceVim("vim/pager.vim")
+call SourceVim("vim/tab.vim")
 call SourceVim("vim/termdebug.vim")
 if has("patch-8.1.1401")
 	call SourceVim("vim/terminal.vim")
