@@ -422,10 +422,11 @@ cnoremap <c-e> <end>
 inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
 
-" In insert mode, Ctrl-Shift-U behaves like Ctrl-U. It's easy to trigger
-" accidentally since it's used for Unicode input on Linux. For simplicity, do
-" nothing and manually delete the inserted data afterwards.
-inoremap <c-s-u> <nop>
+" Ctrl-Shift-U behaves like Ctrl-U by default. It's easy to accidentally create
+" a mess since it's used for Unicode input on Linux. For simplicity, have the
+" codepoint typed as text manually delete it afterwards.
+inoremap <c-s-u> /
+nnoremap <c-s-u> /
 
 " In insert and normal mode, use Ctrl-C to save file. If initially in insert
 " mode, this will remain in normal mode at the end. For insert mode, imap is
