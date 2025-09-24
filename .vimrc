@@ -423,10 +423,14 @@ inoremap <c-u> <c-g>u<c-u>
 inoremap <c-w> <c-g>u<c-w>
 
 " Ctrl-Shift-U behaves like Ctrl-U by default. It's easy to accidentally create
-" a mess since it's used for Unicode input on Linux. For simplicity, have the
-" codepoint typed as text manually delete it afterwards.
-inoremap <c-s-u> /
-nnoremap <c-s-u> /
+" a mess since the sequence is used for Unicode input on Linux. For simplicity,
+" have codepoint typed as text and delete it manually afterwards. This only
+" applies outside of tmux since it's not possible to distinguish between
+" Ctrl-Shift-U and Ctrl-U within tmux. This will be investigated later.
+if !exists("$TMUX")
+	inoremap <c-s-u> /
+	nnoremap <c-s-u> /
+endif
 
 " In insert and normal mode, use Ctrl-C to save file. If initially in insert
 " mode, this will remain in normal mode at the end. For insert mode, imap is
