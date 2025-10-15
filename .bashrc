@@ -183,6 +183,9 @@ alias gfmt='dfmt $(git rev-parse --show-toplevel)'
 alias sins="ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
 alias sinsr="sins -l root"
 
+# Define alias to decompress a gzip file while keeping the original.
+alias gzdk="gzip --decompress --keep"
+
 # Define aliases for tar. When extracting as root, tar will extract with the
 # setuid/setgid attribute by default. This can be a problem when untrusted
 # archives are extracted to a location accessible to other users so prevent this
@@ -384,13 +387,20 @@ function dotC {
 	echo $combined | xc
 }
 
-# Use pub to print Ed25519 public key. It will generate a new key if one does
-# not exist.
+# Use pub to print Ed25519 public key.
 function pub {
+	# Generate a new key if one does not exist.
 	if [[ ! -f ~/.ssh/id_ed25519 ]]; then
 		ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N "" > /dev/null
 	fi
-	cat ~/.ssh/id_ed25519.pub
+
+	# Print key with custom hostname if needed. This is useful for importing the
+	# key into GitHub.
+	if [[ -f ~/.hostname ]]; then
+		awk '{print $1, $2, "'$(cat ~/.hostname)'"}' ~/.ssh/id_ed25519.pub
+	else
+		cat ~/.ssh/id_ed25519.pub
+	fi
 }
 
 # Use pubc to print and copy the local SSH public key.
@@ -401,6 +411,17 @@ alias pubc="pub | xc"
 function pubC {
 	cmd='mkdir -p ~/.ssh && echo "'$(pub)'" >> ~/.ssh/authorized_keys'
 	echo $cmd | xc
+}
+
+# Use sshsig to print the hash for all SSH keys.
+function sshsig {
+	find ~/.ssh -name '*.pub' | while read line; do
+		basename "$line"
+		echo -n "- "
+		ssh-keygen -l -E sha256 -f "$line" | awk '{print $2}' | sed "s/:/ /"
+		echo -n "- "
+		ssh-keygen -l -E md5 -f "$line" | awk '{print $2}' | sed "s/:/ /"
+	done | vis
 }
 
 # Use mkc to create and change to a directory. Create parent directories if
