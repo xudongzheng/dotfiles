@@ -387,24 +387,31 @@ function dotC {
 	echo $combined | xc
 }
 
-# Use pub to print Ed25519 public key.
 function pub {
-	# Generate a new key if one does not exist.
-	if [[ ! -f ~/.ssh/id_ed25519 ]]; then
-		ssh-keygen -t ed25519 -f ~/.ssh/id_ed25519 -N "" > /dev/null
+	# If no key passed as argument, default to account Ed25519 key.
+	key=$1
+	if [[ $key == "" ]]; then
+		key=~/.ssh/id_ed25519
+	fi
+
+	# Generate a new key if it does not exist.
+	if [[ ! -f $key ]]; then
+		ssh-keygen -t ed25519 -f $key -N "" > /dev/null
 	fi
 
 	# Print key with custom hostname if needed. This is useful for importing the
 	# key into GitHub.
 	if [[ -f ~/.hostname ]]; then
-		awk '{print $1, $2, "'$(cat ~/.hostname)'"}' ~/.ssh/id_ed25519.pub
+		awk '{print $1, $2, "'$(cat ~/.hostname)'"}' $key.pub
 	else
-		cat ~/.ssh/id_ed25519.pub
+		cat $key.pub
 	fi
 }
 
 # Use pubc to print and copy the local SSH public key.
-alias pubc="pub | xc"
+function pubc {
+	pub "$@" | xc
+}
 
 # Use pubC to print and copy command for adding the local SSH public key to
 # .ssh/authorized_keys.
