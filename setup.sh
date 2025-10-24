@@ -26,39 +26,53 @@ else
 	bashrcSrc=~/.bashrc
 fi
 
-# Configure Bash and Vim to source the repository .bashrc and .vimrc
-# respectively. This is preferred over a symlink so the local user can be
-# customized. For Bash, it is better to check if the repository file is sourced
-# (rather than checking for its existence) since user directories typically come
-# with a file by default.
+# Configure Bash (and Zsh) to source the repository .bashrc. In general,
+# sourcing is preferred over creating a symlink so the local user can have
+# additional configuration. This needs to check if the repository file is
+# already sourced since new accounts typically come with a default file.
 bashrcDst="$base/.bashrc"
 if ! grep -qs "$bashrcDst" $bashrcSrc; then
 	echo "source \"$bashrcDst\"" > $bashrcSrc
 fi
-vimrcDst="$base/.vimrc"
+
+# Configure Vim to source the repository .vimrc.
 if [[ ! -f ~/.vimrc ]]; then
-	echo 'execute "source " .. fnameescape("'"$vimrcDst"'")' > ~/.vimrc
+	echo "execute \"source \" .. fnameescape(\"$base/.vimrc\")" > ~/.vimrc
 fi
 
 # Source repository .ssh/config for SSH. If the repository is shared between
-# multiple users, then .ssh/config must be owned by root for it to be included.
-sshconfigDst="$base/.ssh/config"
+# multiple users, .ssh/config must be owned by root for the include to work.
 if [[ ! -f ~/.ssh/config ]]; then
 	mkdir -p ~/.ssh
-	echo "Include \"$sshconfigDst\"" > ~/.ssh/config
+	echo "Include \"$base/.ssh/config\"" > ~/.ssh/config
 	echo "Include config-*" >> ~/.ssh/config
 fi
 
-# Create symlinks for other configuration files.
-files=(.gitconfig .inputrc)
-if command -v gdb > /dev/null; then
-	files+=(.gdbinit)
+# Configure Git to source the repository .gitconfig.
+if [[ ! -f ~/.gitconfig ]]; then
+	echo "[include]" > ~/.gitconfig
+	echo -e "\tpath = $base/.gitconfig" >> ~/.gitconfig
 fi
+
+# Configure Readline to source the repository .inputrc.
+if [[ ! -f ~/.inputrc ]]; then
+	echo "\$include $base/.inputrc" > ~/.inputrc
+fi
+
+# Configure tmux to source the repository .tmux.conf.
+if [[ ! -f ~/.tmux.conf ]]; then
+	echo "source-file $base/.tmux.conf" > ~/.tmux.conf
+fi
+
+# Configure GDB to source the repository .gdbinit.
+if [[ ! -f ~/.gdbinit ]]; then
+	echo "source $base/.gdbinit" > ~/.gdbinit
+fi
+
+# Create symlinks for applications that do not support external sourcing.
+files=()
 if command -v screen > /dev/null; then
 	files+=(.screenrc)
-fi
-if command -v tmux > /dev/null; then
-	files+=(.tmux.conf)
 fi
 for file in "${files[@]}"; do
 	if [[ ! -e "$HOME/$file" ]]; then
