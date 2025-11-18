@@ -30,9 +30,9 @@ def main():
 	parser.add_argument("-w", "--word-regexp", action="store_true")
 	args = parser.parse_args()
 
+	if len(args.query) == 0:
+		raise Exception("no search query defined")
 	query = " ".join(args.query)
-	if query == "":
-		sys.exit(0)
 	if args.word_regexp:
 		query = r"\b" + query + r"\b"
 	if args.ignore_case:

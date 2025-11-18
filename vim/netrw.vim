@@ -124,6 +124,9 @@ let g:netrw_bufsettings = "nomodifiable nomodified number relativenumber nowrap 
 " Display directories above files but otherwise sort alphabetically.
 let g:netrw_sort_sequence = "[\/]"
 
+" Define mapping to change sort order.
+autocmd FileType netrw nnoremap <buffer> s :call netrw#Call("NetrwSortStyle", 1)<cr>
+
 " Netrw by default maps gx. Disable mapping so gx can be used to navigate to the
 " x character.
 let g:netrw_nogx = v:true
