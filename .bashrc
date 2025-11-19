@@ -123,7 +123,7 @@ alias r="tput reset"
 # command exists natively in Linux but not macOS.
 if [[ $uname == "Darwin" ]]; then
 	function realpath {
-		echo $(cd $(dirname "$1") && pwd)/$(basename "$1")
+		echo $(cd "$(dirname "$1")" && pwd)/$(basename "$1")
 	}
 fi
 
@@ -343,7 +343,7 @@ function xv {
 # double click a path in grep output (assuming it does not contain spaces) and
 # navigate to the folder containing it.
 function cdn {
-	cd $(dirname "$1")
+	cd "$(dirname "$1")"
 }
 
 # Similar to cdn above, use ndc to do edit the file.
