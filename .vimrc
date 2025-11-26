@@ -35,11 +35,17 @@ noremap T F
 noremap U I
 noremap Y O
 
-" Use the desert color scheme starting with Vim 9. Use elflord if older and
-" slate in vimdiff since highlighted lines are hard to see in elflord.
 if has("patch-9.0.0")
-	colorscheme desert
+	" In Vim 9 and later, default to desert theme. When the color palette is
+	" limited such as in GNU Screen on macOS, use habamax.
+	if &t_Co >= 256
+		colorscheme desert
+	else
+		colorscheme habamax
+	endif
 else
+	" For older Vim, default to elflord theme. Use slate for vimdiff since
+	" highlighted lines are hard to see with elflord.
 	if &diff
 		colorscheme slate
 	else
