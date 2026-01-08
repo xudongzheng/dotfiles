@@ -298,8 +298,13 @@ function! AppendPrint(tpl, visual, separator)
 		let l:varnames = ""
 	endif
 
-	" Generate random 4 digit number.
-	let l:randnum = 1000 + rand() % 9000
+	" Generate random 4 digit number. Vim 8.1.2342 is required for rand() per
+	" https://bit.ly/4jzyjM3.
+	if has("patch-8.1.2342")
+		let l:randnum = 1000 + rand() % 9000
+	else
+		let l:randnum = 1000 + localtime() % 9000
+	endif
 
 	" Construct line and add to file.
 	execute "normal! o" . printf(a:tpl, l:randnum, l:varnames) . "\<esc>"
