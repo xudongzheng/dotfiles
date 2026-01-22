@@ -60,6 +60,11 @@ define nvsclear
 	end
 end
 
+# Define function to halt and erase the storage partition for nRF52833.
+define nvsclear_nrf52833
+	nvsclear 0x6d000 0x7000 $arg0
+end
+
 # Define function to halt and erase the storage partition for nRF52840.
 define nvsclear_nrf52840
 	nvsclear 0xea000 0xa000 $arg0

@@ -52,3 +52,6 @@ endfunction
 noremap <leader>2 :call RetabWidth(visualmode(), 2)<cr>
 noremap <leader>4 :call RetabWidth(visualmode(), 4)<cr>
 noremap <leader>8 :call RetabWidth(visualmode(), 8)<cr>
+
+" Define mapping to convert tabs to spaces.
+noremap <leader>0 :retab<cr>
