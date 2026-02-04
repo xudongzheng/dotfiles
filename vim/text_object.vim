@@ -33,7 +33,7 @@ function! SelectTextObject(charsets, command)
 		endif
 	endfor
 
-	if l:best_before_char != ""
+	if l:best_before_char !=# ""
 		" If character under the cursor matches, use Vim's builtin selection
 		" mechanism; this edge case not easy to handle manually. Also use
 		" builtin mechanism if the before and after delimiters are different.
@@ -46,7 +46,7 @@ function! SelectTextObject(charsets, command)
 		endif
 
 		" Select quotes by searching backwards and forwards.
-		if a:command == "i"
+		if a:command ==# "i"
 			let l:back_suffix = "l"
 			let l:forward_suffix = "h"
 		else

@@ -3,7 +3,7 @@ function! IsTextFileType(ft)
 endfunction
 
 function! EnableTextFeatures()
-	if &filetype == ""
+	if &filetype ==# ""
 		setfiletype text
 	endif
 	if !IsTextFileType(&filetype)

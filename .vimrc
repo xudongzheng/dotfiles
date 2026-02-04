@@ -118,7 +118,7 @@ highlight CursorColumn ctermbg=lightcyan ctermfg=black
 " Define helper function for cnoremap. Use cnoremap instead of command when the
 " command needs to be in a different format.
 function! IsCommandNotSearch()
-	return getcmdpos() == 1 && getcmdtype() == ':'
+	return getcmdpos() == 1 && getcmdtype() ==# ":"
 endfunction
 
 " Use :N to count the number of occurrences in a file.
@@ -214,7 +214,7 @@ function! OpenPath(path)
 	" If path is an absolute path, open directly. Otherwise, resolve it relative
 	" to the open file or directory. This is often preferred over using :e
 	" directly, which resolves paths relative to the working directory.
-	if l:path[0] == "/"
+	if l:path[0] ==# "/"
 		execute "e" fnameescape(l:path)
 	else
 		let l:dir = expand("%:p:h")
@@ -236,7 +236,7 @@ endif
 " An abbrevation at the end of pasted text gets expanded but it shouldn't be.
 " See https://bit.ly/3RGkCwX for Vim issue. Breaking the undo sequence is a
 " workaround that stops that though I have no clue why it works.
-autocmd OptionSet paste if &paste == 0 && mode() == "i" | call feedkeys("\<c-g>u") | endif
+autocmd OptionSet paste if &paste == 0 && mode() ==# "i" | call feedkeys("\<c-g>u") | endif
 
 " Highlight trailing whitespace per https://bit.ly/35RTov2.
 function! HighlightTrailingWS()
@@ -479,7 +479,7 @@ nnoremap <f4> :setlocal spell!<cr>
 " Use F5 to refresh a file or directory from disk. Skip if Vim is used as a
 " pager or if the buffer is not associated with a file.
 function! RefreshBuffer()
-	if &l:buftype == "" && expand("%:p") != ""
+	if &l:buftype ==# "" && expand("%:p") !=# ""
 		edit
 	endif
 endfunction

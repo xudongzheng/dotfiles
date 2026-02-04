@@ -10,7 +10,7 @@ function! OpenTerminal(newtab)
 
 	" If buffer is a normal buffer, change to directory containing file. Skip if
 	" Vim is used as a pager for example.
-	if &l:buftype == ""
+	if &l:buftype ==# ""
 		let l:fileDir = expand("%:p:h")
 		execute "cd " . l:fileDir
 	endif

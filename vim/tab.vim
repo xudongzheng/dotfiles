@@ -36,7 +36,7 @@ function! RetabWidth(type, tab_width)
 
 	" In visual mode, the change applies to the selected lines. In normal mode,
 	" it applies to the entire file.
-	if a:type == "V"
+	if a:type ==# "V"
 		execute a:firstline . ',' . a:lastline . 'retab!'
 	else
 		retab!

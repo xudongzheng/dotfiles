@@ -67,7 +67,7 @@ let g:netrw_liststyle = 1
 function! SetNetrwTabWidth()
 	" The file type must be checked to avoid modifying the tab width for a file
 	" that's been opened.
-	if &filetype == "netrw"
+	if &filetype ==# "netrw"
 		call SetTabWidth(8, v:true, 2)
 	endif
 endfunction
