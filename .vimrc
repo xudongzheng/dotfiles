@@ -103,7 +103,7 @@ set number
 set ruler
 
 " Only insert a single space after punctuations when using the automatic
-" formatter (via dq).
+" formatter (via dw).
 set nojoinspaces
 
 " Increase history for search and command line entries.
@@ -238,12 +238,14 @@ endif
 " workaround that stops that though I have no clue why it works.
 autocmd OptionSet paste if &paste == 0 && mode() ==# "i" | call feedkeys("\<c-g>u") | endif
 
-" Highlight trailing whitespace per https://bit.ly/35RTov2.
+" Highlight trailing whitespace per https://bit.ly/35RTov2. Since :match is
+" local to a specific window, WinEnter is needed for the rule to apply when a
+" window is split.
 function! HighlightTrailingWS()
 	highlight ExtraWhitespace ctermbg=red
 	match ExtraWhitespace /\s\+$/
 endfunction
-autocmd BufEnter * call HighlightTrailingWS()
+autocmd BufEnter,WinEnter * call HighlightTrailingWS()
 
 " Use <leader>W to delete trailing spaces/tabs. In normal mode, it's applied to
 " the entire file. In visual mode, it's only applied to the selected lines.

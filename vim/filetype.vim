@@ -14,7 +14,7 @@ function! EnableTextFeatures()
 	setlocal spell
 
 	" Enable autoindent. Without this, a lot of formatting doesn't work
-	" correctly. One example is when using dqap to format a bullet list where a
+	" correctly. One example is when using dwap to format a bullet list where a
 	" bullet item has 3 or more lines.
 	setlocal autoindent
 
