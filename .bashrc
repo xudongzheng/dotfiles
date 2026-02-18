@@ -356,7 +356,16 @@ function ndc {
 	vi "${files[@]}"
 }
 
-function dotcommit { git -C "$dotDir" rev-parse master; }
+# Define dotcommit for printing the dotfiles commit hash. If the master branch
+# exists, print that commit since HEAD may on a different branch (such as on my
+# local computer). If there is no master branch, print the HEAD commit.
+function dotcommit {
+	if git -C $dotDir show-ref --verify --quiet refs/heads/master; then
+		git -C $dotDir rev-parse master
+	else
+		git -C $dotDir rev-parse HEAD
+	fi
+}
 
 # Use dotc to copy the dotfiles commit hash. This is useful for pulling changes
 # on machines that lack GPG.
