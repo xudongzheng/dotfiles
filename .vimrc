@@ -279,13 +279,6 @@ nnoremap <leader>? ?\V
 vnoremap <leader>/ y/\V<c-r>=escape(@",'/\')<cr><cr>
 vnoremap <leader>? y?\V<c-r>=escape(@",'?\')<cr><cr>
 
-" By default, set the spell checker language to English. Use <leader>l and
-" <leader>L to change to Spanish and English respectively. For both, ignore
-" Chinese characters.
-set spelllang=en,cjk
-nnoremap <leader>l :setlocal spelllang=es,cjk<cr>
-nnoremap <leader>L :setlocal spelllang=en,cjk<cr>
-
 " Use <leader>s in normal mode to automatically format Go source code.
 autocmd FileType go nnoremap <buffer> <leader>s :! gofmt -w=true -s %<cr>:e<cr>
 
@@ -409,11 +402,6 @@ autocmd FileType css setlocal formatoptions+=ro
 " Use the same word boundary for all file types.
 autocmd FileType * set iskeyword=@,48-57,_
 
-" Sometimes the spell checker does not work correctly in large TeX files. This
-" seems to resolve most of the issue per https://goo.gl/dtuJSk. See
-" https://goo.gl/YbxTHp for more information on spell checking in TeX files.
-autocmd FileType tex syntax spell toplevel
-
 " Use m to trigger commands in normal mode.
 nnoremap m :
 xnoremap m :
@@ -473,10 +461,6 @@ nnoremap dh <c-w><c-h>
 nnoremap dn <c-w><c-j>
 nnoremap de <c-w><c-k>
 nnoremap di <c-w><c-l>
-
-" Use F4 to toggle spell checker.
-inoremap <f4> <c-o>:setlocal spell!<cr>
-nnoremap <f4> :setlocal spell!<cr>
 
 " Use F5 to refresh a file or directory from disk. Skip if Vim is used as a
 " pager or if the buffer is not associated with a file.
@@ -591,9 +575,6 @@ xnoremap <leader>R ! sort -R<cr>
 " Use <leader>t to search for triple TODO.
 nnoremap <leader>t /TODO TODO<cr>
 
-" Use <leader>z to correct word under cursor to first suggestion.
-nnoremap <leader>z z=1<cr><cr>
-
 " Use <leader>b to show the current buffer number.
 nnoremap <leader>b :echo bufnr("%")<cr>
 
@@ -619,6 +600,7 @@ call SourceVim("vim/filetype.vim")
 call SourceVim("vim/ime.vim")
 call SourceVim("vim/netrw.vim")
 call SourceVim("vim/pager.vim")
+call SourceVim("vim/spell.vim")
 call SourceVim("vim/tab.vim")
 call SourceVim("vim/termdebug.vim")
 if has("patch-8.1.1401")
