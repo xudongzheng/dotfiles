@@ -3,11 +3,6 @@
 term_title="%n@%m:%~"
 PS1=$'%{\e]0;'"$term_title"$'\a%}'"$term_title\$ "
 
-# Use Emacs bindings. This is already the default when Zsh is launched from
-# macOS terminal or remote SSH. For some reason, Vim bindings is the default
-# when Zsh is launched from GNU Screen.
-bindkey -e
-
 # Increase Zsh history size. $SAVEHIST increases the number of entries written
 # to the history file. $HISTSIZE increases the number of entries loaded from the
 # history file and available for searching with Ctrl-R.

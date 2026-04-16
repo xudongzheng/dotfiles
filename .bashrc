@@ -145,7 +145,7 @@ if [[ $uname == "Darwin" ]]; then
 else
 	# On Linux, set LC_ALL to sort in binary order. The default is case
 	# insensitive and dependent on the locale.
-    alias l="LC_ALL=C.UTF-8 ls --group-directories-first --color=auto"
+	alias l="LC_ALL=C.UTF-8 ls --group-directories-first --color=auto"
 fi
 
 # Define aliases for file listing. When sorting by time, default to newest files
@@ -510,11 +510,13 @@ function jpretty {
 	done
 }
 
-# Define alias for tmux or GNU Screen.
+# Define alias for tmux or GNU Screen. Unset EDITOR since that can cause Zsh to
+# start in Vi mode. Using "bindkey -e" to return to Emacs mode is not ideal
+# since bindings defined in /etc/zshrc such as for Delete end up missing.
 if command -v tmux > /dev/null; then
-	alias t="tmux new-session -t 0 || tmux"
+	alias t="EDITOR= tmux new-session -t 0"
 elif command -v screen > /dev/null; then
-	alias t="screen -x || screen"
+	alias t="EDITOR= screen -x || EDITOR= screen"
 fi
 
 # If wget is not available but cURL is available such as on macOS, allow cURL to
