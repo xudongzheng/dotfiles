@@ -156,6 +156,13 @@ alias llv="ll --color=always | $PAGER"
 alias lt="ll -rt"
 alias ltr="ll -t"
 
+# Define alias for listing TTY devices.
+if [[ $uname == "Darwin" ]]; then
+	alias lcu="ll /dev/cu.usbmodem*"
+else
+	alias lcu="ll /dev/ttyACM*"
+fi
+
 # Define alias for cutting words. Use "tr" to squeeze multiple consecutive
 # spaces into one. "cutw n" prints the n-th word on every line. "cutw n-" prints
 # every word starting from the n-th word on every line.
