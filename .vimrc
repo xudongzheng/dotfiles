@@ -62,6 +62,9 @@ filetype plugin indent on
 " Use space as the leader key.
 let mapleader = " "
 
+" Set xterm title.
+set title
+
 " Disable timeout for leader key and other mappings. However this timeout should
 " not apply to the Esc key. See https://bit.ly/3MsyJW1 for details.
 set notimeout
