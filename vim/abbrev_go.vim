@@ -24,7 +24,6 @@ function! AbbrevGoImport()
 	iab <buffer> tfnhn "fusion/net/http"
 	iab <buffer> thtn "html/template"
 	iab <buffer> tion "io"
-	iab <buffer> tioun "io/ioutil"
 	iab <buffer> tln "log"
 	iab <buffer> tmn "math"
 	iab <buffer> tnen "net"

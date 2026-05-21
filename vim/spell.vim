@@ -16,7 +16,7 @@ nnoremap <leader>z z=1<cr><cr>
 function! ConfirmSpellAdd()
 	let l:word = expand("<cword>")
 	if confirm("Add '" . l:word . "' to personal dictionary?", "&Yes\n&No", 2) == 1
-		execute "normal! zg"
+		normal! zg
 	endif
 endfunction
 nnoremap <leader>Z :call ConfirmSpellAdd()<cr>

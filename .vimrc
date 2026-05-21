@@ -356,36 +356,19 @@ autocmd FileType gitcommit nnoremap <buffer> <leader>d :call GitCommitDiff()<cr>
 
 " Use <leader>D to duplicate the buffer into a new scratch buffer tab.
 function! DuplicateBuffer()
-	execute "normal! ggVGy"
-	execute "tabnew"
-	execute "normal! Vp"
+	normal! ggVGy
+	tabnew
+	normal! Vp
 	setlocal buftype=nofile
 endfunction
 nnoremap <leader>D :call DuplicateBuffer()<cr>
 
 " Use <leader>S to create a new scratch buffer tab.
 function! CreateScratchBuffer()
-	execute "tabnew"
+	tabnew
 	setlocal buftype=nofile
 endfunction
 nnoremap <leader>S :call CreateScratchBuffer()<cr>
-
-function! EnableCopilot()
-	" Skip if file is for editing shell command.
-	if match(expand("%:p"), "^/tmp/bash-fc") == 0 || match(expand("%:p"), "^/private/tmp/") == 0
-		return
-	endif
-
-	" Enable Copilot plugin if it exists.
-	if isdirectory(expand("~/.vim/pack/github/opt/copilot.vim"))
-		" Use Ctrl-N instead of Tab for accepting the Copilot suggestion.
-		let g:copilot_no_tab_map = v:true
-		inoremap <expr> <c-n> copilot#Accept("")
-
-		packadd copilot.vim
-	endif
-endfunction
-autocmd VimEnter * call EnableCopilot()
 
 " Wrap long line even if the initial line is longer than textwidth. Per
 " https://goo.gl/3pws7z, we should not combine flags when removing.
@@ -599,6 +582,7 @@ call SourceVim("vim/abbrev_go.vim")
 call SourceVim("vim/abbrev_md.vim")
 call SourceVim("vim/clipboard.vim")
 call SourceVim("vim/comment.vim")
+call SourceVim("vim/complete.vim")
 call SourceVim("vim/filetype.vim")
 call SourceVim("vim/ime.vim")
 call SourceVim("vim/netrw.vim")
