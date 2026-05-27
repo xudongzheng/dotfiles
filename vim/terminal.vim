@@ -12,7 +12,7 @@ function! OpenTerminal(newtab)
 	" Vim is used as a pager for example.
 	if &l:buftype ==# ""
 		let l:fileDir = expand("%:p:h")
-		execute "cd " . l:fileDir
+		execute "cd" l:fileDir
 	endif
 
 	" Open in vertical split if window is wide enough.
@@ -28,7 +28,7 @@ function! OpenTerminal(newtab)
 	endif
 
 	" Restore initial working directory if needed.
-	execute "cd " . l:cwd
+	execute "cd" l:cwd
 endfunction
 nnoremap <leader>T :call OpenTerminal(v:false)<cr>
 nnoremap <leader><c-t> :call OpenTerminal(v:true)<cr>

@@ -118,23 +118,39 @@ set cursorline
 set cursorcolumn
 highlight CursorColumn ctermbg=lightcyan ctermfg=black
 
-" Define helper function for cnoremap. Use cnoremap instead of command when the
-" command needs to be in a different format.
-function! IsCommandNotSearch()
-	return getcmdpos() == 1 && getcmdtype() ==# ":"
+" Define function for command mode aliases. Some aliases may need to expland
+" differently if a line range is given.
+function! CommandAlias(literal, no_range, with_range)
+	" Alias should only apply to commands, not search prompts.
+	if getcmdtype() !=# ":"
+		return a:literal
+	endif
+
+	" Only alias if cursor is at the end of the command line.
+	let l:cmdline = getcmdline()
+	if getcmdpos() != len(l:cmdline) + 1
+		return a:literal
+	endif
+
+	if l:cmdline ==# ""
+		return a:no_range
+	elseif l:cmdline ==# "'<,'>"
+		return a:with_range
+	endif
+	return a:literal
 endfunction
 
 " Use :N to count the number of occurrences in a file.
-cnoremap <expr> N (IsCommandNotSearch() ? "%s///ign<left><left><left><left><left>" : "N")
+cnoremap <expr> N CommandAlias("N", "%s///ign<left><left><left><left><left>", "s///ign<left><left><left><left><left>")
 
 " Use :H to open a help page in a new tab. This uses cnoremap instead of command
 " so tab autocompletion works.
-cnoremap <expr> H (IsCommandNotSearch() ? "tab help " : "H")
+cnoremap <expr> H CommandAlias("H", "tab help ", "H")
 
 " Use :G for grep and :I for grep inverse. Using :g and :v with /d is confusing
 " to reason about.
-cnoremap <expr> G (IsCommandNotSearch() ? "v//d<left><left>" : "G")
-cnoremap <expr> I (IsCommandNotSearch() ? "g//d<left><left>" : "I")
+cnoremap <expr> G CommandAlias("G", "v//d<left><left>", "v//d<left><left>")
+cnoremap <expr> I CommandAlias("I", "g//d<left><left>", "g//d<left><left>")
 
 " Enable line number for help pages. Additionally, set conceallevel so concealed
 " characters do not break CursorColumn.
@@ -218,10 +234,10 @@ function! OpenPath(path)
 	" to the open file or directory. This is often preferred over using :e
 	" directly, which resolves paths relative to the working directory.
 	if l:path[0] ==# "/"
-		execute "e" fnameescape(l:path)
+		execute "edit" fnameescape(l:path)
 	else
 		let l:dir = expand("%:p:h")
-		execute "e" fnameescape(fnamemodify(l:dir . "/" . l:path, ":p"))
+		execute "edit" fnameescape(fnamemodify(l:dir . "/" . l:path, ":p"))
 	endif
 endfunction
 command -nargs=1 E call OpenPath(<q-args>)
@@ -490,7 +506,7 @@ function! GetSessionFile()
 endfunction
 function! SaveSession()
 	try
-		execute "mksession " . GetSessionFile()
+		execute "mksession" GetSessionFile()
 		try
 			silent quitall
 		catch
@@ -502,7 +518,7 @@ endfunction
 nnoremap <leader>q :call SaveSession()<cr>
 function! LoadSession()
 	try
-		execute "source " . GetSessionFile()
+		execute "source" GetSessionFile()
 		call delete(GetSessionFile())
 	endtry
 endfunction
@@ -573,7 +589,7 @@ nnoremap <tab> :tabp<cr>
 
 function! SourceVim(path)
 	let l:script_path = g:dotfiles_dir . a:path
-	execute "source " . l:script_path
+	execute "source" l:script_path
 endfunction
 
 call SourceVim("vim/abbrev.vim")
