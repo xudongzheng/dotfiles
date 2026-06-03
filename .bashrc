@@ -601,16 +601,12 @@ if command -v apt > /dev/null; then
 	alias aliep="ali | ep"
 fi
 
-# Define aliases for Go.
-if command -v go > /dev/null; then
-	alias gob="go build"
-	alias gog="go generate"
-	alias got="go test -c"
-	alias gotn="got -o /dev/null"
-fi
-
 if command -v git > /dev/null; then
 	source "$dotDir/shell/git.sh"
+fi
+
+if command -v go > /dev/null; then
+	source "$dotDir/shell/go.sh"
 fi
 
 if [[ $uname == "Darwin" ]]; then

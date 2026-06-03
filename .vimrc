@@ -64,7 +64,12 @@ let mapleader = " "
 
 " Set xterm title.
 set title
-set titlestring=%{$USER}@%{hostname()}\ vim:%f
+if filereadable(expand("~/.hostname"))
+	let g:title_hostname = readfile(expand("~/.hostname"))[0]
+else
+	let g:title_hostname = hostname()
+endif
+set titlestring=%{$USER}@%{g:title_hostname}\ vim:%f
 
 " Disable timeout for leader key and other mappings. However this timeout should
 " not apply to the Esc key. See https://bit.ly/3MsyJW1 for details.
