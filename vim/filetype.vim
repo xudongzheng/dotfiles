@@ -22,8 +22,8 @@ function! EnableTextFeatures()
 	" from https://bit.ly/2UWmveA.
 	nnoremap <buffer> <leader>d "=strftime("%B %-d, %Y")<cr>p
 
-	" Use <leader><cr>d to insert date with time and timezone.
-	nnoremap <buffer> <leader><cr>d "=strftime("%Y-%m-%d %H:%M:%S%z")<cr>p
+	" Use <leader>D to insert date with time and timezone.
+	nnoremap <buffer> <leader>D "=strftime("%Y-%m-%d %H:%M:%S%z")<cr>p
 
 	" Enable IME integration.
 	if filereadable(g:mac_ime_bin)

@@ -357,7 +357,7 @@ autocmd FileType mail unmap <buffer> \q
 autocmd FileType gitrebase xnoremap <buffer> <leader>h :s/pick/squash<cr>
 autocmd FileType gitcommit nnoremap <buffer> <leader>h G{kkdgg
 
-" Use <leader>d to display the staged diff when writing a commit message.
+" Use <leader>G to display the staged diff when writing a commit message.
 function! GitCommitDiff()
 	" Load diff in a split.
 	if winwidth(0) > 160
@@ -374,23 +374,23 @@ function! GitCommitDiff()
 	" Allow buffer to be closed without saving.
 	setlocal buftype=nofile
 endfunction
-autocmd FileType gitcommit nnoremap <buffer> <leader>d :call GitCommitDiff()<cr>
+autocmd FileType gitcommit nnoremap <buffer> <leader>G :call GitCommitDiff()<cr>
 
-" Use <leader>D to duplicate the buffer into a new scratch buffer tab.
+" Use <leader>N to duplicate the buffer into a new scratch buffer tab.
 function! DuplicateBuffer()
 	normal! ggVGy
 	tabnew
 	normal! Vp
 	setlocal buftype=nofile
 endfunction
-nnoremap <leader>D :call DuplicateBuffer()<cr>
+nnoremap <leader>N :call DuplicateBuffer()<cr>
 
-" Use <leader>S to create a new scratch buffer tab.
+" Use <leader>n to create a new scratch buffer tab.
 function! CreateScratchBuffer()
 	tabnew
 	setlocal buftype=nofile
 endfunction
-nnoremap <leader>S :call CreateScratchBuffer()<cr>
+nnoremap <leader>n :call CreateScratchBuffer()<cr>
 
 " Wrap long line even if the initial line is longer than textwidth. Per
 " https://goo.gl/3pws7z, we should not combine flags when removing.
@@ -530,16 +530,27 @@ function! LoadSession()
 endfunction
 nnoremap <leader>Q :call LoadSession()<cr>
 
-" In visual mode, use <leader>q, <leader>Q, and <leader>` to place the selected
-" text within quotes.
-xnoremap <leader>q c""<esc>P
-xnoremap <leader>Q c''<esc>P
-xnoremap <leader>` c``<esc>P
+" In visual mode, <leader>` to place the selected text within backticks.
+function! WrapBackticks(type) range
+	if a:type ==# "V"
+		call append(a:lastline, "```")
+		call append(a:firstline - 1, "```")
+	else
+		execute "normal! gvc``\<esc>P"
+	endif
+endfunction
+xnoremap <leader>` :call WrapBackticks(visualmode())<cr>
 
-" Use <leader>' to convert the surrounding double quotes to single quotes.
-" Similarly use <leader>" to convert from single quotes to double quotes.
+" In visual mode, <leader>, to place the selected text within angle brackets.
+xnoremap <leader>, c<><esc>P
+
+" In normal mode, use <leader>' to convert the surrounding double quotes to
+" single quotes. Similarly use <leader>" to convert single quotes to double
+" quotes. In visual mode, the mapping will wrap the selected text within quotes.
 nnoremap <leader>' di"v<left>r'p
 nnoremap <leader>" di'v<left>r"p
+xnoremap <leader>' c''<esc>P
+xnoremap <leader>" c""<esc>P
 
 " Use <leader>u in normal mode to convert various Unicode characters to ASCII.
 function! ConvertUnicode()

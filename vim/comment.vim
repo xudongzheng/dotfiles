@@ -1,5 +1,5 @@
 function! DefineComment(ft, prefix)
-	execute "autocmd FileType " . a:ft . " noremap <buffer> <leader>c :normal! I" . a:prefix . " <Esc>"
+	execute "autocmd FileType " . a:ft . " noremap <buffer> <leader>c :normal! I" . a:prefix . " <esc>"
 endfunction
 
 " Use <leader>c to comment code. This should work in normal mode (for the active
