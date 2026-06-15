@@ -63,15 +63,15 @@ alias giau="git update-index --assume-unchanged"
 # Define alias for copying the HEAD commit hash.
 alias glc="git rev-parse HEAD | xc"
 
-# Define aliases for the long form of "git log".
-alias gl0="git log --graph --decorate --stat --find-renames --date-order --show-signature --pretty=fuller"
-alias gl1="gl0 -1"
-alias gl="gl0 --max-count=50"
-alias gla="gl --branches --remotes --tags"
-
 # Define aliases for the single-line form of "git log".
-alias glo0="git log --pretty=oneline --abbrev-commit"
-alias glo="glo0 --max-count=1000"
+alias gl0="git log --pretty=oneline --abbrev-commit"
+alias gl="gl0 --max-count=1000"
+alias gla="gl --graph --branches --remotes --tags"
+
+# Define aliases for the long form of "git log".
+alias glf0="git log --graph --decorate --stat --find-renames --date-order --show-signature --pretty=fuller"
+alias glf1="glf0 -1"
+alias glf="glf0 --max-count=50"
 
 alias gm="git merge"
 alias gma="gm --abort"

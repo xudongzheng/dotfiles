@@ -92,6 +92,9 @@ set mouse=a
 " Enable persistent undo.
 set undofile
 
+" Disable bell.
+set belloff=all
+
 " Use incremental search and highlight as we go.
 set hlsearch
 set incsearch
@@ -268,7 +271,16 @@ autocmd OptionSet paste if &paste == 0 && mode() ==# "i" | call feedkeys("\<c-g>
 " window is split.
 function! HighlightTrailingWS()
 	highlight ExtraWhitespace ctermbg=red
-	match ExtraWhitespace /\s\+$/
+
+	" Remove rule if it was previously added to the window. When Vim is used as
+	" a pager, highlighting is not necessary so the rule is not added back.
+	if exists("w:extra_whitespace_match")
+		call matchdelete(w:extra_whitespace_match)
+		unlet w:extra_whitespace_match
+	endif
+	if &buftype !=# "terminal"
+		let w:extra_whitespace_match = matchadd("ExtraWhitespace", '\s\+$')
+	endif
 endfunction
 autocmd BufEnter,WinEnter * call HighlightTrailingWS()
 
