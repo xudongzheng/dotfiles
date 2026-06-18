@@ -228,6 +228,17 @@ function unmv {
 	fi
 }
 
+# Define function to rename files by replacing text in filenames. This is
+# preferred over rename.ul since that is not available on macOS.
+function rename {
+	from="$1"
+	to="$2"
+	for src in "${@:3}"; do
+		dst="${src/$from/$to}"
+		mv -iv "$src" "$dst"
+	done
+}
+
 # Define function to rename file based on modification time.
 function mvmod {
 	for src in "$@"; do
