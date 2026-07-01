@@ -103,7 +103,7 @@ elseif has("patch-9.0.0")
 	autocmd FileType netrw call timer_start(0, { -> SetNetrwTabWidth() })
 
 	" By default, Netrw refreshes the listing on FocusGained. That causes the
-	" tab width being set and reset all over again. Disable automatic refresh.
+	" tab width to be set and reset all over again. Disable automatic refresh.
 	autocmd FileType netrw autocmd! AuNetrwEvent FocusGained *
 
 	" Netrw doesn't correctly display names that exceed the maximum length.

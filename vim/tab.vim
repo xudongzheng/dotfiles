@@ -23,7 +23,7 @@ endfunction
 
 " Define tab settings. By default (priority 0), use tabs for indentation.
 " BufWinEnter is needed for reading from standard input as well as buffers
-" created with :new. FileType is needed to override Vim defaults for types like
+" created with :new. FileType is needed to override Vim defaults for types such
 " as Python. Projects can override tab settings with priority 1. Files such as
 " YAML can further override with priority 2.
 autocmd BufWinEnter,FileType * call SetTabWidth(4, v:true, 0)

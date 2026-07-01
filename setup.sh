@@ -40,8 +40,7 @@ if [[ ! -f ~/.vimrc ]]; then
 	echo "execute \"source \" .. fnameescape(\"$base/.vimrc\")" > ~/.vimrc
 fi
 
-# Source repository .ssh/config for SSH. If the repository is shared between
-# multiple users, .ssh/config must be owned by root for the include to work.
+n
 if [[ ! -f ~/.ssh/config ]]; then
 	mkdir -p ~/.ssh
 	echo "Include \"$base/.ssh/config\"" > ~/.ssh/config
@@ -86,7 +85,7 @@ mkdir -p ~/.vim/{session,swap,undo}
 # Suppress MOTD and "last login". On macOS, a new terminal tab opens with the
 # same working directory as the current tab by default. Per the comments on
 # https://bit.ly/45MZSJ2, .hushlogin is checked in the working directory.
-# Configure terminal to open tabs in $HOME will always suppress the "last login"
+# Configure Terminal to open tabs in $HOME will always suppress the "last login"
 # message. This behavior is preferred regardless as it's easier to open a new
 # tab and run commands without first having to check the working directory.
 touch ~/.hushlogin

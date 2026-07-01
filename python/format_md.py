@@ -37,8 +37,12 @@ def format_file(file):
 				output += " " + stripped
 				continue
 
-		# Handle quotes
+		# Handle quotes.
 		if start_of_paragraph or inside_quote:
+			if inside_quote and line == ">":
+				output += "\n>\n"
+				inside_quote = False
+				continue
 			if line.startswith("> "):
 				if inside_quote:
 					output += " " + stripped.removeprefix("> ")

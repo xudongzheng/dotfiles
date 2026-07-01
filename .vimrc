@@ -77,7 +77,7 @@ set notimeout
 set ttimeout
 
 " Set Escape key timeout. This is necessary for IME integration to ensure that
-" the keyboard layout reverts to Colemak quickly after upon leaving insert mode.
+" the keyboard layout reverts to Colemak quickly after leaving insert mode.
 set ttimeoutlen=10
 
 " Store temporary files in .vim to keep the working directories clean. The
@@ -114,7 +114,7 @@ set number
 " Show line and character number in lower right hand corner.
 set ruler
 
-" Only insert a single space after punctuations when using the automatic
+" Only insert a single space after punctuation when using the automatic
 " formatter (via dw).
 set nojoinspaces
 
@@ -127,7 +127,7 @@ set cursorline
 set cursorcolumn
 highlight CursorColumn ctermbg=lightcyan ctermfg=black
 
-" Define function for command mode aliases. Some aliases may need to expland
+" Define function for command mode aliases. Some aliases may need to expand
 " differently if a line range is given.
 function! CommandAlias(literal, no_range, with_range)
 	" Alias should only apply to commands, not search prompts.
@@ -261,7 +261,7 @@ if has("patch-8.1.1401")
 	let &t_PE = "\e[201~"
 endif
 
-" An abbrevation at the end of pasted text gets expanded but it shouldn't be.
+" An abbreviation at the end of pasted text gets expanded but it shouldn't be.
 " See https://bit.ly/3RGkCwX for Vim issue. Breaking the undo sequence is a
 " workaround that stops that though I have no clue why it works.
 autocmd OptionSet paste if &paste == 0 && mode() ==# "i" | call feedkeys("\<c-g>u") | endif
@@ -272,7 +272,7 @@ autocmd OptionSet paste if &paste == 0 && mode() ==# "i" | call feedkeys("\<c-g>
 highlight ExtraWhitespace ctermbg=red
 function! HighlightTrailingWS()
 	if &buftype ==# "terminal"
-		" Do not highlight trailing whitespaces when using Vim as a pager.
+		" Do not highlight trailing whitespace when using Vim as a pager.
 		call clearmatches()
 	else
 		match ExtraWhitespace /\s\+$/
@@ -469,7 +469,7 @@ xnoremap <leader>o I <esc>1vpgvy
 
 " When selecting until the end of the line, do not include the newline
 " character. Otherwise pasting over the selected text would move up the next
-" line of text. This selects trailing whitespaces unlike g_.
+" line of text. This selects trailing whitespace unlike g_.
 xnoremap $ $<left>
 
 " Use dh, dn, de, and di to navigate splits.
