@@ -25,6 +25,10 @@ function! EnableTextFeatures()
 	" Use <leader>D to insert date with time and timezone.
 	nnoremap <buffer> <leader>D "=strftime("%Y-%m-%d %H:%M:%S%z")<cr>p
 
+	" Use <leader>> and <leader>< to quote and unquot the selected text.
+	xnoremap <buffer> <leader>> :s/^/> /<bar>'<,'>s/^> $/>/e<cr>
+	xnoremap <buffer> <leader>< :s/^>$/> /e<bar>'<,'>s/^> //<cr>
+
 	" Enable IME integration.
 	if filereadable(g:mac_ime_bin)
 		setlocal iminsert=2
@@ -54,14 +58,15 @@ augroup filetypedetect
 		autocmd BufRead,BufNewFile *.keymap,*.overlay setfiletype dts
 	endif
 
-	" Treat .fs (F#) and .kt (Kotlin) files as Scala files. They are obviously
-	" different but are similar enough for most of syntax highlighting and
-	" indentation to work. OCaml is another candidate for F# but it doesn't
-	" handle braces well.
-	if has("patch-9.0.1908")
-		autocmd BufRead,BufNewFile *.fs setfiletype scala
-	else
-		autocmd BufRead,BufNewFile *.fs,*.kt setfiletype scala
+	" Treat F# files as Scala files. They are different but are similar enough
+	" for most syntax highlighting and indentation to work. OCaml is another
+	" candidate but it doesn't handle braces well. Vim already detects .fs and
+	" .fsx files as fsharp so simply adjust the syntax highlighting language.
+	autocmd FileType fsharp setlocal syntax=scala
+
+	" Treat Kotlin files as Scala files.
+	if !has("patch-9.0.1908")
+		autocmd BufRead,BufNewFile *.kt setfiletype scala
 	endif
 
 	" Treat Zephyr config files as regular configuration files.

@@ -10,7 +10,7 @@ function aliasDir {
 	done
 }
 
-# Exit if not interactive, such as when transfering files via scp.
+# Exit if not interactive, such as when transferring files via scp.
 if [[ $- != *i* ]]; then
 	return
 fi
@@ -53,7 +53,7 @@ if [[ $uname == "Darwin" ]]; then
 	alias sha512sum="shasum -a 512"
 fi
 
-# Define ping function wrapper to lookup SSH host before pinging.
+# Define ping function wrapper to look up SSH host before pinging.
 function ping {
 	# Look up host using "ssh" command with the last argument being the host.
 	addr="${@: -1}"
@@ -202,7 +202,7 @@ alias tarcf="tar --create --file"
 alias tarzcf="tar --gzip --create --file"
 alias tarxf="tar --keep-old-files --no-same-permissions --no-same-owner --extract --file"
 
-# Create an alias for cp and mv as to prompt before overwriting existing files.
+# Create an alias for cp and mv to prompt before overwriting existing files.
 alias cp="cp -i"
 alias mv="mv -i"
 
@@ -235,7 +235,12 @@ function rename {
 	to="$2"
 	for src in "${@:3}"; do
 		dst="${src/$from/$to}"
-		mv -iv "$src" "$dst"
+
+		# Skip if src and dst are identical. When used with a wildcard, the list
+		# of files may include unrelated files that should be ignored.
+		if [[ "$src" != "$dst" ]]; then
+			mv -iv "$src" "$dst"
+		fi
 	done
 }
 
@@ -364,7 +369,7 @@ function cdn {
 	cd "$(dirname "$1")"
 }
 
-# Similar to cdn above, use ndc to do edit the file.
+# Similar to cdn above, use ndc to edit the file.
 function ndc {
 	files=()
 	for file in "$@"; do
@@ -375,8 +380,8 @@ function ndc {
 }
 
 # Define dotcommit for printing the dotfiles commit hash. If the master branch
-# exists, print that commit since HEAD may on a different branch (such as on my
-# local computer). If there is no master branch, print the HEAD commit.
+# exists, print that commit since HEAD may be on a different branch (such as on
+# my local computer). If there is no master branch, print the HEAD commit.
 function dotcommit {
 	if git -C $dotDir show-ref --verify --quiet refs/heads/master; then
 		git -C $dotDir rev-parse master
@@ -606,7 +611,7 @@ if command -v apt > /dev/null; then
 	fi
 
 	# Use ali to list all installed packages. This writes standard error of "apt
-	# list" to /dev/null since it give a warning about not having a stable CLI
+	# list" to /dev/null since it gives a warning about not having a stable CLI
 	# interface when the output goes to a pipe instead of a terminal.
 	alias ali="apt list --installed 2>/dev/null"
 	alias aliep="ali | ep"

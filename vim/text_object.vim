@@ -35,7 +35,7 @@ function! SelectTextObject(charsets, command)
 
 	if l:best_before_char !=# ""
 		" If character under the cursor matches, use Vim's builtin selection
-		" mechanism; this edge case not easy to handle manually. Also use
+		" mechanism; this edge case is not easy to handle manually. Also use
 		" builtin mechanism if the before and after delimiters are different.
 		" This is not used universally for quotes since it cannot select across
 		" multiple lines. See https://bit.ly/4go5xvw for details.
@@ -69,7 +69,7 @@ function! SelectBlocks(command)
 	call SelectTextObject(l:charsets, a:command)
 endfunction
 
-" Define text object that work around multiple quote characters. This uses c
+" Define text object that works around multiple quote characters. This uses c
 " (for comilla) instead of q since ac is easier to type than aq.
 onoremap uc :<c-u>call SelectQuotes("i")<cr>
 xnoremap uc :<c-u>call SelectQuotes("i")<cr>

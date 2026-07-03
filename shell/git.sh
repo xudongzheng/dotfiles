@@ -218,11 +218,16 @@ function grih {
 # associated with one repository. This makes it easier to manage multiple keys
 # for multiple repositories.
 function gitdk {
-	repo=$1
-	str=$(sed "s/[@:]/\//g" <<< $1 | sed "s/\.git//")
-	hostname=$(cut -d / -f 2 <<< $str)
-	user=$(cut -d / -f 3 <<< $str)
-	repo=$(cut -d / -f 4 <<< $str)
+	# Allow repository to be specified with either HTTPS or SSH.
+	url="${1/#https:\/\//}"
+	url="${url/%.git/}"
+	url="${url/#git@/}"
+	url="${url/:/\/}"
+
+	# Extract repository location.
+	hostname=$(cut -d / -f 1 <<< $url)
+	user=$(cut -d / -f 2 <<< $url)
+	repo=$(cut -d / -f 3 <<< $url)
 
 	if [[ "$hostname" == "github.com" ]]; then
 		service=github
@@ -259,14 +264,14 @@ function gitdk {
 		echo "Press enter to clone or press Ctrl-C to quit"
 	fi
 	if [[ $SHELL == "/bin/bash" ]]; then
-		read -r remote
+		read -r remote_name
 	elif [[ $SHELL == "/bin/zsh" ]]; then
-		read -r "remote?"
+		read -r "remote_name?"
 	fi
-	repo="git@$host:$user/$repo.git"
+	remote_url="git@$host:$user/$repo.git"
 	if [[ "$inside_git_repo" ]]; then
-		git remote add $remote $repo
+		git remote add $remote_name $remote_url
 	else
-		git clone $repo
+		git clone $remote_url
 	fi
 }
