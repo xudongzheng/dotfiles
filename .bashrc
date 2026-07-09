@@ -441,9 +441,7 @@ function pub {
 }
 
 # Use pubc to print and copy the local SSH public key.
-function pubc {
-	pub "$@" | xc
-}
+function pubc { pub "$@" | xc; }
 
 # Use pubC to print and copy command for adding the local SSH public key to
 # .ssh/authorized_keys.
@@ -593,6 +591,22 @@ function osver {
 	if command -v cmd.exe > /dev/null; then
 		cw && cmd.exe /c ver && cm
 	fi
+}
+
+# Define function for printing logs in /var/log chronologically.
+function logcat {
+	files=$(printf "%s\n" "$@" | sort --version-sort --reverse)
+	for file in $files; do
+		if [[ $file == *.gz ]]; then
+			# Use gzip instead of zcat for consistent cross-platform behavior as
+			# zcat on macOS expects files to have the .Z extension.
+			gzip --decompress --stdout "$file"
+		elif [[ $file == *.bz2 ]]; then
+			bzip2 --decompress --stdout "$file"
+		else
+			cat "$file"
+		fi
+	done | vis
 }
 
 # If apt is available, define related aliases. Some are only necessary of the

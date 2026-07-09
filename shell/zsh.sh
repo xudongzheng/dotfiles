@@ -32,6 +32,9 @@ setopt INTERACTIVE_COMMENTS
 # error to be consistent with Bash.
 setopt NO_NOMATCH
 
+# Split multiline variables so for loops behave consistently with Bash.
+setopt SH_WORD_SPLIT
+
 # Use Ctrl-X to edit the current command in Vim. Move the cursor to start of the
 # line to be consistent with Bash as Zsh keeps the cursor position by default.
 autoload -U edit-command-line
