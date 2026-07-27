@@ -3,13 +3,13 @@ import os
 import re
 import sys
 
-import format_md
+import markdown_fmt
 
 def grep_replace_color(match):
 	return "\x1b[1;31m" + match.group(0) + "\x1b[0m"
 
 def grep_markdown_file(file_path, file, query):
-	output = format_md.format_file(file)
+	output = markdown_fmt.format_file(file)
 	lines = output.splitlines()
 	for line in lines:
 		if re.search(query, line):

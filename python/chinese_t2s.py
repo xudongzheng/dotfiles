@@ -8,7 +8,7 @@ import sys
 
 def main():
 	lookup_table = {}
-	conv_file = pathlib.Path(__file__).parent / "conv_chinese.txt"
+	conv_file = pathlib.Path(__file__).parent / "chinese_t2s.txt"
 	with open(conv_file, "r") as file:
 		for line in file:
 			pieces = line.strip().split("\t")

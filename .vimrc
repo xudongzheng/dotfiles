@@ -225,7 +225,7 @@ command S :Sexplore
 " anything if executed from a non-text file.
 function! FormatMarkdown()
 	if IsTextFileType(&filetype)
-		execute "%! python3 " . g:dotfiles_dir . "python/format_md.py" | x
+		execute "%! python3 " . g:dotfiles_dir . "python/markdown_fmt.py" | x
 	else
 		echoerr "Unable to format non-text file"
 	endif

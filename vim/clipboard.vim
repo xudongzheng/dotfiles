@@ -39,7 +39,7 @@ nnoremap <leader>x :set operatorfunc=ClipboardOperatorCut<cr>g@
 xnoremap <leader>x :<c-u>call ClipboardOperatorCut(visualmode())<cr>
 
 function! ClipboardReformatCopy()
-	let l:formatted = system("python3 " . g:dotfiles_dir . "python/format_md.py", getreg('"'))
+	let l:formatted = system("python3 " . g:dotfiles_dir . "python/markdown_fmt.py", getreg('"'))
 	call setreg('"', l:formatted)
 	call ClipboardExternal()
 endfunction

@@ -26,6 +26,9 @@ export EDITOR=vim
 export PAGER="$dotDir/python/pager.py"
 source "$dotDir/shell/vim.sh"
 
+# Allow $PAGER to be used for systemd.
+export SYSTEMD_PAGERSECURE=0
+
 # Load shell specific code.
 if [[ $SHELL == "/bin/bash" ]]; then
 	source "$dotDir/shell/bash.sh"
@@ -100,11 +103,11 @@ alias epri="epr -i"
 alias eprtt="epr 'TODO TODO'"
 alias fep="find . | ep"
 alias fm="free -m"
-alias fmd="python3 $dotDir/python/format_md.py"
+alias fmd="python3 $dotDir/python/markdown_fmt.py"
 alias fms="fm -s 1"
 alias hex="hexdump -C"
 alias hig="history | ep"
-alias ig="python3 $dotDir/python/gen_index.py"
+alias ig="python3 $dotDir/python/index_gen.py"
 alias igdate="ig --sort date"
 alias phttp="python3 -m http.server"
 alias pwdc="pwd | xc"
@@ -142,6 +145,11 @@ if [[ $uname == "Darwin" ]]; then
 	export CLICOLOR=1
 	export LSCOLORS=ExGxBxDxCxEgEdxbxgxcxd
 	alias l="ls"
+
+	# Define alias for uniq, which treats Chinese characters as identical
+	# without LC_ALL. This behavior appears to have changed with a recent
+	# version of macOS.
+	alias uniq="LC_ALL=C.UTF-8 uniq"
 else
 	# On Linux, set LC_ALL to sort in binary order. The default is case
 	# insensitive and dependent on the locale.
