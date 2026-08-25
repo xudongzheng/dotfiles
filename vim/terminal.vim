@@ -5,7 +5,6 @@ set termwinkey=<f11>
 " Use <leader>T to open terminal in a split. Use <leader><c-t> to open terminal
 " in a new tab.
 function! OpenTerminal(newtab)
-	echom "x"
 	" Store initial working directory.
 	let l:cwd = getcwd()
 

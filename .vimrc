@@ -194,6 +194,10 @@ else
 	set backspace=indent,eol,start
 endif
 
+" Preserve presence of or lack of EOL to avoid introducing unrelated changes
+" when contributing to third-party projects.
+set nofixendofline
+
 " Allow h/i and left/right arrow keys to wrap from one line to another.
 set whichwrap+=<,>,h,l,[,]
 
@@ -562,7 +566,7 @@ xnoremap <leader>" c""<esc>P
 
 " Use <leader>u in normal mode to convert various Unicode characters to ASCII.
 function! ConvertUnicode()
-	%s/[\u2013\u2014]/-/ge
+	%s/[\u2013\u2014\u2212]/-/ge
 	%s/[\u2018\u2019]/'/ge
 	%s/[\u201c\u201d]/"/ge
 endfunction
