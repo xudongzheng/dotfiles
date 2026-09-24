@@ -446,9 +446,10 @@ inoremap <c-w> <c-g>u<c-w>
 " Ctrl-Shift-U behaves like Ctrl-U by default. It's easy to accidentally create
 " a mess since the sequence is used for Unicode input on Linux. For simplicity,
 " have codepoint typed as text and delete it manually afterwards. This only
-" applies outside of tmux since it's not possible to distinguish between
-" Ctrl-Shift-U and Ctrl-U within tmux. This will be investigated later.
-if !exists("$TMUX")
+" applies when running directly in xterm. It's not possible to distinguish
+" between Ctrl-Shift-U and Ctrl-U within raw TTY (no GUI) or within tmux. There,
+" keep default Ctrl-U behavior for scrolling up.
+if exists("$DISPLAY") && !exists("$TMUX")
 	inoremap <c-s-u> /
 	nnoremap <c-s-u> /
 endif

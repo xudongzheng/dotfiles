@@ -5,5 +5,10 @@ function! LoadPager(path)
 	let l:options["hidden"] = 1
 	let l:options["term_finish"] = "open"
 	let l:options["term_opencmd"] = "buffer %d"
+
+	" Set minimum width to avoid wrapping lines too early when window is narrow.
+	" This corresponds to the width when my main display is split into two.
+	let l:options["term_cols"] = max([&columns, 115])
+
 	call term_start("cat " . a:path, l:options)
 endfunction
