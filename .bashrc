@@ -353,11 +353,9 @@ function cu {
 }
 
 # Define xe as an alternative for fc. The name was chosen since Ctrl-X Ctrl-E is
-# used for editing the current command. This is preferred over fc as that
+# the default combination for command editing. This is preferred over fc as that
 # requires two consecutive presses with the same finger.
-function xe {
-	fc
-}
+alias xe="fc"
 
 # Define xv to rerun the last command and pipe the output to Vim.
 function xv {

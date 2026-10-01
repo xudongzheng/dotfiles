@@ -268,7 +268,7 @@ endif
 " An abbreviation at the end of pasted text gets expanded but it shouldn't be.
 " See https://bit.ly/3RGkCwX for Vim issue. Breaking the undo sequence is a
 " workaround that stops that though I have no clue why it works.
-autocmd OptionSet paste if &paste == 0 && mode() ==# "i" | call feedkeys("\<c-g>u") | endif
+autocmd OptionSet paste if &paste == 0 && mode() ==# "i" | call feedkeys("\<c-g>u", "in") | endif
 
 " Highlight trailing whitespace per https://bit.ly/35RTov2. Since :match is
 " local to a specific window, WinEnter is needed for the rule to apply when a
