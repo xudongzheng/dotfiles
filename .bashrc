@@ -116,6 +116,7 @@ alias tm="touch -m"
 alias usm="useradd -s /bin/bash -m"
 alias wl="wc -l"
 alias xc="bash $dotDir/clipboard/copy.sh"
+alias xp="bash $dotDir/clipboard/paste.sh"
 
 # The "reset" Bash command takes a full second to run. Use "tput reset" to
 # achieve the same functionality without the delay. See https://bit.ly/3An1bo2

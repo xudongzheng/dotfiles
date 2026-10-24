@@ -40,7 +40,7 @@ function! SelectTextObject(charsets, command)
 		" This is not used universally for quotes since it cannot select across
 		" multiple lines. See https://bit.ly/4go5xvw for details.
 		let l:current_char = getline(".")[col(".") - 1]
-		if l:best_before_char != l:best_after_char || l:best_before_char == l:current_char || l:best_after_char == l:current_char
+		if l:best_before_char !=# l:best_after_char || l:best_before_char ==# l:current_char || l:best_after_char ==# l:current_char
 			execute "normal! v" . a:command . l:best_before_char
 			return
 		endif

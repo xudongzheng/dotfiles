@@ -225,13 +225,13 @@ set nrformats+=alpha nrformats-=octal
 command V :Vexplore
 command S :Sexplore
 
-" Use :F to format a text file, save, and close. The command should not do
-" anything if executed from a non-text file.
+" Use :F to format a text file, save, and close. It should not be used for
+" gitcommit or non-text files.
 function! FormatMarkdown()
-	if IsTextFileType(&filetype)
+	if IsTextFileType(&filetype) && &filetype !=# "gitcommit"
 		execute "%! python3 " . g:dotfiles_dir . "python/markdown_fmt.py" | x
 	else
-		echoerr "Unable to format non-text file"
+		echoerr "Unable to format file as Markdown"
 	endif
 endfunction
 command F call FormatMarkdown()

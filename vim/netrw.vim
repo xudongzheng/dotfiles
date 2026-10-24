@@ -13,7 +13,7 @@ endfunction
 function! NetrwReturn()
 	" When the cursor is in the banner area, the Netrw default behavior should
 	" be skipped. Navigate if cursor is within file listing area.
-	if getline(".")[0] != '"'
+	if getline(".")[0] !=# '"'
 		call NetrwBrowse(netrw#Call("NetrwGetWord"))
 	endif
 endfunction
