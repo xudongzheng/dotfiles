@@ -124,9 +124,9 @@ autocmd FileType go call AbbrevGoSnippets()
 
 " Define visual mapping for common Go snippets.
 function! MapGoSnippets()
-	xnoremap <leader>b c[]byte()<esc>P
-	xnoremap <leader>l clen()<esc>P
-	xnoremap <leader>s cstring()<esc>P
-	xnoremap <leader>f cfloat64()<esc>P
+	xnoremap <buffer> <leader>b c[]byte()<esc>P
+	xnoremap <buffer> <leader>l clen()<esc>P
+	xnoremap <buffer> <leader>s cstring()<esc>P
+	xnoremap <buffer> <leader>f cfloat64()<esc>P
 endfunction
 autocmd FileType go call MapGoSnippets()

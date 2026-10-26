@@ -388,21 +388,22 @@ function! GitCommitDiff()
 endfunction
 autocmd FileType gitcommit nnoremap <buffer> <leader>G :call GitCommitDiff()<cr>
 
-" Use <leader>N to duplicate the buffer into a new scratch buffer tab.
-function! DuplicateBuffer()
-	normal! ggVGy
-	tabnew
-	normal! Vp
-	setlocal buftype=nofile
-endfunction
-nnoremap <leader>N :call DuplicateBuffer()<cr>
-
-" Use <leader>n to create a new scratch buffer tab.
+" Use <leader>n to create a new scratch buffer tab. In visual mode, copy the
+" selected text into the new buffer.
 function! CreateScratchBuffer()
 	tabnew
 	setlocal buftype=nofile
 endfunction
 nnoremap <leader>n :call CreateScratchBuffer()<cr>
+xnoremap <leader>n y:call CreateScratchBuffer()<cr>Vp
+
+" Use <leader>N to duplicate the buffer into a new scratch buffer tab.
+function! DuplicateBuffer()
+	normal! ggVGy
+	call CreateScratchBuffer()
+	normal! Vp
+endfunction
+nnoremap <leader>N :call DuplicateBuffer()<cr>
 
 " Wrap long line even if the initial line is longer than textwidth. Per
 " https://goo.gl/3pws7z, we should not combine flags when removing.

@@ -13,7 +13,7 @@ autocmd FileType php call AbbrevPHPSnippets()
 
 " Define abbreviations for Python snippets.
 function! AbbrevPythonSnippets()
-	xnoremap <leader>l clen()<esc>P
+	xnoremap <buffer> <leader>l clen()<esc>P
 endfunction
 autocmd FileType python call AbbrevPythonSnippets()
 
@@ -21,7 +21,7 @@ autocmd FileType python call AbbrevPythonSnippets()
 autocmd FileType java,javascript,scala iab <buffer> strtn toString()
 
 " Swift uses String() to convert integer to string.
-autocmd FileType swift xnoremap <leader>s cString()<esc>P
+autocmd FileType swift xnoremap <buffer> <leader>s cString()<esc>P
 
 " Define abbreviations for TeX snippets.
 function! AbbrevTeXSnippets()
