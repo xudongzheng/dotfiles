@@ -641,3 +641,8 @@ if has("patch-8.1.1401")
 	call SourceVim("vim/terminal.vim")
 endif
 call SourceVim("vim/text_object.vim")
+
+" Source files from submodules.
+for script_path in glob(g:dotfiles_dir . "submodule/*/.vimrc", v:false, v:true)
+	execute "source" fnameescape(script_path)
+endfor

@@ -654,3 +654,11 @@ fi
 if command -v $firefox > /dev/null; then
 	source "$dotDir/shell/mozilla.sh"
 fi
+
+# Source files from submodules. It's necessary to check that the file exists
+# since Bash will loop through the unexpanded glob if no files match.
+for file in "$dotDir"/submodule/*/.bashrc; do
+	if [[ -f $file ]]; then
+		source "$file"
+	fi
+done
