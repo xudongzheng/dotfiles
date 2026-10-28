@@ -640,6 +640,10 @@ if command -v apt > /dev/null; then
 	alias aliep="ali | ep"
 fi
 
+if command -v codex > /dev/null; then
+	source "$dot_dir/shell/codex.sh"
+fi
+
 if command -v git > /dev/null; then
 	source "$dot_dir/shell/git.sh"
 fi

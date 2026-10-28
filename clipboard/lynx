@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# Write directly to the terminal so the clipboard escape sequence reaches tmux
+# even when the link launcher redirects stdout.
+echo "$1" | bash $(dirname $0)/copy.sh -q > /dev/tty
+
+if [[ -n "$TMUX" ]]; then
+	tmux display-message -t "$TMUX_PANE" "Copied link to clipboard"
+fi
