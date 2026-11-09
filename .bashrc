@@ -105,7 +105,7 @@ alias fep="find . | ep"
 alias fm="free -m"
 alias fmd="python3 $dotDir/python/markdown_fmt.py"
 alias fms="fm -s 1"
-alias hex="hexdump -C"
+alias hex="hexdump --canonical --no-squeezing"
 alias hig="history | ep"
 alias ig="python3 $dotDir/python/index_gen.py"
 alias igdate="ig --sort date"
@@ -305,6 +305,7 @@ else
 fi
 
 # Create aliases for common directories.
+aliasDir cag ~/.agents
 aliasDir cde $userHome/Desktop
 aliasDir cdl $userHome/Downloads
 aliasDir cdoc $userHome/Documents

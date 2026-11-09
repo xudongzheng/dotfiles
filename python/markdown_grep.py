@@ -25,13 +25,11 @@ def grep_markdown_file(file_path, file, query):
 
 def main():
 	parser = argparse.ArgumentParser()
-	parser.add_argument("query", nargs="*")
+	parser.add_argument("query", nargs="+")
 	parser.add_argument("-i", "--ignore-case", action="store_true")
 	parser.add_argument("-w", "--word-regexp", action="store_true")
 	args = parser.parse_args()
 
-	if len(args.query) == 0:
-		raise Exception("no search query defined")
 	query = " ".join(args.query)
 	if args.word_regexp:
 		query = r"\b" + query + r"\b"

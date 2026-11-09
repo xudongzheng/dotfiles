@@ -72,11 +72,6 @@ function handleUserJS {
 		# on the ESR, Developer, and Nightly releases.
 		writePref "$userDir" xpinstall.signatures.required false
 
-		# Disable text segmentation for Chinese. Double clicking should select
-		# an entire phrase or sentence. Text segmentation makes it more
-		# difficult to select names, among other things.
-		writePref "$userDir" intl.icu4x.segmenter.enabled false
-
 		# Manage updates manually.
 		writePref "$userDir" app.update.auto false
 
