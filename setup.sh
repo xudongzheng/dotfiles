@@ -21,18 +21,18 @@ fi
 
 # Use .bashrc for Bash and .zshrc for Zsh.
 if [[ $SHELL == "/bin/zsh" ]]; then
-	bashrcSrc=~/.zshrc
+	bashrc_src=~/.zshrc
 else
-	bashrcSrc=~/.bashrc
+	bashrc_src=~/.bashrc
 fi
 
 # Configure Bash (and Zsh) to source the repository .bashrc. In general,
 # sourcing is preferred over creating a symlink so the local user can have
 # additional configuration. This needs to check if the repository file is
 # already sourced since new accounts typically come with a default file.
-bashrcDst="$base/.bashrc"
-if ! grep -qs "$bashrcDst" $bashrcSrc; then
-	echo "source \"$bashrcDst\"" > $bashrcSrc
+bashrc_dst="$base/.bashrc"
+if ! grep -qs "$bashrc_dst" $bashrc_src; then
+	echo "source \"$bashrc_dst\"" > $bashrc_src
 fi
 
 # Configure Vim to source the repository .vimrc.

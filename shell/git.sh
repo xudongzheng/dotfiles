@@ -153,7 +153,7 @@ function grom { git rebase origin/$(gitma); }
 # exclude tracked files.
 function gL0 {
 	if command -v git-lfs > /dev/null; then
-		git grep -z --cached -l "" | grep --null-data -vFf <(s $dotDir/python/git_ls_lfs.py)
+		git grep -z --cached -l "" | grep --null-data -vFf <(s $dot_dir/python/git_ls_lfs.py)
 	else
 		git grep -z --cached -l ""
 	fi

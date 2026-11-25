@@ -1,6 +1,6 @@
 # Define function for creating directory aliases. This is defined before exiting
 # for non-interactive sessions since the function may be called from ~/.bashrc.
-function aliasDir {
+function alias_dir {
 	# When multiple directories are given, create alias for first that exists.
 	for dir in "${@:2}"; do
 		if [[ -d "$dir" ]]; then
@@ -18,28 +18,28 @@ fi
 # Define alias for changing to the dotfiles directory. The logic for getting the
 # current file path comes from https://bit.ly/33OR2Lh. This works with both Bash
 # and Zsh.
-dotDir=$(dirname "${BASH_SOURCE[0]:-${(%):-%x}}")
-aliasDir cdot "$dotDir"
+dot_dir=$(dirname "${BASH_SOURCE[0]:-${(%):-%x}}")
+alias_dir cdot "$dot_dir"
 
 # Use Vim as editor and pager.
 export EDITOR=vim
-export PAGER="$dotDir/python/pager.py"
-source "$dotDir/shell/vim.sh"
+export PAGER="$dot_dir/python/pager.py"
+source "$dot_dir/shell/vim.sh"
 
 # Allow $PAGER to be used for systemd.
 export SYSTEMD_PAGERSECURE=0
 
 # Load shell specific code.
 if [[ $SHELL == "/bin/bash" ]]; then
-	source "$dotDir/shell/bash.sh"
+	source "$dot_dir/shell/bash.sh"
 elif [[ $SHELL == "/bin/zsh" ]]; then
-	source "$dotDir/shell/zsh.sh"
+	source "$dot_dir/shell/zsh.sh"
 fi
 
 # Python pip can install packages without root into ~/.local/bin on Linux and
 # ~/Library/Python/*/bin on macOS. If directory exists, add to $PATH.
-pythonBins=(~/.local/bin ~/Library/Python/*/bin)
-for dir in "${pythonBins[@]}"; do
+python_bins=(~/.local/bin ~/Library/Python/*/bin)
+for dir in "${python_bins[@]}"; do
 	if [[ -d $dir ]]; then
 		export PATH=$dir:$PATH
 	fi
@@ -103,11 +103,11 @@ alias epri="epr -i"
 alias eprtt="epr 'TODO TODO'"
 alias fep="find . | ep"
 alias fm="free -m"
-alias fmd="python3 $dotDir/python/markdown_fmt.py"
+alias fmd="python3 $dot_dir/python/markdown_fmt.py"
 alias fms="fm -s 1"
 alias hex="hexdump --canonical --no-squeezing"
 alias hig="history | ep"
-alias ig="python3 $dotDir/python/index_gen.py"
+alias ig="python3 $dot_dir/python/index_gen.py"
 alias igdate="ig --sort date"
 alias phttp="python3 -m http.server"
 alias pwdc="pwd | xc"
@@ -115,8 +115,8 @@ alias tf="tail -f"
 alias tm="touch -m"
 alias usm="useradd -s /bin/bash -m"
 alias wl="wc -l"
-alias xc="bash $dotDir/clipboard/copy.sh"
-alias xp="bash $dotDir/clipboard/paste.sh"
+alias xc="bash $dot_dir/clipboard/copy.sh"
+alias xp="bash $dot_dir/clipboard/paste.sh"
 
 # The "reset" Bash command takes a full second to run. Use "tput reset" to
 # achieve the same functionality without the delay. See https://bit.ly/3An1bo2
@@ -298,20 +298,20 @@ function sslinfo {
 
 # In WSL2, determine path to native home directory.
 if command -v powershell.exe > /dev/null; then
-	userHome=/mnt/c/Users/$(powershell.exe -Command 'Write-Host -NoNewline $env:USERNAME')
-	aliasDir cw $userHome
+	user_home=/mnt/c/Users/$(powershell.exe -Command 'Write-Host -NoNewline $env:USERNAME')
+	alias_dir cw $user_home
 else
-	userHome=$HOME
+	user_home=$HOME
 fi
 
 # Create aliases for common directories.
-aliasDir cag ~/.agents
-aliasDir cde $userHome/Desktop
-aliasDir cdl $userHome/Downloads
-aliasDir cdoc $userHome/Documents
-aliasDir csh ~/.ssh
-aliasDir csr ~/src
-aliasDir css ~/Documents/screenshot $userHome/Pictures/Screenshots
+alias_dir cag ~/.agents
+alias_dir cde $user_home/Desktop
+alias_dir cdl $user_home/Downloads
+alias_dir cdoc $user_home/Documents
+alias_dir csh ~/.ssh
+alias_dir csr ~/src
+alias_dir css ~/Documents/screenshot $user_home/Pictures/Screenshots
 
 # If screenshot is organized by month, follow "current" symlink. Otherwise print
 # main screenshot directory.
@@ -391,10 +391,10 @@ function ndc {
 # exists, print that commit since HEAD may be on a different branch (such as on
 # my local computer). If there is no master branch, print the HEAD commit.
 function dotcommit {
-	if git -C $dotDir show-ref --verify --quiet refs/heads/master; then
-		git -C $dotDir rev-parse master
+	if git -C $dot_dir show-ref --verify --quiet refs/heads/master; then
+		git -C $dot_dir rev-parse master
 	else
-		git -C $dotDir rev-parse HEAD
+		git -C $dot_dir rev-parse HEAD
 	fi
 }
 
@@ -640,11 +640,11 @@ if command -v apt > /dev/null; then
 fi
 
 if command -v git > /dev/null; then
-	source "$dotDir/shell/git.sh"
+	source "$dot_dir/shell/git.sh"
 fi
 
 if command -v go > /dev/null; then
-	source "$dotDir/shell/go.sh"
+	source "$dot_dir/shell/go.sh"
 fi
 
 if [[ $uname == "Darwin" ]]; then
@@ -653,12 +653,12 @@ else
 	firefox=firefox
 fi
 if command -v $firefox > /dev/null; then
-	source "$dotDir/shell/mozilla.sh"
+	source "$dot_dir/shell/mozilla.sh"
 fi
 
 # Source files from submodules. It's necessary to check that the file exists
 # since Bash will loop through the unexpanded glob if no files match.
-for file in "$dotDir"/submodule/*/.bashrc; do
+for file in "$dot_dir"/submodule/*/.bashrc; do
 	if [[ -f $file ]]; then
 		source "$file"
 	fi

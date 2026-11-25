@@ -48,6 +48,6 @@ fi
 # Copy to clipboard with OSC 52. On Linux, disable breaking base64 output into
 # multiple lines.
 if [[ $(uname) == "Linux" ]]; then
-	base64Flags="-w 0"
+	base64_flags="-w 0"
 fi
-printf '\e]52;c;%s\x07' $(echo_input | base64 $base64Flags)
+printf '\e]52;c;%s\x07' $(echo_input | base64 $base64_flags)
