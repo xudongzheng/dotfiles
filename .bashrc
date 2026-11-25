@@ -116,6 +116,7 @@ alias tm="touch -m"
 alias usm="useradd -s /bin/bash -m"
 alias wl="wc -l"
 alias xc="bash $dot_dir/clipboard/copy.sh"
+alias xcap="python3 $dot_dir/clipboard/capture.py"
 alias xp="bash $dot_dir/clipboard/paste.sh"
 
 # The "reset" Bash command takes a full second to run. Use "tput reset" to

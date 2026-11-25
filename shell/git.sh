@@ -172,9 +172,34 @@ alias lgi="lg -i"
 alias lgt="lg TODO"
 alias lgtt="lg 'TODO TODO'"
 
+# Define function for creating and opening a worktree.
+function gw {
+	branch="$1"
+	root=$(git rev-parse --show-toplevel) || return
+	worktree="$root/.worktree/branch/$branch"
+	if [[ ! -d "$worktree" ]]; then
+		# Use branch if it exists, otherwise create worktree from HEAD.
+		if git show-ref --verify --quiet "refs/heads/$branch"; then
+			git worktree add "$worktree" "$branch" || return
+		else
+			git worktree add -b "$branch" "$worktree" || return
+		fi
+	fi
+	cd "$worktree"
+}
+
+# Define function for deleting worktrees and branches.
+function gwd {
+	for branch in "$@"; do
+		git worktree remove $branch && gbD $branch
+	done
+}
+
 # Define aliases for counting lines in a Git repository.
-alias gw="gL0 | xargs cat | wc -l"
-alias gW="gL0 | xargs cat | grep -v ^$ | wc -l"
+function gW {
+	echo Non-empty: $(gL0 | xargs cat | grep -v ^$ | wc -l)
+	echo Total: $(gL0 | xargs cat | wc -l)
+}
 
 # Define alias for searching filenames in a Git repository. Use -z so Unicode
 # names are not escaped. As that also changes the separator to 0x00, convert

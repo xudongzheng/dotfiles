@@ -87,4 +87,8 @@ augroup filetypedetect
 	" takes effect in every window that opens the buffer. With FileType, it
 	" would only take effect in the first window that opens the buffer.
 	autocmd BufRead,BufNewFile * call EnableTextFeatures()
+
+	" Only treat # lines as comments so cron entries starting with * do not
+	" wrap. See https://bit.ly/4AFPF18 for fix.
+	autocmd FileType crontab setlocal comments=:#
 augroup END
