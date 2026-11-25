@@ -61,7 +61,7 @@ alias gian="git update-index --no-assume-unchanged"
 alias giau="git update-index --assume-unchanged"
 
 # Define alias for copying the HEAD commit hash.
-alias glc="git rev-parse HEAD | xc"
+alias glc="git rev-parse HEAD | xc -n"
 
 # Define aliases for the single-line form of "git log".
 alias gl0="git log --pretty=oneline --abbrev-commit"

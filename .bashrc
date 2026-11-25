@@ -110,7 +110,7 @@ alias hig="history | ep"
 alias ig="python3 $dot_dir/python/index_gen.py"
 alias igdate="ig --sort date"
 alias phttp="python3 -m http.server"
-alias pwdc="pwd | xc"
+alias pwdc="pwd | xc -n"
 alias tf="tail -f"
 alias tm="touch -m"
 alias usm="useradd -s /bin/bash -m"
@@ -133,7 +133,7 @@ if [[ $uname == "Darwin" ]]; then
 fi
 
 alias rp="realpath"
-function rpc { rp "$@" | xc; }
+function rpc { rp "$@" | xc -n; }
 
 # Define alias for listing ports that are in use.
 if [[ $uname == "Darwin" ]]; then
@@ -401,7 +401,7 @@ function dotcommit {
 
 # Use dotc to copy the dotfiles commit hash. This is useful for pulling changes
 # on machines that lack GPG.
-alias dotc="dotcommit | xc"
+alias dotc="dotcommit | xc -n"
 
 # Use dotC to print and copy the command for setting up dotfiles on a new server
 # or user.
@@ -425,7 +425,7 @@ function dotC {
 		fi
 		combined+="$cmd"
 	done
-	echo $combined | xc
+	echo $combined | xc -n
 }
 
 function pub {
@@ -450,13 +450,13 @@ function pub {
 }
 
 # Use pubc to print and copy the local SSH public key.
-function pubc { pub "$@" | xc; }
+function pubc { pub "$@" | xc -n; }
 
 # Use pubC to print and copy command for adding the local SSH public key to
 # .ssh/authorized_keys.
 function pubC {
 	cmd='mkdir -p ~/.ssh && echo "'$(pub)'" >> ~/.ssh/authorized_keys'
-	echo $cmd | xc
+	echo $cmd | xc -n
 }
 
 # Use sshsig to print the hash for all SSH keys.
